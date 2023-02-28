@@ -1,0 +1,221 @@
+[policies]
+
+  [policies.PolAllowAllAll]
+    operations = ["encrypt", "decrypt", "hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*"]
+
+  [policies.PolDenyAllAll]
+    operations = ["encrypt", "decrypt", "hash"]
+    policy_type = "deny"
+    reasons = ["*"]
+    resources = ["*"]
+
+  [policies.PolAllowAllHigh]
+    operations = ["encrypt", "decrypt", "hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
+
+  [policies.PolAllowAllLow]
+    operations = ["encrypt", "decrypt", "hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
+
+  [policies.PolAllowAllMed]
+    operations = ["encrypt", "decrypt", "hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
+
+  [policies.PolAllowAllMeta]
+    operations = ["encrypt", "decrypt", "hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/properties/_*", "*/properties/id"]
+
+  [policies.PolAllowAllPci]
+    operations = ["encrypt", "decrypt", "hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
+
+  [policies.PolAllowDecryptAll]
+    operations = ["decrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*"]
+
+  [policies.PolAllowDecryptHigh]
+    operations = ["decrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
+
+  [policies.PolAllowDecryptLow]
+    operations = ["decrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
+
+  [policies.PolAllowDecryptMed]
+    operations = ["decrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
+
+  [policies.PolAllowDecryptMeta]
+    operations = ["decrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/properties/_*", "*/properties/id"]
+
+  [policies.PolAllowDecryptPci]
+    operations = ["decrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
+
+  [policies.PolAllowEncryptAll]
+    operations = ["encrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*"]
+
+  [policies.PolAllowEncryptHigh]
+    operations = ["encrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
+
+  [policies.PolAllowEncryptLow]
+    operations = ["encrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
+
+  [policies.PolAllowEncryptMed]
+    operations = ["encrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
+
+  [policies.PolAllowEncryptMeta]
+    operations = ["encrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/properties/_*", "*/properties/id"]
+
+  [policies.PolAllowEncryptPci]
+    operations = ["encrypt"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
+
+  
+  [policies.PolAllowHashAll]
+    operations = ["hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*"]
+
+  [policies.PolAllowHashHigh]
+    operations = ["hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
+
+  [policies.PolAllowHashLow]
+    operations = ["hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
+
+  [policies.PolAllowHashMed]
+    operations = ["hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
+
+  [policies.PolAllowHashMeta]
+    operations = ["hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/properties/_*", "*/properties/id"]
+
+  [policies.PolAllowHashPci]
+    operations = ["hash"]
+    policy_type = "allow"
+    reasons = ["*"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
+
+[roles]
+
+  [roles.Developer]
+    capabilities = ["CapIAMReader", "CapKMSWriter", "CapConfvarReader", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesReader"]
+    policies = ["PolDenyAllAll"]
+
+  [roles.CICD]
+    capabilities = ["CapIAMReader", "CapIAMWriter", "CapKMSReader", "CapKMSWriter", "CapConfvarReader", "CapConfvarWriter", "CapErrorWriter", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesReader", "CapCodeWriter", "CapTypesWriter"]
+    policies = ["PolDenyAllAll"]
+
+  [roles.ExternalApplication]
+    capabilities = ["CapCryptoDecrypter", "CapCryptoEncrypter", "CapCryptoHasher"]
+    policies = ["PolAllowAllMeta", "PolAllowAllLow", "PolAllowAllMed", "PolAllowEncryptHigh", "PolAllowHashHigh"]
+
+  [roles.InternalApplication]
+    capabilities = ["CapCryptoDecrypter", "CapCryptoEncrypter", "CapCryptoHasher"]
+    policies = ["PolAllowAllMeta", "PolAllowAllLow", "PolAllowAllMed", "PolAllowDecryptHigh", "PolAllowEncryptHigh", "PolAllowHashHigh"]
+
+  [roles.PrivilegedService]
+    capabilities = ["CapCryptoDecrypter", "CapCryptoEncrypter", "CapCryptoHasher"]
+    policies = ["PolAllowAllMeta", "PolAllowAllLow", "PolAllowAllMed", "PolAllowAllHigh"]
+
+  [roles.SecurityAdmin]
+    capabilities = ["CapIAMReader", "CapIAMWriter", "CapKMSReader", "CapKMSWriter", "CapConfvarReader", "CapConfvarWriter", "CapErrorWriter", "CapClusterInfoReader", "CapInfoReader", "CapSystemGCRunner"]
+    policies = ["PolDenyAllAll"]
+
+  [roles.Decryptor]
+    capabilities = ["CapCryptoDecrypter"]
+    policies = ["PolAllowDecryptAll"]
+
+  [roles.VaultScheduler]
+    capabilities = ["CapKMSReader", "CapKMSWriter", "CapSystemGCRunner"]
+    policies = ["PolDenyAllAll"]
+
+[users]
+
+  [users.CICD]
+    disabled = false
+    role = "CICD"
+
+  [users.Developer]
+    disabled = false
+    role = "Developer"
+
+  [users.IdentityService]
+    disabled = false
+    role = "PrivilegedService"
+
+  [users.SecurityAdmin]
+    disabled = false
+    role = "SecurityAdmin"
+
+  [users.SupportApp]
+    disabled = false
+    role = "InternalApplication"
+
+  [users.Decryptor]
+    disabled = false
+    role = "Decryptor"
+
+  [users.VaultScheduler]
+    disabled = false
+    role = "VaultScheduler"
+
+  [users.Webapp]
+    disabled = false
+    role = "ExternalApplication"
+

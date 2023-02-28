@@ -1,0 +1,27 @@
+filebeat.inputs:
+- type: container
+  paths:
+    - '/var/lib/docker/containers/*/*.log'
+  processors:
+    - add_docker_metadata:
+        host: "unix:///var/run/docker.sock"
+    - drop_event:
+        when:
+          not:
+            or:
+              - equals:
+                  container.labels.com_docker_compose_service: "client"
+              - equals:
+                  container.labels.com_docker_compose_service: "piiano-vault"
+              - equals:
+                  container.labels.com_docker_compose_service: "server-python-django"
+
+output.logstash:
+  hosts: ["logstash:5001"]
+
+
+# Add the following lines to enable debug logging
+# logging.level: debug
+# logging.to_files: false
+# logging.to_syslog: false
+# logging.metrics.enabled: false

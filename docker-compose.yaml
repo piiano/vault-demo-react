@@ -1,0 +1,162 @@
+version: '3.9'
+services:
+
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - ${CLIENT_PORT}:${CLIENT_PORT}
+    # Simplify debugging - any changes is automatically updated within the container
+    # volumes:
+    #   - ./client:/app
+    depends_on:
+      - server-python-django
+      - piiano-vault
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:${SERVER_PORT}/api/
+
+  db:
+    image: postgres:14.5
+    #volumes:
+    #  - ./data/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  server-python-django:
+    build: ./server/python-django
+    # command: python manage.py runserver 0.0.0.0:${SERVER_PORT}
+    command: sh -c "python wait_for_db.py && python manage.py runserver 0.0.0.0:${SERVER_PORT}"
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    # Simplify debugging - any changes is automatically updated within the container
+    volumes:
+      - ./server/python-django:/app
+      - ./vault/keys:/keys:ro
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db/postgres
+      PVAULT_BASE_URL: http://piiano-vault:${PVAULT_PORT}
+
+  vaultdb:
+    image: postgres:${POSTGRES_VERSION}
+    environment:
+      - POSTGRES_DB=${PVAULT_DB_NAME}
+      - POSTGRES_USER=${PVAULT_DB_USER}
+      - POSTGRES_PASSWORD=${PVAULT_DB_PASSWORD}
+    ports:
+      - 5433:5432
+
+  piiano-vault:
+    image: ${PVAULT_SERVER_DOCKER_TAG}
+    volumes:
+    #  - ./data/vaultdb:/var/lib/postgresql/data
+      - ./vault:/usr/init:ro
+      - ./vault/keys:/keys
+    depends_on:
+      - vaultdb
+    init: true
+    environment:
+      - PVAULT_DB_HOSTNAME=vaultdb
+      - PVAULT_DB_NAME=${PVAULT_DB_NAME}
+      - PVAULT_DB_USER=${PVAULT_DB_USER}
+      - PVAULT_DB_PASSWORD=${PVAULT_DB_PASSWORD}
+      - PVAULT_DB_PORT=5432
+
+      - PVAULT_SERVICE_ADMIN_API_KEY=${PVAULT_ADMIN_API_KEY}
+
+      - PVAULT_SERVICE_LISTEN_ADDR=0.0.0.0:${PVAULT_PORT}
+      - PVAULT_SERVICE_ARCHIVE_PRUNE_INTERVAL=${PVAULT_SERVICE_ARCHIVE_PRUNE_INTERVAL:-0}
+
+      - PVAULT_LOG_LEVEL:${PVAULT_LOG_LEVEL}
+      - PVAULT_LOG_CUSTOMER_ENV=${PVAULT_LOG_CUSTOMER_ENV}
+      - PVAULT_LOG_CUSTOMER_IDENTIFIER=${PVAULT_LOG_CUSTOMER_IDENTIFIER}
+      - PVAULT_DEVMODE=${PVAULT_DEVMODE}
+
+      - PVAULT_SERVICE_LICENSE=${PVAULT_SERVICE_LICENSE}
+    ports:
+      - ${PVAULT_PORT}:${PVAULT_PORT}
+    logging:
+      driver: "json-file"
+      options:
+          max-size: "50m"
+          max-file: "2"
+
+  # Init container
+  init:
+    image: docker
+    command: /usr/code/docker-compose-init.sh
+    working_dir: /usr/code
+    volumes:
+      - .:/usr/code # Not ro because the script writes the Webapp API key to file.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - piiano-vault
+      - server-python-django
+
+  terminal:
+    build: ./terminal
+    command: --host 0.0.0.0
+    ports:
+      - "5050:5000"
+
+    volumes:
+      - .:/demo:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
+  # Filebeat + ELK
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.15.0
+    container_name: filebeat
+    user: root
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./elk/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    depends_on:
+      - server-python-django
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.15.0
+    container_name: logstash
+    volumes:
+      - ./elk/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+    ports:
+      - "5001:5001"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.15.0
+    container_name: kibana
+    volumes:
+      - ./elk/create_index_pattern.sh:/usr/bin/create_index_pattern.sh:ro
+
+
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+volumes:
+  es-data:
