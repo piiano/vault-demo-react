@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom'
 
 import { Container } from './Container'
-import { Logo } from './Logo'
-import { NavLink } from './NavLink'
 
 export function Footer() {
   return (

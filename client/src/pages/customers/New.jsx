@@ -70,6 +70,7 @@ export default function NewCustomer() {
             id="name"
             name="name"
             required
+            disabled={isSubmitting}
             onChange={handleValueChange}
           />
           <TextField
@@ -78,6 +79,7 @@ export default function NewCustomer() {
             name="email"
             type="email"
             required
+            disabled={isSubmitting}
             onChange={handleValueChange}
           />
           <TextField
@@ -85,6 +87,7 @@ export default function NewCustomer() {
             id="ssn"
             name="ssn"
             required={false}
+            disabled={isSubmitting}
             onChange={handleValueChange}
           />
           <div>

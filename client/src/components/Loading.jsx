@@ -1,5 +1,13 @@
 import clsx from 'clsx'
 
+export function Placeholder({ isLoading, className, ...props}) {
+  return (
+    isLoading ? 
+    <div className={ clsx("h-4 my-1 text-gray bg-gray-200 opacity-50 rounded w-24 animate-pulse", className) } /> :
+    <>{props.children}</>
+  )
+}
+
 export function Loading({ className, text, ...props }) {
   return (
     <div

@@ -25,10 +25,21 @@ const LoginProvider = (props) => {
     setIsLoggedIn(false);
   };
 
+  const getLoggedInProfile = () => {
+    //localStorage.getItem('loggedInUser')
+    return {
+      name: 'Test',
+      email: 'example@piiano.com',
+      imageUrl: 
+        'https://piiano.com/wp-content/themes/hello-elementor/assets/images/cropped-favicon-512x512.png',
+    }
+  };
+
   const contextValue = {
     isLoggedIn,
     handleLoginClick,
     handleLogoutClick,
+    getLoggedInProfile,
   };
 
   return (

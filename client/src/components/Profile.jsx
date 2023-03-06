@@ -1,20 +1,22 @@
-import { Fragment, useContext } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { LoginContext } from '../providers/LoginProvider'
 import { Link } from 'react-router-dom'
 
 import clsx from 'clsx';
 
-const profile = {
-  name: 'Test',
-  email: 'example@piiano.com',
-  imageUrl: 
-    'https://piiano.com/wp-content/themes/hello-elementor/assets/images/cropped-favicon-512x512.png',
-}
-
 export function MobileProfile({ className }) {
+  const [profile, setProfile] = useState(null);
+  const { isLoggedIn, getLoggedInProfile } = useContext(
+    LoginContext
+  );
+
+  useEffect(() => {
+    setProfile(getLoggedInProfile())
+  }, [isLoggedIn])
+
   return (
-    <div className="flex items-center px-4">
+    profile && <div className="flex items-center px-4">
       {profile.imageUrl && (
       <div className="flex-shrink-0 mr-3">
         <img className="h-10 w-10 rounded-full" src={profile.imageUrl} alt="" />
@@ -29,9 +31,14 @@ export function MobileProfile({ className }) {
 }
 
 export function NavProfile({ className }) {
-  const { isLoggedIn, handleLogoutClick } = useContext(
+  const [profile, setProfile] = useState(null);
+  const { isLoggedIn, getLoggedInProfile, handleLogoutClick } = useContext(
     LoginContext
   );
+
+  useEffect(() => {
+    setProfile(getLoggedInProfile())
+  }, [isLoggedIn])
 
   const navigation = [
     { name: 'Sign out', onClick: handleLogoutClick, className: 'text-red-600 hover:text-red-700 hover:bg-red-50' },
@@ -41,9 +48,9 @@ export function NavProfile({ className }) {
     'relative ml-3',
     className
   )
-
+  
   return (
-    <Menu as="div" className={className}>
+    profile && <Menu as="div" className={className}>
       <div>
         <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span className="sr-only">Open profile menu</span>

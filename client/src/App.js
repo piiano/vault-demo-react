@@ -6,45 +6,55 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import ListCustomers from './pages/customers/List'
 import NewCustomer from './pages/customers/New'
+import EditCustomer from './pages/customers/Edit'
 import { LoginProvider, RequireLogin } from './providers/LoginProvider';
+import { VaultProvider } from './providers/VaultProvider';
 
 function App() {
   
   return (
     <BrowserRouter>
       <LoginProvider>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home />
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <Register />
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <Login />
-            }
-          />
-          <Route
-            path="/customers"
-            element={
-              <RequireLogin><ListCustomers /></RequireLogin>
-            }
-          />
-          <Route
-            path="/customers/new"
-            element={
-              <RequireLogin><NewCustomer /></RequireLogin>
-            }
-          />
-        </Routes>
+        <VaultProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home />
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <Register />
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <Login />
+              }
+            />
+            <Route
+              path="/customers"
+              element={
+                <RequireLogin><ListCustomers /></RequireLogin>
+              }
+            />
+            <Route
+              path="/customers/new"
+              element={
+                <RequireLogin><NewCustomer /></RequireLogin>
+              }
+            />
+            <Route
+              path="/customers/:customerId"
+              element={
+                <RequireLogin><EditCustomer /></RequireLogin>
+              }
+            />
+          </Routes>
+        </VaultProvider>
       </LoginProvider>
     </BrowserRouter>
   );
