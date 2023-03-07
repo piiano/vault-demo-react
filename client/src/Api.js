@@ -12,35 +12,36 @@ let customers = [
 ]
 
 export const getCustomers = () => {
-  return new Promise((resolve, reject) => {
+  /*return new Promise((resolve, reject) => {
     // Mimic a slow API call
     setTimeout(() => {
       resolve(customers)}, 1000);
-  });
+  });*/
   
-  // return axios.get('/customers')
-  //   .then(response => response.data)
-  //   .catch(error => {
-  //     throw new Error(`API request failed: ${error.message}`);
-  //   });
+  return axios.get('/customers')
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`API request failed: ${error.message}`);
+    });
 };
 
 export const createCustomer = (customer) => {
-  return new Promise((resolve, reject) => {
+  /*return new Promise((resolve, reject) => {
     // Mimic a slow API call
     setTimeout(() => {
       resolve(customer)
     }, 1000);
-  });
-  // return axios.post('/customers', customer)
-  //   .then(response => response.data)
-  //   .catch(error => {
-  //     throw new Error(`API request failed: ${error.message}`);
-  //   });
+  });*/
+  console.log(customer)
+  return axios.post('/customers/', customer)
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`API request failed: ${error.message}`);
+    });
 };
 
 export const getCustomer = (customerId) => {
-  let customer = customers.find(c => c.id === customerId);
+  /*let customer = customers.find(c => c.id === customerId);
 
   return new Promise((resolve, reject) => {
     // Mimic a slow API call
@@ -52,32 +53,32 @@ export const getCustomer = (customerId) => {
       }
         
     }, 1000);
-  });
+  });*/
 
-  // return axios.get(`/customers/${customerId}`)
-  //   .then(response => response.data)
-  //   .catch(error => {
-  //     throw new Error(`API request failed: ${error.message}`);
-  //   });
+  return axios.get(`/customers/${customerId}/`)
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`API request failed: ${error.message}`);
+    });
 };
 
 export const updateCustomer = (customer) => {
-  return new Promise((resolve, reject) => {
+  /*return new Promise((resolve, reject) => {
     // Mimic a slow API call
     setTimeout(() => {
       resolve(customer)
     }, 1000);
-  });
+  });*/
 
-  // return axios.put(`/customers/${customer.id}`, customer)
-  //   .then(response => response.data)
-  //   .catch(error => {
-  //     throw new Error(`API request failed: ${error.message}`);
-  //   });
+  return axios.put(`/customers/${customer.id}/`, customer)
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`API request failed: ${error.message}`);
+    });
 };
 
 export const deleteCustomer = (customerId) => {
-  return axios.delete(`/customers/${customerId}`)
+  return axios.delete(`/customers/${customerId}/`)
     .then(response => response.data)
     .catch(error => {
       throw new Error(`API request failed: ${error.message}`);
