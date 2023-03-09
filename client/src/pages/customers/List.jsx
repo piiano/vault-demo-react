@@ -85,7 +85,11 @@ export default function ListCustomers() {
                         {(isLoading ? Array(3).fill({}) : customers).map((customer, i) => (
                           <tr key={i}>
                             <td className="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900">
-                              <Placeholder isLoading={isLoading}>{customer.name}</Placeholder>
+                              <Placeholder isLoading={isLoading}>
+                                <Link to={`/customers/${customer.id}`} className="text-blue-700 hover:text-blue-500 cursor-pointer" aria-label="Edit customer">
+                                  {customer.name}
+                                </Link>
+                              </Placeholder>
                             </td>
                             <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
                               <Placeholder isLoading={isLoading}>{customer.email}</Placeholder>
@@ -95,7 +99,7 @@ export default function ListCustomers() {
                             </td>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                               <Placeholder isLoading={isLoading}>
-                                <Link to={`/customers/${customer.id}`} className="text-blue-700 hover:text-blue-500 cursor-pointer" aria-label="Edit customer">
+                                <Link to={`/customers/${customer.id}/edit`} className="text-blue-700 hover:text-blue-500 cursor-pointer" aria-label="Edit customer">
                                   Edit
                                 </Link>
                               </Placeholder>

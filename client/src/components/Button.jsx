@@ -9,11 +9,18 @@ const baseStyles = {
 }
 
 const variantStyles = {
+  link: {
+    red:
+      'font-medium text-red-700 hover:text-red-500 cursor-pointer',
+    blue:
+      'font-medium text-blue-700 hover:text-blue-500 cursor-pointer',
+  },
   solid: {
     slate:
       'bg-slate-900 text-white hover:bg-slate-700 hover:text-slate-100 active:bg-slate-800 active:text-slate-300 focus-visible:outline-slate-900',
     blue: 'bg-blue-600 text-white hover:text-slate-100 hover:bg-blue-500 active:bg-blue-800 active:text-blue-100 focus-visible:outline-blue-600',
     green: 'bg-green-600 text-white hover:text-slate-100 hover:bg-green-500 active:bg-green-800 active:text-green-100 focus-visible:outline-green-600',
+    red: 'bg-red-600 text-white hover:text-slate-100 hover:bg-red-500 active:bg-red-800 active:text-green-100 focus-visible:outline-red-600',
     white:
       'bg-white text-slate-900 hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white',
   },
@@ -22,6 +29,8 @@ const variantStyles = {
       'ring-slate-200 text-slate-700 hover:text-slate-900 hover:ring-slate-300 active:bg-slate-100 active:text-slate-600 focus-visible:outline-blue-600 focus-visible:ring-slate-300',
     white:
       'ring-slate-700 text-white hover:ring-slate-500 active:ring-slate-700 active:text-slate-400 focus-visible:outline-white',
+    red:
+      'bg-red-50 ring-red-700 text-red-700 hover:text-red-500 hover:ring-red-500 active:ring-red-700 active:text-red-400 focus-visible:outline-white',
   },
 }
 
@@ -38,6 +47,7 @@ export function Button({
   variant = 'solid',
   color = 'slate',
   className,
+  confirm,
   isSubmitting,
   href,
   ...props
