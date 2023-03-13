@@ -3,23 +3,27 @@ import { Menu, Transition } from '@headlessui/react'
 import { LoginContext } from '../providers/LoginProvider'
 import { Link } from 'react-router-dom'
 
+import { getProfile } from '../Api'
+
 import clsx from 'clsx';
 
 export function MobileProfile({ className }) {
-  const [profile, setProfile] = useState(null);
-  const { isLoggedIn, getLoggedInProfile } = useContext(
+  const { isLoadingProfile, profile } = useContext(
     LoginContext
   );
 
-  useEffect(() => {
-    setProfile(getLoggedInProfile())
-  }, [isLoggedIn])
+  useEffect(() => {}, [profile]);
+
+  className = clsx(
+    'flex items-center px-4',
+    className
+  )
 
   return (
-    profile && <div className="flex items-center px-4">
-      {profile.imageUrl && (
+    profile && <div className={className}>
+      {profile.avatar && (
       <div className="flex-shrink-0 mr-3">
-        <img className="h-10 w-10 rounded-full" src={profile.imageUrl} alt="" />
+        <img className="h-10 w-10 rounded-full" src={profile.avatar} alt="" />
       </div>
       )}
       <div>
@@ -31,17 +35,14 @@ export function MobileProfile({ className }) {
 }
 
 export function NavProfile({ className }) {
-  const [profile, setProfile] = useState(null);
-  const { isLoggedIn, getLoggedInProfile, handleLogoutClick } = useContext(
+  const { profile, handleLogoutClick } = useContext(
     LoginContext
   );
 
-  useEffect(() => {
-    setProfile(getLoggedInProfile())
-  }, [isLoggedIn])
-
+  useEffect(() => {}, [profile]);
+  
   const navigation = [
-    { name: 'Sign out', onClick: handleLogoutClick, className: 'text-red-600 hover:text-red-700 hover:bg-red-50' },
+    { name: 'Your profile', to: '/profile', className: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50 ' },
   ]  
 
   className = clsx(
@@ -54,8 +55,8 @@ export function NavProfile({ className }) {
       <div>
         <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span className="sr-only">Open profile menu</span>
-          {profile.imageUrl && (
-            <img className="h-8 w-8 rounded-full" src={profile.imageUrl} alt="" />
+          {profile.avatar && (
+            <img className="h-8 w-8 rounded-full" src={profile.avatar} alt="" />
           )}
         </Menu.Button>
       </div>
@@ -69,24 +70,27 @@ export function NavProfile({ className }) {
         leaveTo="transform opacity-0 scale-95"
       >
         
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-60 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <Menu.Item>
-            {({ active }) => (
-              <div className="truncate">
-                <div className="flex flex-row items-center py-4 px-4 border-b">
-                  {profile.imageUrl && (
-                    <div className="flex-shrink-0 mr-3">
-                      <img className="h-10 w-10 rounded-full" src={profile.imageUrl} alt="" />
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-60 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100">
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <div className="truncate">
+                  <div className="flex flex-row items-center py-4 px-4">
+                    {profile.avatar && (
+                      <div className="flex-shrink-0 mr-3">
+                        <img className="h-10 w-10 rounded-full" src={profile.avatar} alt="" />
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-base font-medium leading-snug text-gray-800 truncate">{profile.name}</div>
+                      <div className="text-sm font-medium leading-snug text-gray-500 truncate">{profile.email}</div>
                     </div>
-                  )}
-                  <div>
-                    <div className="text-base font-medium leading-snug text-gray-800 truncate">{profile.name}</div>
-                    <div className="text-sm font-medium leading-snug text-gray-500 truncate">{profile.email}</div>
                   </div>
                 </div>
-              </div>
-            )}
-          </Menu.Item>
+              )}
+            </Menu.Item>
+          </div>
+          <div className="py-1">
           {navigation.map((item) => (
             <Menu.Item key={item.name}>
               {({ active }) => (
@@ -104,6 +108,7 @@ export function NavProfile({ className }) {
               )}
             </Menu.Item>
           ))}
+          </div>
         </Menu.Items>
       </Transition>
     </Menu>

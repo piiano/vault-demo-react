@@ -47,7 +47,7 @@ Follow the steps below to run locally.
 
 1. Clone the project from GitHub:
 ```bash
-git clone https://github.com/piiano/vault-demo.git
+git clone https://github.com/piiano/vault-demo-react.git
 ```
 
 2. Copy the .env.example file into a file named .env in the folder of the server you want to use. For example:

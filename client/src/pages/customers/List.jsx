@@ -8,6 +8,7 @@ import { Alert } from '../../components/Alert'
 import { getCustomers } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
+import { LoginContext, RequireSupportRole, RedactIfSupportRole } from '../../providers/LoginProvider'
 
 export default function ListCustomers() {
   const [error, setError] = useState(null);
@@ -18,6 +19,10 @@ export default function ListCustomers() {
   const { isSecured } = useContext(
     VaultContext
   );
+  const { profile } = useContext(
+    LoginContext
+  );
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,7 +37,7 @@ export default function ListCustomers() {
           setError(error);
         }
       )
-  }, [isSecured])
+  }, [isSecured, profile])
 
   return (
     <AppLayout>
@@ -42,7 +47,7 @@ export default function ListCustomers() {
             <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900">Customers</h1>
             <p className="mt-2 max-w-4xl text-sm text-gray-500">
               A list of all the customers in your account.
-            </p>
+          </p>
           </header>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
             <Button href="/customers/new" color="blue">New customer</Button>
@@ -78,6 +83,11 @@ export default function ListCustomers() {
                           <th scope="col" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">
                             SSN
                           </th>
+                          <RequireSupportRole profile={profile}>
+                            <th scope="col" className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">
+                              Owner
+                            </th>
+                          </RequireSupportRole>
                           <th />
                         </tr>
                       </thead>
@@ -95,8 +105,15 @@ export default function ListCustomers() {
                               <Placeholder isLoading={isLoading}>{customer.email}</Placeholder>
                             </td>
                             <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                              <Placeholder isLoading={isLoading}>{customer.ssn}</Placeholder>
+                              <Placeholder isLoading={isLoading}>
+                                <RedactIfSupportRole profile={profile}>{customer.ssn}</RedactIfSupportRole>
+                              </Placeholder>
                             </td>
+                            <RequireSupportRole profile={profile}>
+                              <td className="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-500">
+                                <Placeholder isLoading={isLoading}>{customer.owner || '-'}</Placeholder>
+                              </td>
+                            </RequireSupportRole>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                               <Placeholder isLoading={isLoading}>
                                 <Link to={`/customers/${customer.id}/edit`} className="text-blue-700 hover:text-blue-500 cursor-pointer" aria-label="Edit customer">

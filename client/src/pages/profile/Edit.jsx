@@ -5,50 +5,33 @@ import { Button } from '../../components/Button'
 import { TextField } from '../../components/Fields'
 import { Alert } from '../../components/Alert'
 import { Loading } from '../../components/Loading'
-import { getCustomer, updateCustomer } from '../../Api'
+import { updateProfile } from '../../Api'
 
-import { VaultContext } from '../../providers/VaultProvider'
 import { LoginContext } from '../../providers/LoginProvider'
 
-export default function NewCustomer({ props }) {
-  const navigate = useNavigate();
+export default function EditProfile({ props }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  let { customerId } = useParams();
   const [formValues, setFormValues] = useState({
     id: '',
     name: '',
-    email: '',
-    ssn: '',
+    avatar: '',
+    email: ''
   });
-  const { isSecured } = useContext(
-    VaultContext
-  );
-  const { profile } = useContext(
+  const { profile, isLoadingProfile } = useContext(
     LoginContext
   );
 
   useEffect(() => {
-    setIsLoading(true);
-    getCustomer(customerId)
-      .then(
-        (customer) => {
-          setIsLoading(false);
-          setFormValues({
-            id: customer.id,
-            name: customer.name,
-            email: customer.email,
-            ssn: customer.ssn,
-          });
-        },
-        (error) => {
-          setIsLoading(false);
-          setError(error);
-        }
-      )
-  }, [customerId, isSecured, profile])
+    if( !profile ) return;
+    setFormValues({
+      id: profile.id,
+      avatar: profile.avatar,
+      name: profile.name,
+      email: profile.email,
+    });
+  }, [profile]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -58,11 +41,10 @@ export default function NewCustomer({ props }) {
     // TODO: Add form validation
     
     setIsSubmitting(true);
-    updateCustomer({
+    updateProfile({
       id: formValues.id,
       name: formValues.name,
       email: formValues.email,
-      ssn: formValues.ssn,
     })
       .then(
         () => {
@@ -94,12 +76,12 @@ export default function NewCustomer({ props }) {
   return (
     <AppLayout>
       {
-        isLoading ?
+        isLoadingProfile ?
         <Loading className="py-12" text="Loading..." /> :
         <div className="mx-auto w-full max-w-2lg sm:px-4 md:w-2/3 md:max-w-md md:px-0">
           <div className="sm:flex sm:items-center">
             <header className="flex flex-row items-center space-x-6">
-              <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900">Edit customer</h1>
+              <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900">Edit your profile</h1>
             </header>
           </div>
 
@@ -120,12 +102,17 @@ export default function NewCustomer({ props }) {
           {
             !error &&
               <form onSubmit={handleSubmit} className="mt-10 grid grid-cols-1 gap-y-8">
+                <div className="flex">
+                  <div className="mr-4 flex-shrink-0">
+                    <img className="h-12 w-12 rounded-full" src={formValues.avatar} alt="" />
+                  </div>
+                </div>
                 <TextField
                   label="Name"
                   id="name"
                   name="name"
                   value={formValues.name}
-                  required
+                  required={false}
                   disabled={isSubmitting}
                   onChange={handleValueChange}
                 />
@@ -139,15 +126,6 @@ export default function NewCustomer({ props }) {
                   disabled={isSubmitting}
                   onChange={handleValueChange}
                 />
-                <TextField
-                  label="Social security number"
-                  id="ssn"
-                  name="ssn"
-                  value={formValues.ssn}
-                  required={false}
-                  disabled={isSubmitting}
-                  onChange={handleValueChange}
-                />
                 <div>
                   <Button
                     type="submit"
@@ -157,7 +135,7 @@ export default function NewCustomer({ props }) {
                     isSubmitting={isSubmitting}
                   >
                     <span>
-                      Save customer <span aria-hidden="true">&rarr;</span>
+                      Save profile <span aria-hidden="true">&rarr;</span>
                     </span>
                   </Button>
                   <div className="mt-4 flex justify-center text-sm">

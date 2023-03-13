@@ -88,9 +88,6 @@ function MobileNavigation() {
             {isLoggedIn ? (
               <div className="pt-3">
                 <MobileProfile />
-                <div className="mt-3">
-                  <MobileNavLink onClick={handleLogoutClick}>Sign out</MobileNavLink>
-                </div>
               </div>
             ) : (
               <MobileNavLink href="/login">Sign in</MobileNavLink>
@@ -115,11 +112,9 @@ export function Header({className}) {
             <Link to="/" aria-label="Home">
               <Logo className="h-8 w-auto" />
             </Link>
-            {isLoggedIn ? (
-              <div className="hidden md:flex md:gap-x-6">
-                <NavLink href="/customers">Customers</NavLink>
-              </div>
-            ) : null}
+            <div className="hidden md:flex md:gap-x-6">
+              <NavLink href="/customers">Customers</NavLink>
+            </div>
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             {isLoggedIn ? (

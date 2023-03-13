@@ -14,7 +14,7 @@ export function Hero() {
       </h1>
       <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">This is a Piiano Vault sample application on how to build a web application in React to store sensitive information.</p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register">Sign up</Button>
+        <Button href="/customers">Get started</Button>
       </div>
     </Container>
   )

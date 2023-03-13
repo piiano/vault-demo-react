@@ -1,3 +1,4 @@
+import { Placeholder } from './Loading'
 import clsx from 'clsx'
 
 const formClasses =
@@ -20,15 +21,20 @@ export function TextField({
   type = 'text',
   className = '',
   required,
+  isLoading,
   ...props
 }) {
   return (
-    <div className={className}>
-      {label && <Label id={id}>{label}
-        {!required && <span className="text-gray-500 font-normal">{' '}(optional)</span>}
-      </Label>}
-      <input id={id} type={type} {...props} className={formClasses} />
-    </div>
+    
+      <div className={className}>
+        {label && <Label id={id}>{label}
+          {!required && <span className="text-gray-500 font-normal">{' '}(optional)</span>}
+        </Label>}
+        <Placeholder className="h-8"  isLoading={isLoading}>
+          <input id={id} type={type} {...props} className={formClasses} />
+        </Placeholder>
+      </div>
+    
   )
 }
 

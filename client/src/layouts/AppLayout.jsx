@@ -13,7 +13,7 @@ export function AppLayout({ children }) {
           { children }
         </Container>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   )
 }

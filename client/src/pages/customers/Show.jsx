@@ -2,10 +2,12 @@ import { useContext, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { AppLayout } from '../../layouts/AppLayout'
 import { Alert } from '../../components/Alert'
-import { Loading, Placeholder } from '../../components/Loading'
+import { Placeholder } from '../../components/Loading'
 import { getCustomer } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
+import { LoginContext, RedactIfSupportRole, RequireSupportRole } from '../../providers/LoginProvider'
+
 import { Button } from '../../components/Button'
 
 export default function ShowCustomer({ props }) {
@@ -15,6 +17,9 @@ export default function ShowCustomer({ props }) {
   const [customer, setCustomer] = useState({});
   const { isSecured } = useContext(
     VaultContext
+  );
+  const { profile } = useContext(
+    LoginContext
   );
 
   useEffect(() => {
@@ -30,16 +35,16 @@ export default function ShowCustomer({ props }) {
           setError(error);
         }
       )
-  }, [customerId, isSecured])
+  }, [customerId, isSecured, profile])
 
   return (
     <AppLayout>
       <div className="mx-auto w-full max-w-2lg sm:px-4 md:w-2/3 md:max-w-md md:px-0">
-        <Button className="text-sm" href={`/customers`} variant="link" color="blue">Customers</Button>
+        <Button className="text-sm" href={`/customers`} variant="link" color="blue">← Back to customers</Button>
 
         { 
           error && 
-            <Alert color='red' icon='exclamation' className="mt-10">
+            <Alert color='red' icon='exclamation' className="mt-4">
               Error: {error.message}
             </Alert> 
         }
@@ -92,9 +97,19 @@ export default function ShowCustomer({ props }) {
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">SSN</dt>
                 <dd className="whitespace-nowrap text-gray-900">
-                  <Placeholder isLoading={isLoading}>{customer.ssn}</Placeholder>
+                  <Placeholder isLoading={isLoading}>
+                    <RedactIfSupportRole profile={profile}>{customer.ssn}</RedactIfSupportRole>
+                  </Placeholder>
                 </dd>
               </div>
+              <RequireSupportRole profile={profile}>
+                <div className="flex justify-between py-3 text-sm font-medium">
+                  <dt className="text-gray-500">Owner</dt>
+                  <dd className="whitespace-nowrap text-gray-900">
+                    <Placeholder isLoading={isLoading}>{customer.owner}</Placeholder>
+                  </dd>
+                </div>
+              </RequireSupportRole>
             </dl>
           </div>
           </>

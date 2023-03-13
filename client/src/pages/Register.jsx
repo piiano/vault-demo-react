@@ -33,20 +33,13 @@ export default function Register() {
         className="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2"
       >
         <TextField
-          label="First name"
-          id="first_name"
-          name="first_name"
+          className="col-span-full"
+          label="Name"
+          id="name"
+          name="name"
           type="text"
-          autoComplete="given-name"
-          required
-        />
-        <TextField
-          label="Last name"
-          id="last_name"
-          name="last_name"
-          type="text"
-          autoComplete="family-name"
-          required
+          autoComplete="name"
+          required={false}
         />
         <TextField
           className="col-span-full"

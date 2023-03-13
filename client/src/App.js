@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import ListCustomers from './pages/customers/List'
 import NewCustomer from './pages/customers/New'
 import EditCustomer from './pages/customers/Edit'
+import EditProfile from './pages/profile/Edit'
 import { LoginProvider, RequireLogin } from './providers/LoginProvider';
 import { VaultProvider } from './providers/VaultProvider';
 import ShowCustomer from './pages/customers/Show';
@@ -34,6 +35,12 @@ function App() {
               path="/login"
               element={
                 <Login />
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <RequireLogin><EditProfile /></RequireLogin>
               }
             />
             <Route

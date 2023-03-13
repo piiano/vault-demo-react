@@ -9,9 +9,9 @@ export function Footer() {
         <div className="flex flex-col items-center py-8 sm:flex-row-reverse sm:justify-between">
           <div className="flex gap-x-6">
             <Link
-              to="https://github.com/piiano/vault-demo"
+              to="https://github.com/piiano/vault-demo-react"
               className="group"
-              aria-label="Piiano Vault demo on GitHub"
+              aria-label="Piiano Vault React demo on GitHub"
             >
               <svg
                 aria-hidden="true"
@@ -26,7 +26,7 @@ export function Footer() {
             <Link
               to="https://piiano.com"
               className="group hover:text-slate-700"
-              aria-label="Piiano Vault demo on GitHub"
+              aria-label="Piiano Vault React demo on GitHub"
             >
               Piiano Privacy Solutions LTD.
             </Link>
