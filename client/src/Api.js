@@ -17,7 +17,7 @@ let users = [
   { id: "3", name: 'Piiano Support', email: 'support@piiano.com', role: 'support', avatar: 'https://www.gravatar.com/avatar/51e1dc098d02ed5e96c1069b4c4bd029?d=identicon' },
 ]
 
-let isAxiosMock = true;
+let isAxiosMock = false;
 
 // Mock Axios requests if the isAxiosMock environment variable is set to true
 if (isAxiosMock) {

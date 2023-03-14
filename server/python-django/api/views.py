@@ -102,7 +102,8 @@ def update_profile(request, user_id):
 @csrf_exempt
 def tokens(request):
     request.POST = json.loads(request.body)
-    id = request.POST.get('id')
+    email = request.POST.get('email')
+    id = User.objects.get(email=email).id
     return JsonResponse( {"token": id})
 
 @require_http_methods(["GET"])
