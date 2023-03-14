@@ -66,7 +66,7 @@ const LoginProvider = (props) => {
   }, [token]);
 
   const switchUser = (user) => {
-    createToken(user.email)
+    createToken(user.id)
       .then(
         ({ token }) => {
           setToken(token);
