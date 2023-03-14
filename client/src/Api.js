@@ -17,7 +17,7 @@ let users = [
   { id: "3", name: 'Piiano Support', email: 'support@piiano.com', role: 'support', avatar: 'https://www.gravatar.com/avatar/51e1dc098d02ed5e96c1069b4c4bd029?d=identicon' },
 ]
 
-let isAxiosMock = false;
+let isAxiosMock = true;
 
 // Mock Axios requests if the isAxiosMock environment variable is set to true
 if (isAxiosMock) {
@@ -44,9 +44,9 @@ if (isAxiosMock) {
     .onAny('/profile').reply((config) => {
       let profile = null;
       if (config.headers && config.headers.Authorization) {
-        // Assume the token is the user email
-        const email = config.headers.Authorization.split(' ')[1];
-        profile = users.find(u => u.email?.toLowerCase() === email?.toLowerCase());
+        // Assume the token is the user ID
+        const id = config.headers.Authorization.split(' ')[1];
+        profile = users.find(u => u.id?.toLowerCase() === id?.toLowerCase());
       }
 
       return profile ? [200, profile] : [404, { message: 'Profile not found.' }];
@@ -56,7 +56,7 @@ if (isAxiosMock) {
       const { email } = JSON.parse(config.data);
       const user = users.find(u => u.email?.toLowerCase() === email?.toLowerCase());  
       if (user) {
-        return [200, { token: email }];
+        return [200, { token: user.id }];
       } else {
         return [401, { message: 'Invalid email or password.' }];
       } 
@@ -122,8 +122,8 @@ export const updateProfile = (profile) => {
 };
 
 /* Token exchange */
-export const createToken = (id) => {
-  return axios.post(`/oauth/tokens`, { id })
+export const createToken = (email) => {
+  return axios.post(`/oauth/tokens`, { email })
     .then(response => response.data)
     .catch(error => {
       throw new Error(`API request failed: ${error.message}`);
