@@ -47,6 +47,12 @@ if (isAxiosMock) {
         // Assume the token is the user ID
         const id = config.headers.Authorization.split(' ')[1];
         profile = users.find(u => u.id?.toLowerCase() === id?.toLowerCase());
+        if (profile && config.method === 'put') {
+          debugger;
+          let payload = JSON.parse(config.data);
+          profile.name = payload?.name
+          profile.email = payload?.email
+        }
       }
 
       return profile ? [200, profile] : [404, { message: 'Profile not found.' }];

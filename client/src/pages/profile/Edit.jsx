@@ -19,7 +19,7 @@ export default function EditProfile({ props }) {
     avatar: '',
     email: ''
   });
-  const { profile, isLoadingProfile } = useContext(
+  const { refresh, profile, isLoadingProfile } = useContext(
     LoginContext
   );
 
@@ -51,6 +51,7 @@ export default function EditProfile({ props }) {
           setIsSubmitting(false);
           setSuccess({ message: "Successfully saved!" });
           setTimeout(() => { setSuccess(null); }, 2000);
+          refresh();
         },
         (error) => {
           setIsSubmitting(false);

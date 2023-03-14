@@ -22,18 +22,7 @@ const LoginProvider = (props) => {
   const [users, setUsers] = useState([])
 
   useEffect(() => {
-    setIsLoadingUsers(true);
-    getUsers()
-      .then(
-        (users) => {
-          setUsers(users);
-          setIsLoadingUsers(false);
-        },
-        (error) => {
-          setIsLoadingUsers(false);
-          console.log(error);
-        }
-      )
+    refreshUsers();
   }, [])
 
 
@@ -42,27 +31,7 @@ const LoginProvider = (props) => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if( token ) {
-      setIsLoadingProfile(true);
-      localStorage.setItem('token', token);
-      setAuthToken(token);
-      // Fetch profile
-      
-      getProfile()
-        .then(
-          (profile) => {
-            setProfile(profile);
-            setIsLoadingProfile(false);
-          },
-          (error) => {
-            setIsLoadingProfile(false);
-            console.log(error);
-          }
-        )
-    } else {
-      localStorage.removeItem('token');
-      setAuthToken(null);
-    }
+    refreshProfile();
   }, [token]);
 
   const switchUser = (user) => {
@@ -90,12 +59,57 @@ const LoginProvider = (props) => {
     setIsLoggedIn(true);
   };
 
+  const refreshUsers = () => {
+    setIsLoadingUsers(true);
+    getUsers()
+      .then(
+        (users) => {
+          setUsers(users);
+          setIsLoadingUsers(false);
+        },
+        (error) => {
+          setIsLoadingUsers(false);
+          console.log(error);
+        }
+      )
+  }
+
+  const refreshProfile = () => {
+    if( token ) {
+      setIsLoadingProfile(true);
+      localStorage.setItem('token', token);
+      setAuthToken(token);
+      // Fetch profile
+      
+      getProfile()
+        .then(
+          (profile) => {
+            setProfile(profile);
+            setIsLoadingProfile(false);
+          },
+          (error) => {
+            setIsLoadingProfile(false);
+            console.log(error);
+          }
+        )
+    } else {
+      localStorage.removeItem('token');
+      setAuthToken(null);
+    }
+  }
+
+  const refresh = () => {
+    refreshProfile();
+    refreshUsers();
+  }
+
   const contextValue = {
     isLoadingUsers,
     isLoadingProfile,
     isLoggedIn,
     users,
     profile,
+    refresh,
     switchUser,
     handleLoginClick,
     handleLogoutClick,
