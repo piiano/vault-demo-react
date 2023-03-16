@@ -6,8 +6,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from .models import Customer, User
+from . import vault
 
 
+######## Parsing of auth "token"
 def parse_auth(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
@@ -23,6 +25,7 @@ def parse_auth(func):
         return func(request, *args, **kwargs)
     return wrapper
 
+######## Customers management
 @require_http_methods(["GET", "POST"])
 @csrf_exempt
 @parse_auth
@@ -37,16 +40,24 @@ def get_customers(request, user_id, role):
         customers = Customer.objects.values()
     else:  
         customers = Customer.objects.values().filter(owner__id=user_id)
+
+    if request.META.get("HTTP_X_VAULT_MODE") == "secure":
+        customers = [vault.decrypt_object(customer) for customer in customers]
+
     return JsonResponse(list(customers), safe=False)
 
 def create_customer(request, user_id):
     request.POST = json.loads(request.body)
     owner = User.objects.get(id=user_id)
     request.POST["owner_id"] = owner.pk
+    if request.META.get("HTTP_X_VAULT_MODE") == "secure":
+        request.POST = vault.encrypt_object(request.POST)
+
     customer = Customer.objects.create(**request.POST)
     customer_res = Customer.objects.values().get(pk=customer.pk)
     return JsonResponse(customer_res, safe=False)
 
+######## Per customer
 @require_http_methods(["PUT", "DELETE",  "GET"])
 @csrf_exempt
 def customer(request, pk):
@@ -60,9 +71,10 @@ def customer(request, pk):
 def update_customer(request, pk):
     customer = Customer.objects.get(pk=pk)
     request.POST = json.loads(request.body)
-    customer.name = request.POST.get('name')
-    customer.email = request.POST.get('email')
-    customer.ssn = request.POST.get('ssn')
+    if request.META.get("HTTP_X_VAULT_MODE") == "secure":
+        print("**** enc")
+        request.POST = vault.encrypt_object(request.POST)
+    customer.__dict__.update(request.POST)
     customer.save()
     
     customer_res = Customer.objects.values().get(pk=customer.pk)
@@ -70,6 +82,8 @@ def update_customer(request, pk):
 
 def get_customer(request, pk):
     customer = Customer.objects.values().get(pk=pk)
+    if request.META.get("HTTP_X_VAULT_MODE") == "secure":
+        customer = vault.decrypt_object(customer)
     return JsonResponse(customer, safe=False)
 
 
@@ -79,6 +93,8 @@ def delete_customer(request, pk):
     return JsonResponse({'message': 'Customer deleted successfully'})
 
 
+
+######## Profile management
 @require_http_methods(["GET", "PUT"])
 @csrf_exempt
 @parse_auth
@@ -98,6 +114,8 @@ def update_profile(request, user_id):
     users = User.objects.values().get(id=user_id)
     return JsonResponse(users, safe=False)
 
+
+######## Login
 @require_http_methods(["POST"])
 @csrf_exempt
 def tokens(request):
@@ -106,6 +124,7 @@ def tokens(request):
     id = User.objects.get(email=email).id
     return JsonResponse( {"token": id})
 
+######## List users (for the demo)
 @require_http_methods(["GET"])
 @csrf_exempt
 def users(request):

@@ -60,7 +60,7 @@ Update the .env file with your Piiano Vault service license and API key:
 
 ```
 PVAULT_SERVICE_LICENSE=<your Piiano Vault license>
-PVAULT_API_KEY="pvaultauth"
+PVAULT_ADMIN_API_KEY="pvaultauth"
 ```
 
 #### Running the API server
@@ -87,3 +87,40 @@ PVAULT_API_KEY="pvaultauth"
 The code in this directory contains a demo client in React and a set of server implmentation available in 2 common languages for a safe User management CRUD API with [Piiano Vault](http://piiano.com). 
 
 The server includes [2 server implementations](server/README.md) in [Node](/server/node) and [Python](/server/python). Each server implements several RESTful implementations, each with the same endpoints and logic.
+
+
+# Docker compose
+```bash
+cd client && yarn
+docker compose build
+docker compose up
+docker compose exec server-python-django python manage.py migrate
+docker compose exec server-python-django python manage.py loaddata init.json
+docker compose exec piiano-vault pvault collection add --collection-pvschema "
+customers PERSONS (
+  ssn SSN UNIQUE COMMENT 'Social security number',
+  email EMAIL,
+  name NAME,
+)"
+``` 
+
+Browse http://localhost:3000
+Note: The client and server files can be edited in run time
+
+
+To connect to Vault
+```bash
+alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.2.1"
+pvault status
+```
+
+Debug
+```bash
+docker compose exec -it client sh
+wget http://server-python-django:8000/api/users
+
+docker compose exec -it server-python-django sh
+python manage.py shell
+from api.models import *
+
+```

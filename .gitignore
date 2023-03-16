@@ -1,3 +1,3 @@
-#SDK
-pvault-sdk-generator/openapi.yaml
-pvault-sdk/
+data/**
+.venv/**
+.env
