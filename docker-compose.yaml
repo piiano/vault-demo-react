@@ -5,44 +5,48 @@ services:
       context: ./client
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - ${CLIENT_PORT}:${CLIENT_PORT}
     volumes:
       - ./client:/app
     depends_on:
       - server-python-django
       - piiano-vault
     environment:
-      - REACT_APP_API_BASE_URL=http://localhost:8000/api/
+      - REACT_APP_API_BASE_URL=http://localhost:${SERVER_PORT}/api/
+
   db:
     image: postgres
     #volumes:
     #  - ./data/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   server-python-django:
     build: ./server/python-django
-    command: python manage.py runserver 0.0.0.0:8000
+    # command: python manage.py runserver 0.0.0.0:${SERVER_PORT}
+    command: sh -c "python wait_for_db.py && python manage.py runserver 0.0.0.0:${SERVER_PORT}"
     ports:
-      - 8000:8000
+      - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
       - ./server/python-django:/app
     depends_on:
       - db
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/postgres
-      PVAULT_BASE_URL: http://piiano-vault:${SERVER_API_PORT}
+      PVAULT_BASE_URL: http://piiano-vault:${PVAULT_PORT}
       PVAULT_ADMIN_API_KEY: ${PVAULT_ADMIN_API_KEY}
 
   vaultdb:
-    image: postgres:${PSQL_VERSION}
+    image: postgres:${POSTGRES_VERSION}
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${PVAULT_DB_NAME}
+      - POSTGRES_USER=${PVAULT_DB_USER}
+      - POSTGRES_PASSWORD=${PVAULT_DB_PASSWORD}
     ports:
-      - ${POSTGRES_PORT}:5432
+      - 5433:5432
 
   piiano-vault:
     image: ${PVAULT_SERVER_DOCKER_TAG}
@@ -56,28 +60,21 @@ services:
       - PVAULT_DB_NAME=${PVAULT_DB_NAME}
       - PVAULT_DB_USER=${PVAULT_DB_USER}
       - PVAULT_DB_PASSWORD=${PVAULT_DB_PASSWORD}
-      - PVAULT_DB_PORT=${PVAULT_DB_PORT}
+      - PVAULT_DB_PORT=5432
 
       - PVAULT_SERVICE_ADMIN_API_KEY=${PVAULT_ADMIN_API_KEY}
 
-      - PVAULT_SERVICE_LISTEN_ADDR=${PVAULT_SERVER_LISTEN_ADDR}
+      - PVAULT_SERVICE_LISTEN_ADDR=0.0.0.0:${PVAULT_PORT}
       - PVAULT_SERVICE_ARCHIVE_PRUNE_INTERVAL=${PVAULT_SERVICE_ARCHIVE_PRUNE_INTERVAL:-0}
 
-      - PVAULT_AUDIT_LOG_DIR=${SHARED_AUDIT_DIR}
-      - PVAULT_LOG_DATADOG_ENABLE=${PVAULT_LOG_DATADOG_ENABLE:-none}
+      - PVAULT_LOG_LEVEL:${PVAULT_LOG_LEVEL}
       - PVAULT_LOG_CUSTOMER_ENV=${PVAULT_LOG_CUSTOMER_ENV}
       - PVAULT_LOG_CUSTOMER_IDENTIFIER=${PVAULT_LOG_CUSTOMER_IDENTIFIER}
-      - PVAULT_SENTRY_ENABLE=${PVAULT_SENTRY_ENABLE}
-      - PVAULT_FORCE_ACCESS_REASON=${PVAULT_FORCE_ACCESS_REASON}
-
       - PVAULT_DEVMODE=${PVAULT_DEVMODE}
-      - PVAULT_SERVICE_ADMIN_MAY_READ_DATA=${PVAULT_SERVICE_ADMIN_MAY_READ_DATA}
-      - PVAULT_TLS_ENABLE=${PVAULT_TLS_ENABLE}
-      - PVAULT_DB_REQUIRE_TLS=${PVAULT_DB_REQUIRE_TLS}
 
       - PVAULT_SERVICE_LICENSE=${PVAULT_SERVICE_LICENSE}
     ports:
-      - ${SERVER_API_PORT}:${SERVER_API_PORT}
+      - ${PVAULT_PORT}:${PVAULT_PORT}
     logging:
       driver: "json-file"
       options:

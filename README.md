@@ -107,14 +107,40 @@ customers PERSONS (
 Browse http://localhost:3000
 Note: The client and server files can be edited in run time
 
+1. Show the app
+  - You can manage your customers
+  - Support can see all, SSN is redacted
 
+Issues
+
+1. SSN is maksed on the client side
+
+2. IDOR - can access other customer info
+
+3. Show everythin is unencrypted in the DB
+  - Can start with SQL command
+  - Use metabase?
+
+4. Connect to `server` show how we can dump the DB 
+```bash
+docker compose exec -it server-python-django sh
+python -c 'import psycopg2,os,pprint;cu=psycopg2.connect(os.environ["DATABASE_URL"]).cursor();cu.execute("SELECT * from api_customer;");pprint.pprint(cu.fetchall())'
+```
+
+5. Sensitive data in logs
+
+6. One don't know who accessed data!
+
+
+
+# Debugging
 To connect to Vault
 ```bash
 alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.2.1"
 pvault status
 ```
 
-Debug
+# Debug
 ```bash
 docker compose exec -it client sh
 wget http://server-python-django:8000/api/users
@@ -122,5 +148,15 @@ wget http://server-python-django:8000/api/users
 docker compose exec -it server-python-django sh
 python manage.py shell
 from api.models import *
+```
 
+# Dump DB from server
+python -c 'import psycopg2,os,pprint;cu=psycopg2.connect(os.environ["DATABASE_URL"]).cursor();cu.execute("SELECT * from api_customer;");pprint.pprint(cu.fetchall())'
+```python
+
+import psycopg2,os
+conn=psycopg2.connect(os.environ["DATABASE_URL"])
+cur = conn.cursor();
+cur.execute("SELECT * from api_customer;")
+print(cur.fetchall())
 ```

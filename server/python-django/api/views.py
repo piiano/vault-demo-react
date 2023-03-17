@@ -10,12 +10,24 @@ from . import vault
 
 
 ######## Parsing of auth "token"
+MAGIC_BEGIN = "TOKEN"
+MAGIC_END = "SIGNATURE"
+BEARER = "Bearer"
+def generate_token(id, email):
+    return f"{MAGIC_BEGIN}_{id}_{email}_{MAGIC_END}"
+
+def parse_token(token):
+    assert token.startswith(BEARER)
+    begin, id, email, end = token.split(" ")[1].split("_")
+    assert begin == MAGIC_BEGIN and end == MAGIC_END
+    return id
+
 def parse_auth(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         auth = request.META.get("HTTP_AUTHORIZATION")
         if auth:
-            id = auth.split()[1]
+            id = parse_token(auth)
             kwargs['user_id'] = id
             role = User.objects.get(id=id).role
             kwargs['role'] = role
@@ -24,6 +36,23 @@ def parse_auth(func):
             kwargs['role'] = ""
         return func(request, *args, **kwargs)
     return wrapper
+
+######## Login
+@require_http_methods(["POST"])
+@csrf_exempt
+def tokens(request):
+    request.POST = json.loads(request.body)
+    email = request.POST.get('email')
+    id = User.objects.get(email=email).id
+    return JsonResponse( {"token": generate_token(id, email)})
+
+######## List users (for the demo)
+@require_http_methods(["GET"])
+@csrf_exempt
+def users(request):
+    users = User.objects.values()
+    return JsonResponse(list(users), safe=False)
+
 
 ######## Customers management
 @require_http_methods(["GET", "POST"])
@@ -115,18 +144,3 @@ def update_profile(request, user_id):
     return JsonResponse(users, safe=False)
 
 
-######## Login
-@require_http_methods(["POST"])
-@csrf_exempt
-def tokens(request):
-    request.POST = json.loads(request.body)
-    email = request.POST.get('email')
-    id = User.objects.get(email=email).id
-    return JsonResponse( {"token": id})
-
-######## List users (for the demo)
-@require_http_methods(["GET"])
-@csrf_exempt
-def users(request):
-    users = User.objects.values()
-    return JsonResponse(list(users), safe=False)
