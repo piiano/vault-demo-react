@@ -1,11 +1,13 @@
 version: '3.9'
 services:
+
   client:
     build: 
       context: ./client
       dockerfile: Dockerfile
     ports:
       - ${CLIENT_PORT}:${CLIENT_PORT}
+    # Simplify debugging - any changes is automatically updated within the container
     volumes:
       - ./client:/app
     depends_on:
@@ -30,6 +32,7 @@ services:
     command: sh -c "python wait_for_db.py && python manage.py runserver 0.0.0.0:${SERVER_PORT}"
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+    # Simplify debugging - any changes is automatically updated within the container
     volumes:
       - ./server/python-django:/app
     depends_on:
@@ -80,3 +83,68 @@ services:
       options:
           max-size: "50m"
           max-file: "2"
+
+  init:
+    image: docker
+    command: /usr/code/docker-compose-init.sh
+    working_dir: /usr/code
+    volumes:
+      - .:/usr/code
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - piiano-vault
+      - kibana
+      - server-python-django
+
+      
+  # Add Filebeat as a sidecar container
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.15.0
+    container_name: filebeat
+    user: root
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./elk/filebeat.yml:/usr/share/filebeat/filebeat.yml
+    depends_on:
+      - server-python-django
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.15.0
+    container_name: logstash
+    volumes:
+      - ./elk/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5001:5001"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.15.0
+    container_name: kibana
+    volumes:
+      - ./elk/create_index_pattern.sh:/usr/bin/create_index_pattern.sh
+
+
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+volumes:
+  es-data:

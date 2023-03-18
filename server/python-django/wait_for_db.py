@@ -15,7 +15,5 @@ def wait_for_db(retry_count):
             time.sleep(1)
     return 1
 
-os.system("python manage.py migrate")
-os.system("python manage.py loaddata init.json")
-
 sys.exit(wait_for_db(10))
+

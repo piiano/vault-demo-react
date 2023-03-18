@@ -91,21 +91,15 @@ The server includes [2 server implementations](server/README.md) in [Node](/serv
 
 # Docker compose
 ```bash
+# This is so the dependecies exists on the local env, as we map it as volume into the container for simplifiying development
 cd client && yarn
-docker compose build
-docker compose up
-docker compose exec server-python-django python manage.py migrate
-docker compose exec server-python-django python manage.py loaddata init.json
-docker compose exec piiano-vault pvault collection add --collection-pvschema "
-customers PERSONS (
-  ssn SSN UNIQUE COMMENT 'Social security number',
-  email EMAIL,
-  name NAME,
-)"
+docker compose down --volumes && docker compose build && docker compose up -d
 ``` 
 
 Browse http://localhost:3000
 Note: The client and server files can be edited in run time
+Browse [to kibana](http://localhost:5601/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15h,to:now))&_a=(columns:!(reason,operation_id,collection,user_name,personsIDs,data_requested,data_accessed,context.options,returned_count),filters:!(),interval:auto,query:(language:kuery,query:'type:audit'),sort:!(!('@timestamp',desc))))
+
 
 1. Show the app
   - You can manage your customers
