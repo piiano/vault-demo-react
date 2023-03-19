@@ -53,7 +53,7 @@ def decrypt(cipher, field_name):
 
     response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
     resp = response.json()
-    print(cipher, resp)
+    #print(cipher, resp)
     return resp[0]["fields"][field_name]
 
 def encrypt_object(object):

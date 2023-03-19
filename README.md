@@ -107,21 +107,21 @@ Browse [to kibana](http://localhost:5601/app/discover#/?_g=(filters:!(),refreshI
 
 Issues
 
-1. SSN is maksed on the client side
+1. IDOR - can access other customer info
+(John, edit a customer, http://localhost:3000/customers/3/edit)
 
-2. IDOR - can access other customer info
+2. SSN is maksed on the client side for the Support role
+(Using the network tab in the debugging tools)
 
 3. Show everythin is unencrypted in the DB
-  - Can start with SQL command
-  - Use metabase?
+( terminal link, run `./1-db-connection.sh` )
+  
 
 4. Connect to `server` show how we can dump the DB 
-```bash
-docker compose exec -it server-python-django sh
-python -c 'import psycopg2,os,pprint;cu=psycopg2.connect(os.environ["DATABASE_URL"]).cursor();cu.execute("SELECT * from api_customer;");pprint.pprint(cu.fetchall())'
-```
+( terminal link, run `./2-django-server-shell.sh` )
 
 5. Sensitive data in logs
+( edit + save customer, then use logs link )
 
 6. One don't know who accessed data!
 

@@ -1,4 +1,5 @@
 import json
+import logging
 from functools import wraps
 
 from django.shortcuts import render
@@ -8,6 +9,7 @@ from django.views.decorators.http import require_http_methods
 from .models import Customer, User
 from . import vault
 
+logging.basicConfig(level=logging.INFO)
 
 ######## Parsing of auth "token"
 MAGIC_BEGIN = "TOKEN"
@@ -100,8 +102,8 @@ def customer(request, pk):
 def update_customer(request, pk):
     customer = Customer.objects.get(pk=pk)
     request.POST = json.loads(request.body)
+    logging.info(f"saving {request.POST}")
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
-        print("**** enc")
         request.POST = vault.encrypt_object(request.POST)
     customer.__dict__.update(request.POST)
     customer.save()

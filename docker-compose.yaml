@@ -89,14 +89,24 @@ services:
     command: /usr/code/docker-compose-init.sh
     working_dir: /usr/code
     volumes:
-      - .:/usr/code
-      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/usr/code:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - piiano-vault
       - kibana
       - server-python-django
 
-      
+  terminal:
+    build: ./terminal
+    command: --host 0.0.0.0
+    ports:
+      - "5050:5000"
+
+    volumes:
+      - .:/demo:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
   # Add Filebeat as a sidecar container
   filebeat:
     image: docker.elastic.co/beats/filebeat:7.15.0
@@ -105,7 +115,7 @@ services:
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./elk/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./elk/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
     depends_on:
       - server-python-django
 
@@ -130,7 +140,7 @@ services:
     image: docker.elastic.co/logstash/logstash:7.15.0
     container_name: logstash
     volumes:
-      - ./elk/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./elk/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
     ports:
       - "5001:5001"
 
@@ -138,7 +148,7 @@ services:
     image: docker.elastic.co/kibana/kibana:7.15.0
     container_name: kibana
     volumes:
-      - ./elk/create_index_pattern.sh:/usr/bin/create_index_pattern.sh
+      - ./elk/create_index_pattern.sh:/usr/bin/create_index_pattern.sh:ro
 
 
     ports:
