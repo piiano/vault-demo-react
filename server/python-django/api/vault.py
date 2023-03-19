@@ -7,16 +7,19 @@ API_KEY = os.environ.get("PVAULT_ADMIN_API_KEY")
 
 MAGIC_PREFIX = "ENC_"
 
-def encrypt(data, field_name):
+def encrypt(data, field_name, expiration_secs):
     if type(data) != str:
         return data
     url = f"{BASE_URL}/api/pvlt/1.0/data/collections/customers/encrypt/objects"
 
-    querystring = {"reason":"AppFunctionality"}
+    querystring = {
+        "reason":"AppFunctionality", 
+        "expiration_secs": expiration_secs
+    }
 
     payload = [
         {
-            "type":"deterministic",
+            "type":"randomized",
             "object": {"fields": {field_name:data}},
         }
     ]
@@ -27,6 +30,7 @@ def encrypt(data, field_name):
 
     response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
     resp = response.json()
+    #logging.info(f"{response.status_code} {resp}")
     if response.status_code == 200:
         return MAGIC_PREFIX + resp[0]["ciphertext"]
     if response.status_code == 404 and resp["error_code"] == "PV3004":
@@ -56,15 +60,18 @@ def decrypt(cipher, field_name):
 
     response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
     resp = response.json()
-    #print(cipher, resp)
-    return resp[0]["fields"][field_name]
+    #logging.info(f"{response.status_code} {resp}")
+    if response.status_code == 200:
+        return resp[0]["fields"][field_name]
+    if response.status_code == 400 and resp["error_code"] == "PV3233":
+        return None
 
-def encrypt_object(object):
+def encrypt_object(object, expiration_secs = None):
     errors = dict()
     res = dict()
     for k,v in object.items():
         try:
-            data = encrypt(v, k)
+            data = encrypt(v, k, expiration_secs)
             res[k] = data
         except Exception as err:
             errors[k] = err.args[0]
