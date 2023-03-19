@@ -11,13 +11,12 @@ def encrypt(data, field_name):
         return data
     url = f"{BASE_URL}/api/pvlt/1.0/data/collections/customers/encrypt/objects"
 
-    querystring = {"reason":"Maintenance"}
+    querystring = {"reason":"AppFunctionality"}
 
     payload = [
         {
             "type":"deterministic",
             "object": {"fields": {field_name:data}},
-            "props": []
         }
     ]
     headers = {
@@ -37,13 +36,11 @@ def decrypt(cipher, field_name):
     cipher = cipher.lstrip(MAGIC_PREFIX)
     url = f"{BASE_URL}/api/pvlt/1.0/data/collections/customers/decrypt/objects"
 
-    querystring = {"reason":"Maintenance"}
+    querystring = {"reason":"AppFunctionality"}
 
     payload = [
         {
-            "type":"deterministic",
             "encrypted_object": {"ciphertext":cipher},
-            "props": []
         }
     ]
     headers = {

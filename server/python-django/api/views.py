@@ -89,10 +89,10 @@ def create_customer(request, user_id):
     return JsonResponse(customer_res, safe=False)
 
 ######## Per customer
-@require_http_methods(["PUT", "DELETE",  "GET"])
+@require_http_methods(["PATCH", "DELETE",  "GET"])
 @csrf_exempt
 def customer(request, pk):
-    if request.method == 'PUT':
+    if request.method == 'PATCH':
         return update_customer(request, pk)
     elif request.method == 'DELETE':
         return delete_customer(request, pk)
@@ -102,9 +102,9 @@ def customer(request, pk):
 def update_customer(request, pk):
     customer = Customer.objects.get(pk=pk)
     request.POST = json.loads(request.body)
-    logging.info(f"saving {request.POST}")
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         request.POST = vault.encrypt_object(request.POST)
+    logging.info(f"saving {request.POST}")
     customer.__dict__.update(request.POST)
     customer.save()
     

@@ -111,7 +111,7 @@ export default function ListCustomers() {
                             </td>
                             <RequireSupportRole profile={profile}>
                               <td className="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-500">
-                                <Placeholder isLoading={isLoading}>{customer.owner || '-'}</Placeholder>
+                                <Placeholder isLoading={isLoading}>{customer.owner_id || '-'}</Placeholder>
                               </td>
                             </RequireSupportRole>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">

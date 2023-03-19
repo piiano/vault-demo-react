@@ -102,14 +102,12 @@ export default function ShowCustomer({ props }) {
                   </Placeholder>
                 </dd>
               </div>
-              <RequireSupportRole profile={profile}>
-                <div className="flex justify-between py-3 text-sm font-medium">
-                  <dt className="text-gray-500">Owner</dt>
-                  <dd className="whitespace-nowrap text-gray-900">
-                    <Placeholder isLoading={isLoading}>{customer.owner}</Placeholder>
-                  </dd>
-                </div>
-              </RequireSupportRole>
+              <div className="flex justify-between py-3 text-sm font-medium">
+                <dt className="text-gray-500">Owner</dt>
+                <dd className="whitespace-nowrap text-gray-900">
+                  <Placeholder isLoading={isLoading}>{customer.owner_id}</Placeholder>
+                </dd>
+              </div>
             </dl>
           </div>
           </>

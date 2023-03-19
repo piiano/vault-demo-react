@@ -110,7 +110,7 @@ Issues
 1. IDOR - can access other customer info
 (John, edit a customer, http://localhost:3000/customers/3/edit)
 
-2. SSN is maksed on the client side for the Support role
+2. SSN is maksed on the client side for the Support role, show non normalized SSN bad masking
 (Using the network tab in the debugging tools)
 
 3. Show everythin is unencrypted in the DB
