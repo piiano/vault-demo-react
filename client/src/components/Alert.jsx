@@ -3,21 +3,21 @@ import clsx from 'clsx'
 
 const baseColors = {
   yellow: 'border-yellow-400 bg-yellow-50',
-  blue: 'border-blue-400 bg-blue-50',
+  purple: 'border-purple-400 bg-purple-50',
   green: 'border-green-400 bg-green-50',
   red: 'border-red-400 bg-red-50',
 }
 
 const textColors = {
   yellow: 'text-yellow-700',
-  blue: 'text-blue-700',
+  purple: 'text-purple-700',
   green: 'text-green-700',
   red: 'text-red-700',
 }
 
 const iconColors = {
   yellow: 'text-yellow-400',
-  blue: 'text-blue-400',
+  purple: 'text-purple-400',
   green: 'text-green-400',
   red: 'text-red-400',
 }

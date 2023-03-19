@@ -5,10 +5,11 @@ import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
 import { Placeholder } from '../../components/Loading'
 import { Alert } from '../../components/Alert'
+import { UserById } from '../../components/UserById'
 import { getCustomers } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
-import { LoginContext, RequireSupportRole, RedactIfSupportRole } from '../../providers/LoginProvider'
+import { LoginContext, RequireSupportRole, MaskIfSupportRole } from '../../providers/LoginProvider'
 
 export default function ListCustomers() {
   const [error, setError] = useState(null);
@@ -96,7 +97,7 @@ export default function ListCustomers() {
                           <tr key={i}>
                             <td className="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900">
                               <Placeholder isLoading={isLoading}>
-                                <Link to={`/customers/${customer.id}`} className="text-blue-700 hover:text-blue-500 cursor-pointer" aria-label="Edit customer">
+                                <Link to={`/customers/${customer.id}`} className="text-purple-700 hover:text-purple-500 cursor-pointer" aria-label="Edit customer">
                                   {customer.name}
                                 </Link>
                               </Placeholder>
@@ -106,17 +107,17 @@ export default function ListCustomers() {
                             </td>
                             <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
                               <Placeholder isLoading={isLoading}>
-                                <RedactIfSupportRole profile={profile}>{customer.ssn}</RedactIfSupportRole>
+                                <MaskIfSupportRole profile={profile} text={customer.ssn} />
                               </Placeholder>
                             </td>
                             <RequireSupportRole profile={profile}>
                               <td className="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-500">
-                                <Placeholder isLoading={isLoading}>{customer.owner || '-'}</Placeholder>
+                                <Placeholder isLoading={isLoading}><UserById id={customer.owner_id} /></Placeholder>
                               </td>
                             </RequireSupportRole>
                             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                               <Placeholder isLoading={isLoading}>
-                                <Link to={`/customers/${customer.id}/edit`} className="text-blue-700 hover:text-blue-500 cursor-pointer" aria-label="Edit customer">
+                                <Link to={`/customers/${customer.id}/edit`} className="text-purple-700 hover:text-purple-500 cursor-pointer" aria-label="Edit customer">
                                   Edit
                                 </Link>
                               </Placeholder>

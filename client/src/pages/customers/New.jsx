@@ -103,7 +103,7 @@ export default function NewCustomer() {
               </span>
             </Button>
             <div className="mt-4 flex justify-center text-sm">
-              <Link className="text-blue-700 hover:text-blue-500  font-medium cursor-pointer" to="/customers" aria-label="Back to customers">
+              <Link className="text-purple-700 hover:text-purple-500  font-medium cursor-pointer" to="/customers" aria-label="Back to customers">
                 <span className="sr-only">Back to custoemrs</span>
                 Cancel
               </Link>

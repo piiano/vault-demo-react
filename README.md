@@ -41,7 +41,7 @@ More details can be found [on our website](https://piiano.com/pii-data-privacy-v
 
 To run this sample locally you need to start both a local dev server for the front-end (under `client` folder) and another server for the back-end (under `server` folder).
 
-You will need a valid Piiano Vault service license to run Piiano Vault locally.
+In addition, you will need a valid Piiano Vault service license to run Piiano Vault locally.
 
 Follow the steps below to run locally.
 
@@ -50,10 +50,10 @@ Follow the steps below to run locally.
 git clone https://github.com/piiano/vault-demo-react.git
 ```
 
-2. Copy the .env.example file into a file named .env in the folder of the server you want to use. For example:
+1. Copy the .env.example file into a file named .env in the folder of the server you want to use. For example:
 
 ```bash
-cp .env.example server/node/.env
+cp .env.example .env
 ```
 
 Update the .env file with your Piiano Vault service license and API key:
@@ -86,7 +86,7 @@ PVAULT_ADMIN_API_KEY="pvaultauth"
 
 The code in this directory contains a demo client in React and a set of server implmentation available in 2 common languages for a safe User management CRUD API with [Piiano Vault](http://piiano.com). 
 
-The server includes [2 server implementations](server/README.md) in [Node](/server/node) and [Python](/server/python). Each server implements several RESTful implementations, each with the same endpoints and logic.
+The server includes [1 server implementations](server/README.md) [Python Django](/server/python-django). Each server implements several RESTful implementations, each with the same endpoints and logic.
 
 
 # Docker compose

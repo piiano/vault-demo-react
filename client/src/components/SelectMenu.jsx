@@ -21,7 +21,7 @@ export default function SelectMenu({ className, label, items, selected, setSelec
                     
                     <span className="block truncate">
                       <Placeholder isLoading={isLoading} className="h-2 my-0" >
-                        {selected?.name}
+                        <span>{selected?.name}</span>
                       </Placeholder>
                     </span>
                   </span>
@@ -56,7 +56,7 @@ export default function SelectMenu({ className, label, items, selected, setSelec
                               <span
                                 className={clsx(selected ? 'font-semibold' : 'font-normal', 'block truncate')}
                               >
-                                {item.name}
+                                {item?.name}
                               </span>
                             </div>
 

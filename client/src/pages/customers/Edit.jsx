@@ -8,7 +8,7 @@ import { Loading } from '../../components/Loading'
 import { getCustomer, updateCustomer } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
-import { LoginContext } from '../../providers/LoginProvider'
+import { LoginContext, MaskIfSupportRole } from '../../providers/LoginProvider'
 
 export default function NewCustomer({ props }) {
   const navigate = useNavigate();
@@ -17,11 +17,15 @@ export default function NewCustomer({ props }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   let { customerId } = useParams();
+  const [dirty, setDirty] = useState({
+    name: false,
+    email: false,
+    ssn: false
+  });
   const [formValues, setFormValues] = useState({
-    id: '',
     name: '',
     email: '',
-    ssn: '',
+    ssn: ''
   });
   const { isSecured } = useContext(
     VaultContext
@@ -37,10 +41,9 @@ export default function NewCustomer({ props }) {
         (customer) => {
           setIsLoading(false);
           setFormValues({
-            id: customer.id,
             name: customer.name,
             email: customer.email,
-            ssn: customer.ssn,
+            ssn: MaskIfSupportRole({ profile, text: customer.ssn }),
           });
         },
         (error) => {
@@ -58,12 +61,11 @@ export default function NewCustomer({ props }) {
     // TODO: Add form validation
     
     setIsSubmitting(true);
-    updateCustomer({
-      id: formValues.id,
-      name: formValues.name,
-      email: formValues.email,
-      ssn: formValues.ssn,
-    })
+    
+    // Only pick dirty fields
+    let payload = Object.fromEntries(Object.entries(formValues).filter(([key]) => dirty[key] ));
+
+    updateCustomer(customerId, payload)
       .then(
         () => {
           setIsSubmitting(false);
@@ -79,6 +81,7 @@ export default function NewCustomer({ props }) {
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
+    setDirty({ ...dirty, [name]: true });
     setFormValues({ ...formValues, [name]: value });
   };
 
@@ -143,7 +146,7 @@ export default function NewCustomer({ props }) {
                   label="Social security number"
                   id="ssn"
                   name="ssn"
-                  value={formValues.ssn}
+                  value={ formValues.ssn }
                   required={false}
                   disabled={isSubmitting}
                   onChange={handleValueChange}

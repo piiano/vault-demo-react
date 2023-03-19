@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom'
 import { AppLayout } from '../../layouts/AppLayout'
 import { Alert } from '../../components/Alert'
 import { Placeholder } from '../../components/Loading'
+import { UserById } from '../../components/UserById'
 import { getCustomer } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
-import { LoginContext, RedactIfSupportRole, RequireSupportRole } from '../../providers/LoginProvider'
+import { LoginContext, MaskIfSupportRole } from '../../providers/LoginProvider'
 
 import { Button } from '../../components/Button'
 
@@ -98,18 +99,16 @@ export default function ShowCustomer({ props }) {
                 <dt className="text-gray-500">SSN</dt>
                 <dd className="whitespace-nowrap text-gray-900">
                   <Placeholder isLoading={isLoading}>
-                    <RedactIfSupportRole profile={profile}>{customer.ssn}</RedactIfSupportRole>
+                    <MaskIfSupportRole profile={profile} text={customer.ssn} />
                   </Placeholder>
                 </dd>
               </div>
-              <RequireSupportRole profile={profile}>
-                <div className="flex justify-between py-3 text-sm font-medium">
-                  <dt className="text-gray-500">Owner</dt>
-                  <dd className="whitespace-nowrap text-gray-900">
-                    <Placeholder isLoading={isLoading}>{customer.owner}</Placeholder>
-                  </dd>
-                </div>
-              </RequireSupportRole>
+              <div className="flex justify-between py-3 text-sm font-medium">
+                <dt className="text-gray-500">Owner</dt>
+                <dd className="whitespace-nowrap text-gray-900">
+                  <Placeholder isLoading={isLoading}><UserById id={customer.owner_id} /></Placeholder>
+                </dd>
+              </div>
             </dl>
           </div>
           </>

@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { setAuthToken, createToken, getProfile, getUsers } from '../Api';
 
+import clsx from 'clsx';
+
 const LoginContext = createContext();
 
 const LoginProvider = (props) => {
@@ -144,15 +146,23 @@ const RequireSupportRole = ({ profile, redact, children }) => {
   return <RequireRoles redact={redact} profile={profile} roles={["support"]} children={children} />
 }
 
-const RedactIfRoles = ({ profile, roles, children }) => {
-  if( profile && roles.includes(profile.role) ) {
-    return <span className="text-gray-500">{'<REDACTED>'}</span>;
+const maskText = (text, length=4, char="X") => {
+  if( text ) {
+    return text.replace(/\d{4}$/g, Array(length + 1).join(char));  
+  } else {
+    return "";
   }
-  return children;
 }
 
-const RedactIfSupportRole = ({ profile, roles, children }) => {
-  return <RedactIfRoles profile={profile} roles={["support"]} children={children} />
+const MaskIfRoles = ({ profile, roles, text, length=4, char="X" }) => {
+  if( profile && roles.includes(profile.role) ) {
+    return maskText(text, length, char);
+  }
+  return text;
 }
 
-export { LoginProvider, LoginContext, RequireLogin, RequireSupportRole, RedactIfSupportRole };
+const MaskIfSupportRole = ({ profile, text, length=4, char="X" }) => {
+  return MaskIfRoles({ profile, roles: ["support"], text, length, char });
+}
+
+export { LoginProvider, LoginContext, RequireLogin, RequireSupportRole, MaskIfSupportRole };
