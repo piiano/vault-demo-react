@@ -82,7 +82,10 @@ def create_customer(request, user_id):
     owner = User.objects.get(id=user_id)
     request.POST["owner_id"] = owner.pk
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
-        request.POST = vault.encrypt_object(request.POST)
+        try:
+            request.POST = vault.encrypt_object(request.POST)
+        except Exception as e:
+            return JsonResponse(e.args[0], status=422)
 
     customer = Customer.objects.create(**request.POST)
     customer_res = Customer.objects.values().get(pk=customer.pk)
@@ -90,6 +93,7 @@ def create_customer(request, user_id):
 
 ######## Per customer
 @require_http_methods(["PATCH", "DELETE",  "GET"])
+#parse_auth - IDOR bug, credentials aren't checked
 @csrf_exempt
 def customer(request, pk):
     if request.method == 'PATCH':
@@ -103,8 +107,10 @@ def update_customer(request, pk):
     customer = Customer.objects.get(pk=pk)
     request.POST = json.loads(request.body)
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
-        request.POST = vault.encrypt_object(request.POST)
-    logging.info(f"saving {request.POST}")
+        try:
+            request.POST = vault.encrypt_object(request.POST)
+        except Exception as e:
+            return JsonResponse(e.args[0], status=422)
     customer.__dict__.update(request.POST)
     customer.save()
     

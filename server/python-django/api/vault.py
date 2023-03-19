@@ -1,5 +1,6 @@
 import requests
 import os
+import logging
 
 BASE_URL = os.environ.get("PVAULT_BASE_URL")
 API_KEY = os.environ.get("PVAULT_ADMIN_API_KEY")
@@ -25,10 +26,15 @@ def encrypt(data, field_name):
     }
 
     response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
+    resp = response.json()
     if response.status_code == 200:
-        resp = response.json()
         return MAGIC_PREFIX + resp[0]["ciphertext"]
-    raise Exception(f"Can't encrypt data {response.json()}, {response.text}")
+    if response.status_code == 404 and resp["error_code"] == "PV3004":
+        return data
+    if response.status_code == 400 and resp["error_code"] == "PV3002":
+        raise Exception("Bad format") 
+    
+    raise Exception({"status": response.status_code, "text": resp})
 
 def decrypt(cipher, field_name):
     if type(cipher) != str or not cipher.startswith(MAGIC_PREFIX):
@@ -54,9 +60,18 @@ def decrypt(cipher, field_name):
     return resp[0]["fields"][field_name]
 
 def encrypt_object(object):
+    errors = dict()
     res = dict()
     for k,v in object.items():
-        res[k] = encrypt(v, k)
+        try:
+            data = encrypt(v, k)
+            res[k] = data
+        except Exception as err:
+            errors[k] = err.args[0]
+    if errors:
+        raise Exception(errors)
+    return res
+    
     return res
 def decrypt_object(object):
     res = dict()
