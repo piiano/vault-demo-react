@@ -146,23 +146,23 @@ const RequireSupportRole = ({ profile, redact, children }) => {
   return <RequireRoles redact={redact} profile={profile} roles={["support"]} children={children} />
 }
 
-const maskText = (text, length=4, char="X") => {
+const maskText = (text, char="X") => {
   if( text ) {
-    return text.replace(/\d{4}$/g, Array(length + 1).join(char));  
+    return text.replace(/^(\d{3})(.)\d{2}/g, Array(4).join(char) + "-" + Array(3).join(char))
   } else {
     return "";
   }
 }
 
-const MaskIfRoles = ({ profile, roles, text, length=4, char="X" }) => {
+const MaskIfRoles = ({ profile, roles, text, char="X" }) => {
   if( profile && roles.includes(profile.role) ) {
-    return maskText(text, length, char);
+    return maskText(text, char);
   }
   return text;
 }
 
-const MaskIfSupportRole = ({ profile, text, length=4, char="X" }) => {
-  return MaskIfRoles({ profile, roles: ["support"], text, length, char });
+const MaskIfSupportRole = ({ profile, text, char="X" }) => {
+  return MaskIfRoles({ profile, roles: ["support"], text, char });
 }
 
 export { LoginProvider, LoginContext, RequireLogin, RequireSupportRole, MaskIfSupportRole };

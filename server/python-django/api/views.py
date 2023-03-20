@@ -61,6 +61,13 @@ def users(request):
 
 
 ######## Customers management
+def parse_expiration(request):
+    expiration_secs = request.POST.get("expiration")
+    if expiration_secs:
+        del request.POST["expiration"]
+        expiration_secs = int(expiration_secs-time.time())
+    return expiration_secs
+
 @require_http_methods(["GET", "POST"])
 @csrf_exempt
 @parse_auth
@@ -74,7 +81,7 @@ def get_customers(request, user_id, role):
     if ROLE_SUPPORT == role:
         customers = Customer.objects.values()
     else:  
-        customers = Customer.objects.values().filter(owner__id=user_id)
+        customers = Customer.objects.values().filter(owner_id=user_id)
 
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         customers = [vault.decrypt_object(customer) for customer in customers]
@@ -83,17 +90,15 @@ def get_customers(request, user_id, role):
 
 def create_customer(request, user_id, role):
     request.POST = json.loads(request.body)
-    expiration_secs = request.GET.get("expiration")
-    if expiration_secs:
-        expiration_secs = int(expiration_secs-time.time())
-    owner = User.objects.get(id=user_id)
-    request.POST["owner_id"] = owner.pk
+    expiration_secs = parse_expiration(request)
+
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         try:
             request.POST = vault.encrypt_object(request.POST, expiration_secs)
         except Exception as e:
             return JsonResponse({"message": "Bad format", "errors": e.args[0]}, status=422)
 
+    request.POST["owner_id"] = user_id
     customer = Customer.objects.create(**request.POST)
     customer_res = Customer.objects.values().get(pk=customer.pk)
     return JsonResponse(customer_res, safe=False)
@@ -113,19 +118,17 @@ def customer(request, pk, user_id, role):
 def update_customer(request, pk, user_id, role):
     customer = Customer.objects.get(pk=pk)
     if str(customer.owner_id) != user_id and role != ROLE_SUPPORT:
-        return HttpResponseForbidden()
-    
-    # Parse expiration
-    expiration_secs = request.GET.get("expiration")
-    if expiration_secs:
-        expiration_secs = int(expiration_secs-time.time())
+        return HttpResponseForbidden()    
     
     request.POST = json.loads(request.body)
+    expiration_secs = parse_expiration(request)
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         try:
             request.POST = vault.encrypt_object(request.POST, expiration_secs)
         except Exception as e:
             return JsonResponse({"message": "Bad format", "errors": e.args[0]}, status=422)
+        
+    logging.info(f"updating {request.POST}")
     customer.__dict__.update(request.POST)
     customer.save()
     
@@ -134,6 +137,8 @@ def update_customer(request, pk, user_id, role):
 
 def get_customer(request, pk, user_id, role):
     customer = Customer.objects.values().get(pk=pk)
+    # IDOR bug - missing ownership check
+    
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         customer = vault.decrypt_object(customer)
     return JsonResponse(customer, safe=False)
