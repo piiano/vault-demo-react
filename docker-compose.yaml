@@ -53,8 +53,9 @@ services:
 
   piiano-vault:
     image: ${PVAULT_SERVER_DOCKER_TAG}
-    #volumes:
+    volumes:
     #  - ./data/vaultdb:/var/lib/postgresql/data
+      - ./vault:/usr/init:ro
     depends_on:
       - vaultdb
     init: true
