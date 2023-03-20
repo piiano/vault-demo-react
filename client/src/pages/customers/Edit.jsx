@@ -20,12 +20,12 @@ export default function NewCustomer({ props }) {
   const [dirty, setDirty] = useState({
     name: false,
     email: false,
-    ssn: false
+    ssn: false,
   });
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
-    ssn: ''
+    ssn: '',
   });
   const { isSecured } = useContext(
     VaultContext
@@ -120,58 +120,55 @@ export default function NewCustomer({ props }) {
               </Alert> 
           }
 
-          {
-            !error &&
-              <form onSubmit={handleSubmit} className="mt-10 grid grid-cols-1 gap-y-8">
-                <TextField
-                  label="Name"
-                  id="name"
-                  name="name"
-                  value={formValues.name}
-                  required
-                  disabled={isSubmitting}
-                  onChange={handleValueChange}
-                />
-                <TextField
-                  label="Email address"
-                  id="email"
-                  name="email"
-                  value={formValues.email}
-                  type="email"
-                  required
-                  disabled={isSubmitting}
-                  onChange={handleValueChange}
-                />
-                <TextField
-                  label="Social security number"
-                  id="ssn"
-                  name="ssn"
-                  value={ formValues.ssn }
-                  required={false}
-                  disabled={isSubmitting}
-                  onChange={handleValueChange}
-                />
-                <div>
-                  <Button
-                    type="submit"
-                    variant="solid"
-                    color="blue"
-                    className="w-full"
-                    isSubmitting={isSubmitting}
-                  >
-                    <span>
-                      Save customer <span aria-hidden="true">&rarr;</span>
-                    </span>
-                  </Button>
-                  <div className="mt-4 flex justify-center text-sm">
-                    <Button variant="link" color="blue" href="/customers" onClick={handleCancelButtonClick} aria-label="Back to customers">
-                      <span className="sr-only">Back to custoemrs</span>
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              </form>
-          }
+          <form onSubmit={handleSubmit} className="mt-10 grid grid-cols-1 gap-y-8">
+            <TextField
+              label="Name"
+              id="name"
+              name="name"
+              value={formValues.name}
+              required
+              disabled={isSubmitting}
+              onChange={handleValueChange}
+            />
+            <TextField
+              label="Email address"
+              id="email"
+              name="email"
+              value={formValues.email}
+              type="email"
+              required
+              disabled={isSubmitting}
+              onChange={handleValueChange}
+            />
+            <TextField
+              label="Social security number"
+              id="ssn"
+              name="ssn"
+              value={ formValues.ssn }
+              required={false}
+              disabled={isSubmitting}
+              onChange={handleValueChange}
+            />
+            <div>
+              <Button
+                type="submit"
+                variant="solid"
+                color="blue"
+                className="w-full"
+                isSubmitting={isSubmitting}
+              >
+                <span>
+                  Save customer <span aria-hidden="true">&rarr;</span>
+                </span>
+              </Button>
+              <div className="mt-4 flex justify-center text-sm">
+                <Button variant="link" color="blue" href="/customers" onClick={handleCancelButtonClick} aria-label="Back to customers">
+                  <span className="sr-only">Back to custoemrs</span>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </form>
         </div>
       }
     </AppLayout>

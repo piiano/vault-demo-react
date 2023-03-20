@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from functools import wraps
 
 from django.shortcuts import render
@@ -79,20 +80,27 @@ def get_customers(request, user_id, role):
 
 def create_customer(request, user_id):
     request.POST = json.loads(request.body)
+    expiration_secs = request.GET.get("expiration")
+    if expiration_secs:
+        expiration_secs = int(expiration_secs-time.time())
     owner = User.objects.get(id=user_id)
     request.POST["owner_id"] = owner.pk
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
-        request.POST = vault.encrypt_object(request.POST)
+        try:
+            request.POST = vault.encrypt_object(request.POST, expiration_secs)
+        except Exception as e:
+            return JsonResponse(e.args[0], status=422)
 
     customer = Customer.objects.create(**request.POST)
     customer_res = Customer.objects.values().get(pk=customer.pk)
     return JsonResponse(customer_res, safe=False)
 
 ######## Per customer
-@require_http_methods(["PUT", "DELETE",  "GET"])
+@require_http_methods(["PATCH", "DELETE",  "GET"])
+#parse_auth - IDOR bug, credentials aren't checked
 @csrf_exempt
 def customer(request, pk):
-    if request.method == 'PUT':
+    if request.method == 'PATCH':
         return update_customer(request, pk)
     elif request.method == 'DELETE':
         return delete_customer(request, pk)
@@ -101,10 +109,15 @@ def customer(request, pk):
 
 def update_customer(request, pk):
     customer = Customer.objects.get(pk=pk)
+    expiration_secs = request.GET.get("expiration")
+    if expiration_secs:
+        expiration_secs = int(expiration_secs-time.time())
     request.POST = json.loads(request.body)
-    logging.info(f"saving {request.POST}")
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
-        request.POST = vault.encrypt_object(request.POST)
+        try:
+            request.POST = vault.encrypt_object(request.POST, expiration_secs)
+        except Exception as e:
+            return JsonResponse(e.args[0], status=422)
     customer.__dict__.update(request.POST)
     customer.save()
     

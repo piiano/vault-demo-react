@@ -95,7 +95,7 @@ export const getCustomer = (customerId) => {
 };
 
 export const updateCustomer = (customerId, customer) => {
-  return axios.put(`/customers/${customerId}`, customer)
+  return axios.patch(`/customers/${customerId}`, customer)
     .then(response => response.data)
     .catch(error => {
       throw new Error(`API request failed: ${error.message}`);

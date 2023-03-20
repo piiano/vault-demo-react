@@ -66,7 +66,7 @@ const LoginProvider = (props) => {
     getUsers()
       .then(
         (users) => {
-          setUsers(users);
+          setUsers(users.sort((a, b) => a.name.localeCompare(b.name)));
           setIsLoadingUsers(false);
         },
         (error) => {
