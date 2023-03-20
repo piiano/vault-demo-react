@@ -7,7 +7,7 @@ API_KEY = os.environ.get("PVAULT_ADMIN_API_KEY")
 
 MAGIC_PREFIX = "ENC_"
 
-def encrypt(data, field_name, expiration_secs):
+def encrypt(data, field_name, owner_id, expiration_secs):
     if type(data) != str or len(data) == 0:
         return data
     url = f"{BASE_URL}/api/pvlt/1.0/data/collections/customers/encrypt/objects"
@@ -20,7 +20,7 @@ def encrypt(data, field_name, expiration_secs):
     payload = [
         {
             "type":"randomized",
-            "object": {"fields": {field_name:data}},
+            "object": {"fields": {field_name:data, "owner_id":int(owner_id)}},
         }
     ]
     headers = {
@@ -33,14 +33,14 @@ def encrypt(data, field_name, expiration_secs):
     #logging.info(f"{response.status_code} {resp}")
     if response.status_code == 200:
         return MAGIC_PREFIX + resp[0]["ciphertext"]
-    if response.status_code == 404 and resp["error_code"] == "PV3004":
+    if response.status_code == 404 and resp["error_code"] == "PV3004": # Property does not exist.
         return data
     if response.status_code == 400 and resp["error_code"] == "PV3002":
         raise Exception("Bad format") 
     
     raise Exception({"status": response.status_code, "text": resp})
 
-def decrypt(cipher, field_name):
+def decrypt(cipher, field_name, token):
     if type(cipher) != str or not cipher.startswith(MAGIC_PREFIX):
         return cipher
     cipher = cipher.lstrip(MAGIC_PREFIX)
@@ -55,7 +55,8 @@ def decrypt(cipher, field_name):
     ]
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer pvaultauth"
+        "Authorization": "Bearer pvaultauth",
+        "X-Trans-Param": token
     }
 
     response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
@@ -66,12 +67,12 @@ def decrypt(cipher, field_name):
     if response.status_code == 400 and resp["error_code"] == "PV3233":
         return None
 
-def encrypt_object(object, expiration_secs = None):
+def encrypt_object(object, owner_id, expiration_secs = None):
     errors = dict()
     res = dict()
     for k,v in object.items():
         try:
-            data = encrypt(v, k, expiration_secs)
+            data = encrypt(v, k, owner_id, expiration_secs)
             res[k] = data
         except Exception as err:
             errors[k] = err.args[0]
@@ -80,8 +81,8 @@ def encrypt_object(object, expiration_secs = None):
     return res
     
     return res
-def decrypt_object(object):
+def decrypt_object(object, token):
     res = dict()
     for k,v in object.items():
-        res[k] = decrypt(v, k)
+        res[k] = decrypt(v, k, token)
     return res

@@ -84,7 +84,7 @@ def get_customers(request, user_id, role):
         customers = Customer.objects.values().filter(owner_id=user_id)
 
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
-        customers = [vault.decrypt_object(customer) for customer in customers]
+        customers = [vault.decrypt_object(customer, request.META.get("HTTP_AUTHORIZATION")) for customer in customers]
 
     return JsonResponse(list(customers), safe=False)
 
@@ -94,7 +94,7 @@ def create_customer(request, user_id, role):
 
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         try:
-            request.POST = vault.encrypt_object(request.POST, expiration_secs)
+            request.POST = vault.encrypt_object(request.POST, user_id, expiration_secs)
         except Exception as e:
             return JsonResponse({"message": "Bad format", "errors": e.args[0]}, status=422)
 
@@ -124,7 +124,7 @@ def update_customer(request, pk, user_id, role):
     expiration_secs = parse_expiration(request)
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         try:
-            request.POST = vault.encrypt_object(request.POST, expiration_secs)
+            request.POST = vault.encrypt_object(request.POST, customer.owner_id, expiration_secs)
         except Exception as e:
             return JsonResponse({"message": "Bad format", "errors": e.args[0]}, status=422)
         
@@ -138,9 +138,9 @@ def update_customer(request, pk, user_id, role):
 def get_customer(request, pk, user_id, role):
     customer = Customer.objects.values().get(pk=pk)
     # IDOR bug - missing ownership check
-    
+
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
-        customer = vault.decrypt_object(customer)
+        customer = vault.decrypt_object(customer, request.META.get("HTTP_AUTHORIZATION"))
     return JsonResponse(customer, safe=False)
 
 
