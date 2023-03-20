@@ -8,7 +8,7 @@ API_KEY = os.environ.get("PVAULT_ADMIN_API_KEY")
 MAGIC_PREFIX = "ENC_"
 
 def encrypt(data, field_name, expiration_secs):
-    if type(data) != str:
+    if type(data) != str or len(data) == 0:
         return data
     url = f"{BASE_URL}/api/pvlt/1.0/data/collections/customers/encrypt/objects"
 

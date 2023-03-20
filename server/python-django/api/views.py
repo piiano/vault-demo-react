@@ -4,13 +4,16 @@ import time
 from functools import wraps
 
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from .models import Customer, User
 from . import vault
 
 logging.basicConfig(level=logging.INFO)
+
+ROLE_OWNER = "owner"
+ROLE_SUPPORT = "support"
 
 ######## Parsing of auth "token"
 MAGIC_BEGIN = "TOKEN"
@@ -65,10 +68,10 @@ def customers(request, user_id, role):
     if request.method == 'GET':
         return get_customers(request, user_id, role)
     elif request.method == 'POST':
-        return create_customer(request, user_id)
+        return create_customer(request, user_id, role)
 
 def get_customers(request, user_id, role):
-    if "support" == role:
+    if ROLE_SUPPORT == role:
         customers = Customer.objects.values()
     else:  
         customers = Customer.objects.values().filter(owner__id=user_id)
@@ -78,7 +81,7 @@ def get_customers(request, user_id, role):
 
     return JsonResponse(list(customers), safe=False)
 
-def create_customer(request, user_id):
+def create_customer(request, user_id, role):
     request.POST = json.loads(request.body)
     expiration_secs = request.GET.get("expiration")
     if expiration_secs:
@@ -97,21 +100,26 @@ def create_customer(request, user_id):
 
 ######## Per customer
 @require_http_methods(["PATCH", "DELETE",  "GET"])
-#parse_auth - IDOR bug, credentials aren't checked
+@parse_auth
 @csrf_exempt
-def customer(request, pk):
+def customer(request, pk, user_id, role):
     if request.method == 'PATCH':
-        return update_customer(request, pk)
+        return update_customer(request, pk, user_id, role)
     elif request.method == 'DELETE':
-        return delete_customer(request, pk)
+        return delete_customer(request, pk, user_id, role)
     elif request.method == 'GET':
-        return get_customer(request, pk)
+        return get_customer(request, pk, user_id, role)
 
-def update_customer(request, pk):
+def update_customer(request, pk, user_id, role):
     customer = Customer.objects.get(pk=pk)
+    if str(customer.owner_id) != user_id and role != ROLE_SUPPORT:
+        return HttpResponseForbidden()
+    
+    # Parse expiration
     expiration_secs = request.GET.get("expiration")
     if expiration_secs:
         expiration_secs = int(expiration_secs-time.time())
+    
     request.POST = json.loads(request.body)
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         try:
@@ -124,15 +132,18 @@ def update_customer(request, pk):
     customer_res = Customer.objects.values().get(pk=customer.pk)
     return JsonResponse(customer_res, safe=False)
 
-def get_customer(request, pk):
+def get_customer(request, pk, user_id, role):
     customer = Customer.objects.values().get(pk=pk)
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
         customer = vault.decrypt_object(customer)
     return JsonResponse(customer, safe=False)
 
 
-def delete_customer(request, pk):
+def delete_customer(request, pk, user_id, role):
     customer = Customer.objects.get(pk=pk)
+    if str(customer.owner_id) != user_id and role != ROLE_SUPPORT:
+        return HttpResponseForbidden()
+
     customer.delete()
     return JsonResponse({'message': 'Customer deleted successfully'})
 

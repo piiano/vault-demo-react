@@ -132,8 +132,10 @@ Issues
 # Debugging
 To connect to Vault
 ```bash
-alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.2.1"
+alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.2.2"
 pvault status
+
+pvault confvar set --name log_level --value debug
 ```
 
 # Debug
