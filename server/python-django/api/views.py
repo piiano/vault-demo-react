@@ -89,7 +89,7 @@ def create_customer(request, user_id):
         try:
             request.POST = vault.encrypt_object(request.POST, expiration_secs)
         except Exception as e:
-            return JsonResponse(e.args[0], status=422)
+            return JsonResponse({"message": "Bad format", "errors": e.args[0]}, status=422)
 
     customer = Customer.objects.create(**request.POST)
     customer_res = Customer.objects.values().get(pk=customer.pk)
@@ -117,7 +117,7 @@ def update_customer(request, pk):
         try:
             request.POST = vault.encrypt_object(request.POST, expiration_secs)
         except Exception as e:
-            return JsonResponse(e.args[0], status=422)
+            return JsonResponse({"message": "Bad format", "errors": e.args[0]}, status=422)
     customer.__dict__.update(request.POST)
     customer.save()
     
