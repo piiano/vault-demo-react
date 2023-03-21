@@ -3,8 +3,8 @@
     "model": "api.user",
     "pk": 1,
     "fields": {
-      "name": "John",
-      "email": "john@acme.com",
+      "name": "Bob",
+      "email": "bob@acme.com",
       "role": "owner",
       "avatar": "https://www.gravatar.com/avatar/111d68d06e2d317b5a59c2c6c5bad808?d=identicon"
     }
@@ -33,8 +33,8 @@
     "model": "api.customer",
     "pk": 1,
     "fields": {
-      "name": "Bob",
-      "email": "bob@acme.com",
+      "name": "John",
+      "email": "john@company.com",
       "ssn": "-123-12-1234",
       "owner": 1
     }
@@ -44,7 +44,7 @@
     "pk": 2,
     "fields": {
       "name": "Jack",
-      "email": "jack@acme.com",
+      "email": "jack@company.com",
       "ssn": "222-12-1234",
       "owner": 1
     }
@@ -53,8 +53,8 @@
     "model": "api.customer",
     "pk": 3,
     "fields": {
-      "name": "Moses",
-      "email": "moses@star.com",
+      "name": "Sarah",
+      "email": "sarah@google.com",
       "ssn": "333-12-1234",
       "owner": 2
     }

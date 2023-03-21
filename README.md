@@ -107,26 +107,22 @@ Browse [to kibana](http://localhost:5601/app/discover#/?_g=(filters:!(),refreshI
 
 Issues
 
-1. IDOR - can access other customer info
+1. Show everything is unencrypted in the DB.
+    - Access to creds - terminal link, run `./1-db-connection.sh`
+    - Access to web backend - terminal link, run `./2-django-server-shell.sh`
+
+2. IDOR - can access other customer info
 (John, edit a customer, http://localhost:3000/customers/3/edit)
 
-2. SSN is maksed on the client side for the Support role, also incorrectly due to lack of validation/normalization
+3. SSN is maksed on the client side for the Support role, also incorrectly due to lack of validation/normalization
 (Using the network tab in the debugging tools)
 
-3. Show everythin is unencrypted in the DB
-( terminal link, run `./1-db-connection.sh` )
-  
-
-4. Connect to `server` show how we can dump the DB 
-( terminal link, run `./2-django-server-shell.sh` )
-
-5. Sensitive data in logs
+4. Sensitive data in logs
 ( edit + save customer, then use logs link )
 
-6. One don't know who accessed data!
+5. One don't know who accessed data!
 
-7. Expiraiton
-
+6. Expiraiton
 
 
 # Debugging
@@ -136,6 +132,7 @@ alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.d
 pvault status
 
 pvault confvar set --name log_level --value debug
+docker compose logs -f piiano-vault
 ```
 
 # Debug
