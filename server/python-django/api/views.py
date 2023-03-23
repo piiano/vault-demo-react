@@ -16,7 +16,6 @@ logging.basicConfig(level=logging.INFO)
 @require_http_methods(["POST"])
 @csrf_exempt
 def tokens(request):
-    logging.info(f"{request.POST}")
     request.POST = json.loads(request.body)
     email = request.POST.get('email')
     id = User.objects.get(email=email).id
