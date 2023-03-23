@@ -124,6 +124,11 @@ Issues
 
 6. Expiraiton
 
+TODO:
+Connect to vault DB
+Expiration
+Reveal
+
 
 # Debugging
 To connect to Vault

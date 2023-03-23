@@ -35,7 +35,7 @@
     "fields": {
       "name": "John",
       "email": "john@company.com",
-      "ssn": "-123-12-1234",
+      "ssn": "123---12-1234",
       "owner": 1
     }
   },

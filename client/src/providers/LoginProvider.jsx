@@ -148,7 +148,7 @@ const RequireSupportRole = ({ profile, redact, children }) => {
 
 const maskText = (text, char="X") => {
   if( text ) {
-    return text.replace(/^(\d{3})(.)\d{2}/g, Array(4).join(char) + "-" + Array(3).join(char))
+    return text.replace(/^(\d{3})(.)[\d\-]{2}/g, Array(4).join(char) + "-" + Array(3).join(char))
   } else {
     return "";
   }
