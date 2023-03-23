@@ -69,7 +69,7 @@ export default function VaultBanner({ className, title, ...props }) {
         <Container>
         <p className="text-sm text-orange-600 py-1 text-center hidden md:block">
               Links:&nbsp;
-              <a target="_blank" href="http://localhost:5601/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15h,to:now))&_a=(columns:!(message,reason,operation_id,user_name,personsIDs,data_requested,data_accessed,container.labels.com_docker_compose_service),filters:!(),interval:s,query:(language:kuery,query:'not%20(type:log)%20and%20not%20(operation_id:internal)%20and%20(container.labels.com_docker_compose_service:client%20piiano-vault%20server-python-django)'),sort:!(!('@timestamp',desc)))">logs</a>
+              <a target="_blank" href="http://localhost:5601/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15h,to:now))&_a=(columns:!(message,reason,operation_id,user_name,personsIDs,data_requested,data_accessed,container.labels.com_docker_compose_service),filters:!(),interval:s,query:(language:kuery,query:'not%20(type:log)%20and%20not%20(operation_id:internal)'),sort:!(!('@timestamp',desc)))">logs</a>
               &nbsp;|&nbsp;
               <a target="_blank" href="http://localhost:5050">terminal</a>
             </p>
