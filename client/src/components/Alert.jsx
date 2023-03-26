@@ -1,25 +1,26 @@
-import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
+import { pluralize } from '../lib/utils'
 
 const baseColors = {
-  yellow: 'border-yellow-400 bg-yellow-50',
-  purple: 'border-purple-400 bg-purple-50',
-  green: 'border-green-400 bg-green-50',
-  red: 'border-red-400 bg-red-50',
+  yellow: 'border-yellow-500 bg-yellow-50',
+  purple: 'border-purple-500 bg-purple-50',
+  green: 'border-green-500 bg-green-50',
+  red: 'border-red-500 bg-red-50',
 }
 
 const textColors = {
-  yellow: 'text-yellow-700',
-  purple: 'text-purple-700',
-  green: 'text-green-700',
-  red: 'text-red-700',
+  yellow: 'text-yellow-500',
+  purple: 'text-purple-500',
+  green: 'text-green-500',
+  red: 'text-red-500',
 }
 
 const iconColors = {
-  yellow: 'text-yellow-400',
-  purple: 'text-purple-400',
-  green: 'text-green-400',
-  red: 'text-red-400',
+  yellow: 'text-yellow-500',
+  purple: 'text-purple-500',
+  green: 'text-green-500',
+  red: 'text-red-500',
 }
 
 export function Icon({ icon, color, className }) {
@@ -39,12 +40,34 @@ export function Icon({ icon, color, className }) {
     case 'exclamation':
         return (
           <div className="flex-shrink-0">
-            <ExclamationTriangleIcon className={className} aria-hidden="true" />
+            <ExclamationCircleIcon className={className} aria-hidden="true" />
           </div>
         )
     default:
       return null
   }
+}
+
+export function ErrorAlert({ error = {}, list = false }) {
+  let keys = error.errors ? Object.keys(error.errors) : null;
+  return <Alert color='red' icon='exclamation' className="mt-10">
+    { keys ?
+      <>
+        <h3 className="text-sm text-red-700">
+          Found {pluralize(keys.length, 'error', true)} with your submission:
+        </h3>
+        {list &&
+          <ul className="list-disc list-inside">
+            {keys.map((key, index) => (
+              <li key={keys}>{key}: {error.errors[key]}</li>
+            ))}
+          </ul>
+        }
+      </>
+      :
+      <div>Error: {error.message}</div>
+    }
+  </Alert> 
 }
 
 export function Alert({
@@ -71,9 +94,9 @@ export function Alert({
           icon && <Icon icon={icon} color={color} />
         }
         <div className="ml-3">
-          <p className={textClassName}>
+          <div className={textClassName}>
             {props.children}
-          </p>
+          </div>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { AppLayout } from '../../layouts/AppLayout'
 import { Button } from '../../components/Button'
 import { TextField } from '../../components/Fields'
-import { Alert } from '../../components/Alert'
+import { Alert, ErrorAlert } from '../../components/Alert'
 import { Loading } from '../../components/Loading'
 import { getCustomer, updateCustomer } from '../../Api'
 
@@ -107,10 +107,7 @@ export default function NewCustomer({ props }) {
           </div>
 
           { 
-            error && 
-              <Alert color='red' icon='exclamation' className="mt-10">
-                Error: {error.message}
-              </Alert> 
+            error && <ErrorAlert error={error} /> 
           }
 
           { 
@@ -128,6 +125,7 @@ export default function NewCustomer({ props }) {
               value={formValues.name}
               required
               disabled={isSubmitting}
+              error={error && error.errors && error.errors["name"]}
               onChange={handleValueChange}
             />
             <TextField
@@ -138,6 +136,7 @@ export default function NewCustomer({ props }) {
               type="email"
               required
               disabled={isSubmitting}
+              error={error && error.errors && error.errors["email"]}
               onChange={handleValueChange}
             />
             <TextField
@@ -145,8 +144,10 @@ export default function NewCustomer({ props }) {
               id="ssn"
               name="ssn"
               value={ formValues.ssn }
+              placeholder="e.g. 123-45-6789"
               required={false}
               disabled={isSubmitting}
+              error={error && error.errors && error.errors["ssn"]}
               onChange={handleValueChange}
             />
             <div>

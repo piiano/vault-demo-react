@@ -19,6 +19,13 @@ let users = [
 
 let isAxiosMock = false;
 
+class UnprocessableEntityError extends Error {
+  constructor(error) {
+    super(error.message || "Unprocessable entity");
+    this.errors = error.errors || {};
+  }
+}
+
 // Mock Axios requests if the isAxiosMock environment variable is set to true
 if (isAxiosMock) {
   // Import the Axios mock adapter library
@@ -48,7 +55,6 @@ if (isAxiosMock) {
         const id = config.headers.Authorization.split(' ')[1];
         profile = users.find(u => u.id?.toLowerCase() === id?.toLowerCase());
         if (profile && config.method === 'put') {
-          debugger;
           let payload = JSON.parse(config.data);
           profile.name = payload?.name
           profile.email = payload?.email
@@ -82,7 +88,11 @@ export const createCustomer = (customer) => {
   return axios.post('/customers', customer)
     .then(response => response.data)
     .catch(error => {
-      throw new Error(`API request failed: ${error.message}`);
+      if( error.response.status === 422 ) {
+        throw new UnprocessableEntityError(error.response.data);
+      } else {
+        throw new Error(`API request failed: ${error.message}`);
+      }
     });
 };
 
@@ -98,7 +108,11 @@ export const updateCustomer = (customerId, customer) => {
   return axios.patch(`/customers/${customerId}`, customer)
     .then(response => response.data)
     .catch(error => {
-      throw new Error(`API request failed: ${error.message}`);
+      if( error.response.status === 422 ) {
+        throw new UnprocessableEntityError(error.response.data);
+      } else {
+        throw new Error(`API request failed: ${error.message}`);
+      }
     });
 };
 
@@ -123,7 +137,11 @@ export const updateProfile = (profile) => {
   return axios.put(`/profile`, profile)
     .then(response => response.data)
     .catch(error => {
-      throw new Error(`API request failed: ${error.message}`);
+      if( error.response.status === 422 ) {
+        throw new UnprocessableEntityError(error.response.data);
+      } else {
+        throw new Error(`API request failed: ${error.message}`);
+      }
     });
 };
 

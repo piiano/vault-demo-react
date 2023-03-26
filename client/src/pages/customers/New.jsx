@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AppLayout } from '../../layouts/AppLayout'
 import { Button } from '../../components/Button'
 import { TextField } from '../../components/Fields'
-import { Alert } from '../../components/Alert'
+import { ErrorAlert } from '../../components/Alert'
 
 import { createCustomer } from '../../Api'
 
@@ -58,10 +58,7 @@ export default function NewCustomer() {
         </div>
 
         { 
-          error && 
-            <Alert color='red' icon='exclamation' className="mt-10">
-              Error: {error.message}
-            </Alert> 
+          error && <ErrorAlert error={error} /> 
         }
 
         <form onSubmit={handleSubmit} className="mt-10 grid grid-cols-1 gap-y-8">
@@ -69,6 +66,7 @@ export default function NewCustomer() {
             label="Name"
             id="name"
             name="name"
+            error={error && error.errors && error.errors["name"]}
             required
             disabled={isSubmitting}
             onChange={handleValueChange}
@@ -78,6 +76,7 @@ export default function NewCustomer() {
             id="email"
             name="email"
             type="email"
+            error={error && error.errors && error.errors["email"]}
             required
             disabled={isSubmitting}
             onChange={handleValueChange}
@@ -86,6 +85,8 @@ export default function NewCustomer() {
             label="Social security number"
             id="ssn"
             name="ssn"
+            error={error && error.errors && error.errors["ssn"]}
+            placeholder="e.g. 123-45-6789"
             required={false}
             disabled={isSubmitting}
             onChange={handleValueChange}

@@ -13,7 +13,7 @@ export default function SelectMenu({ className, label, items, selected, setSelec
             <>
               { label && <Listbox.Label className="text-sm font-medium text-gray-900 mr-2">{label}</Listbox.Label> }
               <div className="relative w-full">
-                <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 cursor-pointer">
+                <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 cursor-pointer hover:bg-gray-50">
                   <span className="flex items-center">
                     <Placeholder isLoading={isLoading} className="w-4 h-4 my-0 rounded-full mr-3" >
                       { selected?.avatar && <img src={selected.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full mr-3" /> }
