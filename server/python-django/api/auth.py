@@ -12,16 +12,21 @@ def generate_token(id, email):
 
 def parse_token(token):
     assert token.startswith(BEARER)
-    begin, id, email, end = token.split(" ")[1].split("_")
-    assert begin == MAGIC_BEGIN and end == MAGIC_END
+    try:
+        begin, id, email, end = token.split(" ")[1].split("_")
+        assert begin == MAGIC_BEGIN and end == MAGIC_END
+    except:
+        return None
     return id
 
 def parse_auth(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         auth = request.META.get("HTTP_AUTHORIZATION")
+        id = None
         if auth:
             id = parse_token(auth)
+        if id:
             kwargs['user_id'] = id
             role = User.objects.get(id=id).role
             kwargs['role'] = role
