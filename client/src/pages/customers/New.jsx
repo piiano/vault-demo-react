@@ -16,6 +16,7 @@ export default function NewCustomer() {
     name: '',
     email: '',
     ssn: '',
+    expiration: '',
   });
 
   const handleSubmit = (event) => {
@@ -23,14 +24,15 @@ export default function NewCustomer() {
 
     if( isSubmitting ) return;
 
-    // TODO: Add form validation
-    
     setIsSubmitting(true);
-    createCustomer({
-      name: formValues.name,
-      email: formValues.email,
-      ssn: formValues.ssn,
-    })
+    
+    let payload = Object.fromEntries(Object.entries(formValues));
+
+    if( payload['expiration'] ) {
+      payload['expiration'] = new Date(payload['expiration']).toMilliseconds();
+    }
+
+    createCustomer(payload)
       .then(
         () => {
           setIsSubmitting(false);
@@ -91,6 +93,18 @@ export default function NewCustomer() {
             disabled={isSubmitting}
             onChange={handleValueChange}
           />
+          <TextField
+              label="Expiration"
+              id="expiration"
+              name="expiration"
+              type="datetime-local"
+              value={ formValues.expiration }
+              min={new Date().toISOString().split('.')[0].slice(0,16)}
+              required={false}
+              disabled={isSubmitting}
+              hint="Set an expiration time to schedule removal of this customer object."
+              onChange={handleValueChange}
+            />
           <div>
             <Button
               type="submit"

@@ -21,11 +21,13 @@ export default function NewCustomer({ props }) {
     name: false,
     email: false,
     ssn: false,
+    expiration: true,
   });
   const [formValues, setFormValues] = useState({
     name: '',
     email: '',
     ssn: '',
+    expiration: '',
   });
   const { isSecured } = useContext(
     VaultContext
@@ -44,6 +46,7 @@ export default function NewCustomer({ props }) {
             name: customer.name,
             email: customer.email,
             ssn: MaskIfSupportRole({ profile, text: customer.ssn }),
+            expiration: customer.expiration ? new Date(customer.expiration).toISOString().split('.')[0].slice(0,16) : '',
           });
         },
         (error) => {
@@ -64,6 +67,10 @@ export default function NewCustomer({ props }) {
     
     // Only pick dirty fields
     let payload = Object.fromEntries(Object.entries(formValues).filter(([key]) => dirty[key] ));
+
+    if( payload['expiration'] ) {
+      payload['expiration'] = new Date(payload['expiration']).toMilliseconds();
+    }
 
     updateCustomer(customerId, payload)
       .then(
@@ -148,6 +155,18 @@ export default function NewCustomer({ props }) {
               required={false}
               disabled={isSubmitting}
               error={error && error.errors && error.errors["ssn"]}
+              onChange={handleValueChange}
+            />
+            <TextField
+              label="Expiration"
+              id="expiration"
+              name="expiration"
+              type="datetime-local"
+              value={ formValues.expiration }
+              min={new Date().toISOString().split('.')[0].slice(0,16)}
+              required={false}
+              disabled={isSubmitting}
+              hint="Set an expiration time to schedule removal of this customer object."
               onChange={handleValueChange}
             />
             <div>

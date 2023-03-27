@@ -28,6 +28,7 @@ export function TextField({
   required,
   isLoading,
   error = null,
+  hint = null,
   ...props
 }) {
   return (
@@ -37,16 +38,17 @@ export function TextField({
           {!required && <span className="text-gray-500 font-normal">{' '}(optional)</span>}
         </Label>}
         <Placeholder className="h-8"  isLoading={isLoading}>
-          <div class="relative mt-2 rounded-md shadow-sm">
+          <div className="relative mt-2 rounded-md shadow-sm">
             <input id={id} type={type} {...props} className={clsx(formClasses, error? errorClassName : '')} />
             {
               error && 
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
               </div>
             }
           </div>
           { error && <div className="mt-2 text-red-600 text-xs">{error}</div> }
+          { hint && <div className="mt-2 text-sm text-gray-500">{hint}</div> }
         </Placeholder>
       </div>
     
@@ -60,6 +62,7 @@ export function SearchField({
   className = '',
   errorClassName = 'border-red-500 focus:border-red-500 focus:ring-red-500 placeholder:text-red-300',
   error = null,
+  hint = null,
   required,
   isLoading,
   ...props
@@ -92,6 +95,7 @@ export function SelectField({
   className = '', 
   errorClassName = 'border-red-500 focus:border-red-500 focus:ring-red-500 placeholder:text-red-300',
   error = null, 
+  hint = null,
   required,
   ...props }) {
   return (
@@ -101,6 +105,7 @@ export function SelectField({
         </Label>}
       <select id={id} {...props} className={clsx(formClasses, 'pr-8', error ? errorClassName : '')} />
       { error && <div className="mt-2 text-red-600 text-xs">{error}</div> }
+      { hint && <div className="mt-2 text-sm text-gray-500">{hint}</div> }
     </div>
   )
 }
