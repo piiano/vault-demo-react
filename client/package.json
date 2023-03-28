@@ -10,6 +10,7 @@
     "axios-mock-adapter": "^1.21.2",
     "clsx": "^1.2.1",
     "focus-visible": "^5.2.0",
+    "moment": "^2.29.4",
     "postcss-focus-visible": "^6.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

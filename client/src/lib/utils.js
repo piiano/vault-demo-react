@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const markFilter = (filter, text) => {
   // Find the first index of textFilter within text. 
   // If found, split, wrap the text filter with highlight span, and append the rest.
@@ -29,4 +31,31 @@ const pluralize = (count, word, inclusive = false) => {
   }
 }
 
-export { pluralize, markFilter };
+const isoDateStrFromEpoch = (epochTime, defaultValue = '') => {
+  if (isNaN(epochTime)) {
+    return defaultValue;
+  } else {
+    return moment.unix(epochTime).toISOString(true).slice(0, 16);
+  }
+}
+
+const formatEpoch = (epochTime, defaultValue = '') => {
+  const date = moment.unix(epochTime)
+  if (isNaN(date)) {
+    return defaultValue;
+  } else {
+    return date.format('MMM Do, YYYY [at] HH:mm z');
+  }
+}
+
+const epochFromIsoDateTimeStr = (isoDateTimeStr, defaultValue = '') => {
+  // Convert the date to a iso string
+  const epochTime = moment(isoDateTimeStr).unix();
+  if (isNaN(epochTime)) {
+    return defaultValue;
+  } else {
+    return epochTime;
+  }
+}
+
+export { pluralize, markFilter, formatEpoch, isoDateStrFromEpoch, epochFromIsoDateTimeStr };

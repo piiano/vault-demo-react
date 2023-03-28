@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { setAuthToken, createToken, getProfile, getUsers } from '../Api';
-
-import clsx from 'clsx';
+import { SecretText } from '../components/SecretText';
 
 const LoginContext = createContext();
 
@@ -165,4 +164,15 @@ const MaskIfSupportRole = ({ profile, text, char="X" }) => {
   return MaskIfRoles({ profile, roles: ["support"], text, char });
 }
 
-export { LoginProvider, LoginContext, RequireLogin, RequireSupportRole, MaskIfSupportRole };
+const SecretTextIfRoles = ({ profile, roles, email, text, sendCode, verifyCode, format="XXXXXXXXXXX" }) => {
+  if( profile && roles.includes(profile.role) ) {
+    return <SecretText sendCode={sendCode} verifyCode={verifyCode} email={email} format={format} />
+  }
+  return text;
+} 
+
+const SecretTextIfSupportRole = ({ profile, email, text, sendCode, verifyCode, format="XXXXXXXXXXX" }) => {
+  return SecretTextIfRoles({ profile, roles: ["support"], email, text, sendCode, verifyCode, format });
+} 
+
+export { LoginProvider, LoginContext, RequireLogin, RequireSupportRole, MaskIfSupportRole, SecretTextIfSupportRole };

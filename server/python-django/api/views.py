@@ -33,7 +33,7 @@ def users(request):
 def parse_expiration(request):
     expiration_secs = request.POST.get("expiration")
     if expiration_secs:
-        expiration_secs = int(expiration_secs/1000-time.time())
+        expiration_secs = int(expiration_secs-time.time())
     return expiration_secs
 
 @require_http_methods(["GET", "POST"])

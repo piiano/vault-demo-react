@@ -6,6 +6,7 @@ import { TextField } from '../../components/Fields'
 import { ErrorAlert } from '../../components/Alert'
 
 import { createCustomer } from '../../Api'
+import { epochFromIsoDateTimeStr } from '../../lib/utils'
 
 export default function NewCustomer() {
   const navigate = useNavigate();
@@ -28,9 +29,10 @@ export default function NewCustomer() {
     
     let payload = Object.fromEntries(Object.entries(formValues));
 
-    if( payload['expiration'] ) {
-      payload['expiration'] = new Date(payload['expiration']).toMilliseconds();
-    }
+    // Set expiration to epoch seconds or null if empty
+    payload['expiration'] = epochFromIsoDateTimeStr(payload['expiration'], null);
+
+    debugger;
 
     createCustomer(payload)
       .then(
@@ -94,17 +96,18 @@ export default function NewCustomer() {
             onChange={handleValueChange}
           />
           <TextField
-              label="Expiration"
-              id="expiration"
-              name="expiration"
-              type="datetime-local"
-              value={ formValues.expiration }
-              min={new Date().toISOString().split('.')[0].slice(0,16)}
-              required={false}
-              disabled={isSubmitting}
-              hint="Set an expiration time to schedule removal of this customer object."
-              onChange={handleValueChange}
-            />
+            label="Expiration"
+            id="expiration"
+            name="expiration"
+            error={error && error.errors && error.errors["ssn"]}
+            type="datetime-local"
+            value={ formValues.expiration }
+            min={new Date().toISOString().split('.')[0].slice(0,16)}
+            required={false}
+            disabled={isSubmitting}
+            hint="Set an expiration time to schedule removal of this customer object."
+            onChange={handleValueChange}
+          />
           <div>
             <Button
               type="submit"

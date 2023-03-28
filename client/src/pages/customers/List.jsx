@@ -9,7 +9,7 @@ import { UserById } from '../../components/UserById'
 import { getCustomers } from '../../Api'
 import { markFilter, pluralize } from '../../lib/utils'
 import { VaultContext } from '../../providers/VaultProvider'
-import { LoginContext, RequireSupportRole, MaskIfSupportRole } from '../../providers/LoginProvider'
+import { LoginContext, RequireSupportRole, MaskIfSupportRole, SecretTextIfSupportRole } from '../../providers/LoginProvider'
 import { SearchField } from '../../components/Fields'
 import { TableSortToggle } from '../../components/TableSortToggle'
 
@@ -165,7 +165,13 @@ export default function ListCustomers() {
                               </td>
                               <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
                                 <Placeholder isLoading={isLoading}>{
-                                  markFilter(filter, MaskIfSupportRole({ profile: profile, text: customer.ssn }))
+                                  <SecretTextIfSupportRole 
+                                    profile={profile} 
+                                    email={customer.email} 
+                                    text={markFilter(filter, MaskIfSupportRole({ profile: profile, text: customer.ssn }))} 
+                                    verifyCode={(password) => { return new Promise((resolve) => { resolve(customer.ssn); } ) }}
+                                    sendCode={() => { return new Promise((resolve) => { resolve(); }) }}
+                                  />
                                 }</Placeholder>
                               </td>
                               <RequireSupportRole profile={profile}>

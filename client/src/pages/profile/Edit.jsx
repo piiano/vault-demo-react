@@ -141,7 +141,7 @@ export default function EditProfile({ props }) {
                   </Button>
                   <div className="mt-4 flex justify-center text-sm">
                     <Button variant="link" color="blue" href="/customers" onClick={handleCancelButtonClick} aria-label="Back to customers">
-                      <span className="sr-only">Back to custoemrs</span>
+                      <span className="sr-only">Back</span>
                       Cancel
                     </Button>
                   </div>

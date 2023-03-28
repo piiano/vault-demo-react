@@ -7,9 +7,11 @@ import { UserById } from '../../components/UserById'
 import { getCustomer } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
-import { LoginContext, MaskIfSupportRole } from '../../providers/LoginProvider'
+import { LoginContext, SecretTextIfSupportRole } from '../../providers/LoginProvider'
 
 import { Button } from '../../components/Button'
+import { formatEpoch } from '../../lib/utils'
+import { SecretText } from '../../components/SecretText'
 
 export default function ShowCustomer({ props }) {
   const [error, setError] = useState(null);
@@ -99,8 +101,20 @@ export default function ShowCustomer({ props }) {
                 <dt className="text-gray-500">SSN</dt>
                 <dd className="whitespace-nowrap text-gray-900">
                   <Placeholder isLoading={isLoading}>
-                    <MaskIfSupportRole profile={profile} text={customer.ssn} />
+                    <SecretTextIfSupportRole 
+                        profile={profile} 
+                        email={customer.email} 
+                        text={customer.ssn} 
+                        verifyCode={(password) => { return new Promise((resolve) => { resolve(customer.ssn); } ) }}
+                        sendCode={() => { return new Promise((resolve) => { resolve(); }) }}
+                      />
                   </Placeholder>
+                </dd>
+              </div>
+              <div className="flex justify-between py-3 text-sm font-medium">
+                <dt className="text-gray-500">Expiration</dt>
+                <dd className="whitespace-nowrap text-gray-900">
+                  <Placeholder isLoading={isLoading}>{customer.expiration}</Placeholder>
                 </dd>
               </div>
               <div className="flex justify-between py-3 text-sm font-medium">

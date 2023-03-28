@@ -9,6 +9,7 @@ import { getCustomer, updateCustomer } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
 import { LoginContext, MaskIfSupportRole } from '../../providers/LoginProvider'
+import { isoDateStrFromEpoch, epochFromIsoDateTimeStr } from '../../lib/utils'
 
 export default function NewCustomer({ props }) {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ export default function NewCustomer({ props }) {
             name: customer.name,
             email: customer.email,
             ssn: MaskIfSupportRole({ profile, text: customer.ssn }),
-            expiration: customer.expiration ? new Date(customer.expiration).toISOString().split('.')[0].slice(0,16) : '',
+            expiration: isoDateStrFromEpoch(customer.expiration, null)
           });
         },
         (error) => {
@@ -68,9 +69,8 @@ export default function NewCustomer({ props }) {
     // Only pick dirty fields
     let payload = Object.fromEntries(Object.entries(formValues).filter(([key]) => dirty[key] ));
 
-    if( payload['expiration'] ) {
-      payload['expiration'] = new Date(payload['expiration']).toMilliseconds();
-    }
+    // Set expiration to epoch seconds or null if empty
+    payload['expiration'] = epochFromIsoDateTimeStr(payload['expiration'], null);
 
     updateCustomer(customerId, payload)
       .then(
@@ -162,6 +162,7 @@ export default function NewCustomer({ props }) {
               id="expiration"
               name="expiration"
               type="datetime-local"
+              error={error && error.errors && error.errors["ssn"]}
               value={ formValues.expiration }
               min={new Date().toISOString().split('.')[0].slice(0,16)}
               required={false}

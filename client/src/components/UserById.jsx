@@ -16,7 +16,16 @@ export function UserById({ className, id, ...props }) {
   return (
     <span className={clsx(user ? '' : 'text-gray-500', className)} 
       {...props}>
-        {user ? user.name : '-'}
+        {user ? 
+          <span className="flex items-center">
+            { user?.avatar && <img src={user.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full mr-3" /> }
+            <span className="block truncate">
+                <span>{user?.name}</span>
+            </span>
+          </span>
+          :
+          <span>-</span>
+        }
     </span>
   )
 }
