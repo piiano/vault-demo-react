@@ -64,8 +64,8 @@ def decrypt(cipher, field_name, token):
     #logging.info(f"{response.status_code} {resp}")
     if response.status_code == 200:
         return resp[0]["fields"][field_name]
-    if response.status_code == 400 and resp["error_code"] == "PV3233":
-        return None
+    if response.status_code == 400 and resp["error_code"] == "PV3233": #The encrypted object is archived
+        return "[Archived]"
 
 def encrypt_object(object, owner_id, expiration_secs = None):
     errors = dict()
