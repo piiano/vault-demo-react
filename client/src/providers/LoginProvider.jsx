@@ -164,14 +164,14 @@ const MaskIfSupportRole = ({ profile, text, char="X" }) => {
   return MaskIfRoles({ profile, roles: ["support"], text, char });
 }
 
-const SecretTextIfRoles = ({ profile, roles, email, text, sendCode, verifyCode, format="XXXXXXXXXXX" }) => {
+const SecretTextIfRoles = ({ profile, roles, email, text, sendCode, verifyCode, format="XXXXXXXXXXXXXX" }) => {
   if( profile && roles.includes(profile.role) ) {
     return <SecretText sendCode={sendCode} verifyCode={verifyCode} email={email} format={format} />
   }
   return text;
 } 
 
-const SecretTextIfSupportRole = ({ profile, email, text, sendCode, verifyCode, format="XXXXXXXXXXX" }) => {
+const SecretTextIfSupportRole = ({ profile, email, text, sendCode, verifyCode, format="XXXXXXXXXXXXXX" }) => {
   return SecretTextIfRoles({ profile, roles: ["support"], email, text, sendCode, verifyCode, format });
 } 
 

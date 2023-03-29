@@ -27,10 +27,13 @@ export function SecretText({
     // TODO: Call an API to verify the code
     verifyCode(password)
       .then((secretText) => {
-        setPassword('');
-        setSecretText(secretText);
         setIsDialogOpen(false);
         setIsSubmitting(false);
+        setSecretText(secretText);
+        // Give the dialog some time to close
+        setTimeout(() => {
+          setPassword('');
+        }, 500)
       })
       .catch(error => {
         // Code doesn't match, show error message
@@ -41,10 +44,9 @@ export function SecretText({
 
   function handleReveal() {
     setIsSubmitting(true);
+    setPassword('');
     sendCode()
       .then(() => {
-        setPassword('');
-        setSecretText('');
         setIsDialogOpen(true);
         setIsSubmitting(false);
       })
@@ -53,23 +55,22 @@ export function SecretText({
         setError("Invalid code. Please try again.");
         setIsSubmitting(false);
       });
-    setIsSubmitting(false);
   }
 
   return (
-    <div className={clsx(className, 'relative')} {...props}>
+    <div className={clsx(className, 'relative w-32')} {...props}>
       {
         secretText ? (
-          <p className="relative flex">{secretText}</p>
+          <p>{secretText}</p>
           ) : 
-          <>
-            <p className="relative text-center flex justify-center-center blur blur-sm opacity-75">{format}</p>
-            <div className="absolute w-32 top-0 mx-auto top-0 flex justify-center">
+          <div className="w-32 flex content-center items-center">
+            <p className="relative blur blur-sm opacity-75 w-32">{format}</p>
+            <div className="absolute left-1/2 transform -translate-x-1/2">
               <button 
-                className="rounded bg-white py-1 px-2 text-xs text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                className="rounded bg-white py-1 px-2 text-xs text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 w-full"
                 onClick={handleReveal}>{revealButtonText}</button>
             </div>
-          </>
+          </div>
       }
       <Modal 
         open={isDialogOpen} 
@@ -89,8 +90,8 @@ export function SecretText({
 
         <div className="mt-6">
           <TextField
-            id="verification-code"
-            name="verification-code"
+            id="reveal"
+            name="reveal"
             type="text"
             className='w-full'
             inputClassName='text-md sm:text-md tracking-widest text-center'
@@ -98,6 +99,7 @@ export function SecretText({
             value={ password }
             disabled={isSubmitting}
             error={error}
+            autocomplete="off"
             onChange={handlePasswordChange}
           />
         </div>
