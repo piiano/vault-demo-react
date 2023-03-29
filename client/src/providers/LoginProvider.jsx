@@ -13,8 +13,8 @@ const LoginProvider = (props) => {
   );
 
   const [isLoggedIn, setIsLoggedIn] = useState(
-    //localStorage.getItem('isLoggedIn') === 'true'
-    true
+    localStorage.getItem('isLoggedIn') === 'true'
+    //true
   );
 
   const [profile, setProfile] = useState(null);
@@ -55,9 +55,9 @@ const LoginProvider = (props) => {
 
   const handleLogoutClick = (event) => {
     event.preventDefault();
-    // setIsLoggedIn(false);
+    setIsLoggedIn(false);
     // Stay logged in
-    setIsLoggedIn(true);
+    //setIsLoggedIn(true);
   };
 
   const refreshUsers = () => {

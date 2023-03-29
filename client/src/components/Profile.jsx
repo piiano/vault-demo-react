@@ -43,6 +43,8 @@ export function NavProfile({ className }) {
   
   const navigation = [
     { name: 'Your profile', to: '/profile', className: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50 ' },
+    { name: 'Logout', onClick: handleLogoutClick, className: 'text-gray-700 hover:text-gray-900 hover:bg-gray-50 ' },
+
   ]  
 
   className = clsx(

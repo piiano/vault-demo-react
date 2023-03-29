@@ -1,16 +1,34 @@
-import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
+import { useContext, useState, useEffect} from 'react'
 import { AuthLayout } from '../layouts/AuthLayout'
 import { Button } from '../components/Button'
 import { TextField } from '../components/Fields'
 import { Logo } from '../components/Logo'
 import { LoginContext } from '../providers/LoginProvider'
+import SelectMenu from '../components/SelectMenu'
 
 export default function Login() {
-  const { handleLoginClick } = useContext(
+  const { isLoadingUsers, switchUser, handleLoginClick, users, profile } = useContext(
     LoginContext
   );
+  const [selectedUser, setSelectedUser] = useState(null)
+
+  useEffect(() => {
+    if( profile ) {
+      let user = users.find(u => u.id === profile.id)
+      setSelectedUser(user);
+    } else {
+      setSelectedUser(users[0]);
+    }
+  }, [users])
+
+  useEffect(() => {
+    // When selected user changes, create token for that user
+    if( selectedUser ) {
+      switchUser(selectedUser)
+    }
+  }, [selectedUser])
  
   return (
     <AuthLayout>
@@ -35,14 +53,13 @@ export default function Login() {
         </div>
       </div>
       <form onSubmit={handleLoginClick} className="mt-10 grid grid-cols-1 gap-y-8">
-        <TextField
-          label="Email address"
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          required
-        />
+        <SelectMenu
+          isLoading={ isLoadingUsers }
+                selected={selectedUser}
+                setSelected={setSelectedUser} 
+                items={users}
+                by="id"
+              />
         <TextField
           label="Password"
           id="password"
