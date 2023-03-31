@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pvault bundle add --bundle ssn2 --bundle-code @./bundle.js
+pvault bundle add --name ssn2 --bundle-code @./bundle.js
 pvault datatype add --datatype-json @./types.js
 
 pvault collection add --collection-pvschema "

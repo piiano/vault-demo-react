@@ -91,8 +91,11 @@ def update_customer(request, pk, user_id, role):
     request.POST = json.loads(request.body)
     expiration_secs = parse_expiration(request)
     if request.META.get("HTTP_X_VAULT_MODE") == "secure":
+        customer_data = vault.decrypt_object(customer.__dict__, request.META.get("HTTP_AUTHORIZATION"))
+        customer_data.update(request.POST)
+        logging.info(customer_data)
         try:
-            request.POST = vault.encrypt_object(request.POST, customer.owner_id, expiration_secs)
+            request.POST.update(vault.encrypt_object(customer_data, customer.owner_id, expiration_secs))
         except Exception as e:
             return JsonResponse({"message": "Bad format", "errors": e.args[0]}, status=422)
         
@@ -100,8 +103,7 @@ def update_customer(request, pk, user_id, role):
     customer.__dict__.update(request.POST)
     customer.save()
     
-    customer_res = Customer.objects.values().get(pk=customer.pk)
-    return JsonResponse(customer_res, safe=False)
+    return JsonResponse({'message': 'Customer updated successfully'})
 
 def get_customer(request, pk, user_id, role):
     customer = Customer.objects.values().get(pk=pk)
@@ -139,7 +141,6 @@ def get_profile(request, user_id):
 def update_profile(request, user_id):
     request.POST = json.loads(request.body)
     User.objects.filter(id=user_id).update(**request.POST)
-    users = User.objects.values().get(id=user_id)
-    return JsonResponse(users, safe=False)
+    return JsonResponse({'message': 'Profile updated successfully'})
 
 

@@ -65,7 +65,7 @@ def decrypt(cipher, field_name, token):
     if response.status_code == 200:
         return resp[0]["fields"][field_name]
     if response.status_code == 400 and resp["error_code"] == "PV3233": #The encrypted object is archived
-        return "[Archived]"
+        return None
 
 def encrypt_object(object, owner_id, expiration_secs = None):
     errors = dict()
@@ -84,5 +84,7 @@ def encrypt_object(object, owner_id, expiration_secs = None):
 def decrypt_object(object, token):
     res = dict()
     for k,v in object.items():
-        res[k] = decrypt(v, k, token)
+        plain = decrypt(v, k, token)
+        if plain:
+            res[k] = plain
     return res
