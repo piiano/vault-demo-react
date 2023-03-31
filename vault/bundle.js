@@ -10,6 +10,7 @@ exports = {
 }
 
 function validate_token (token) {
+    if (!token) return null;
     // "Validation" of the token + extraction of the user_id this token belongs to
     const user_id = token.split(" ")[1].split("_")[1];  // Bearer TOKEN_2_alice@star.com_SIGNATURE
     return user_id;
@@ -21,7 +22,7 @@ function mask_ssn(ssn, char='x') {
 }
 
 function idor_mask_handler(context, object, value) {
-    const user_id = validate_token(context.param)
+    user_id = validate_token(context.param)
 
     if (user_id == object.owner_id) {
         return value;
