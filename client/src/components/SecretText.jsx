@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { TextField } from './Fields';
-import Modal from './Modal';
+import { Modal } from './Modal';
 
 export function SecretText({
   className, 

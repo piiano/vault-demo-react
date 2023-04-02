@@ -1,14 +1,36 @@
 import { useContext, useState, useEffect, Fragment } from 'react'
 import { Container } from './Container'
 import { Toggle } from './Toggle'
+import { Modal } from './Modal';
 import { VaultContext } from '../providers/VaultProvider'
 import { LoginContext } from '../providers/LoginProvider'
 import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon, CommandLineIcon, Bars3BottomLeftIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, CommandLineIcon, Bars3BottomLeftIcon, ArrowPathIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 import SelectMenu from './SelectMenu'
+import { rotateVaultKeys } from '../Api';
+import { ErrorAlert } from './Alert';
 
 function VaultActionsMenu({className}) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [error, setError] = useState(null);
+
+  function handleRotateVaultKeys() {
+    setIsSubmitting(true);
+    rotateVaultKeys()
+      .then(
+        () => {
+          setIsDialogOpen(false);
+          setIsSubmitting(false);
+        },
+        (error) => {
+          setIsSubmitting(false);
+          setError(error);
+        }
+      )
+  }
+
   const actions = [
     { name: 'View logs',
       icon: Bars3BottomLeftIcon,
@@ -17,7 +39,10 @@ function VaultActionsMenu({className}) {
     { name: 'View terminal', 
       icon: CommandLineIcon, 
       href: 'http://localhost:5050',
-      target: '_blank' }
+      target: '_blank' },
+    { name: 'Rotate Vault keys', 
+      icon: ArrowPathIcon, 
+      onClick: () => { setIsDialogOpen(true) } }
   ]
   return (
     <Menu as="div" className={ clsx("relative inline-block text-left", className) }>
@@ -48,9 +73,10 @@ function VaultActionsMenu({className}) {
                   {({ active }) => (
                     <a
                       href={action.href}
+                      onClick={action.onClick}
                       className={clsx(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                        'group flex items-center px-4 py-2 text-sm'
+                        'group flex items-center px-4 py-2 text-sm cursor-pointer'
                       )}  
                       target={action.target}
                     >
@@ -67,9 +93,27 @@ function VaultActionsMenu({className}) {
             ))
           }
           </div>
-
         </Menu.Items>
       </Transition>
+      <Modal 
+        open={isDialogOpen} 
+        setOpen={setIsDialogOpen} 
+        title="Rotate Vault keys?"
+        confirmButtonText="Yes, rotate Vault keys"
+        cancelButtonText="No, don't rotate"
+        onConfirmationButtonClick={handleRotateVaultKeys} 
+        icon="arrow-path"
+        color="green"
+        isSubmitting={isSubmitting} >
+
+        { 
+          error && 
+            <ErrorAlert error={error} />
+        }
+        <p className="mt-4 text-sm text-gray-600">
+          Are you sure you want to rotate Vault keys? This action cannot be undone.
+        </p>
+      </Modal>
     </Menu>
   )
 }

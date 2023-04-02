@@ -48,9 +48,9 @@ export function Icon({ icon, color, className }) {
   }
 }
 
-export function ErrorAlert({ error = {}, list = false }) {
+export function ErrorAlert({ error = {}, className = '', list = false }) {
   let keys = error.errors ? Object.keys(error.errors) : null;
-  return <Alert color='red' icon='exclamation' className="mt-10">
+  return <Alert color='red' icon='exclamation' className={ clsx("mt-10", className) }>
     { keys ?
       <>
         <h3 className="text-sm text-red-700">
@@ -65,7 +65,7 @@ export function ErrorAlert({ error = {}, list = false }) {
         }
       </>
       :
-      <div>Error: {error.message}</div>
+      <div>{error.message}</div>
     }
   </Alert> 
 }

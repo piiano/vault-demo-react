@@ -4,7 +4,7 @@ import { AppLayout } from '../../layouts/AppLayout'
 import { Button } from '../../components/Button'
 import { EmptyState } from '../../components/EmptyState'
 import { Placeholder } from '../../components/Loading'
-import { Alert } from '../../components/Alert'
+import { ErrorAlert } from '../../components/Alert'
 import { UserById } from '../../components/UserById'
 import { getCustomers } from '../../Api'
 import { markFilter, pluralize } from '../../lib/utils'
@@ -118,9 +118,7 @@ export default function ListCustomers() {
               <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                 { 
                   error && 
-                    <Alert color='red' icon='exclamation' className="mt-10">
-                      Error: {error.message}
-                    </Alert> 
+                    <ErrorAlert error={error} />
                 }
                 
                 {

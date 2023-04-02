@@ -1,6 +1,6 @@
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckIcon, ShieldCheckIcon } from '@heroicons/react/24/outline'
+import { CheckIcon, ShieldCheckIcon, ExclamationTriangleIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Button } from './Button'
 import clsx from 'clsx'
 
@@ -49,7 +49,13 @@ export function Icon({ icon, color, className, bgClassName }) {
     case 'exclamation':
         return (
           <div className={bgClassName}>
-            <ExclamationIcon className={className} aria-hidden="true" />
+            <ExclamationTriangleIcon className={className} aria-hidden="true" />
+          </div>
+        )
+    case 'arrow-path':
+        return (
+          <div className={bgClassName}>
+            <ArrowPathIcon className={className} aria-hidden="true" />
           </div>
         )
     default:
@@ -57,7 +63,7 @@ export function Icon({ icon, color, className, bgClassName }) {
   }
 }
 
-export default function Modal({ 
+export function Modal({ 
     title, 
     confirmButtonText = 'Confirm', 
     confirmButtonColor = 'blue',

@@ -79,6 +79,7 @@ if (isAxiosMock) {
         return [401, { message: 'Invalid email or password.' }];
       } 
     })
+    .onPost('/vault/key-rotation').reply(200, { message: 'Vault keys rotated successfully.' })
 }
 
 /* Customers */
@@ -163,6 +164,15 @@ export const createToken = (email) => {
 /* Users */
 export const getUsers = () => {
   return axios.get('/users')
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`API request failed: ${error.message}`);
+    });
+};
+
+/* Vault admin */
+export const rotateVaultKeys = () => {
+  return axios.post('/vault/key-rotations')
     .then(response => response.data)
     .catch(error => {
       throw new Error(`API request failed: ${error.message}`);

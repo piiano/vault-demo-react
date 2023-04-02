@@ -1,9 +1,8 @@
 import { useContext, useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
 import { AppLayout } from '../../layouts/AppLayout'
 import { Button } from '../../components/Button'
 import { TextField } from '../../components/Fields'
-import { Alert } from '../../components/Alert'
+import { Alert, ErrorAlert } from '../../components/Alert'
 import { Loading } from '../../components/Loading'
 import { updateProfile } from '../../Api'
 
@@ -88,9 +87,7 @@ export default function EditProfile({ props }) {
 
           { 
             error && 
-              <Alert color='red' icon='exclamation' className="mt-10">
-                Error: {error.message}
-              </Alert> 
+              <ErrorAlert error={error} className="mt-10" />
           }
 
           { 

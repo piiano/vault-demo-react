@@ -1,17 +1,13 @@
 import { useContext, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { AppLayout } from '../../layouts/AppLayout'
-import { Alert } from '../../components/Alert'
+import { ErrorAlert } from '../../components/Alert'
 import { Placeholder } from '../../components/Loading'
 import { UserById } from '../../components/UserById'
 import { getCustomer } from '../../Api'
-
 import { VaultContext } from '../../providers/VaultProvider'
 import { LoginContext, SecretTextIfSupportRole } from '../../providers/LoginProvider'
-
 import { Button } from '../../components/Button'
-import { formatEpoch } from '../../lib/utils'
-import { SecretText } from '../../components/SecretText'
 
 export default function ShowCustomer({ props }) {
   const [error, setError] = useState(null);
@@ -47,9 +43,7 @@ export default function ShowCustomer({ props }) {
 
         { 
           error && 
-            <Alert color='red' icon='exclamation' className="mt-4">
-              Error: {error.message}
-            </Alert> 
+            <ErrorAlert error={error} className="mt-10" />
         }
 
         {
