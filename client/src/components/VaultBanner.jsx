@@ -12,6 +12,9 @@ import { rotateVaultKeys } from '../Api';
 import { ErrorAlert } from './Alert';
 
 function VaultActionsMenu({className}) {
+  const { isSecured } = useContext(
+    VaultContext
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [error, setError] = useState(null);
@@ -34,13 +37,16 @@ function VaultActionsMenu({className}) {
   const actions = [
     { name: 'View logs',
       icon: Bars3BottomLeftIcon,
+      visible: true,
       href: "http://localhost:5601/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15h,to:now))&_a=(columns:!(message,reason,operation_id,user_name,personsIDs,data_requested,data_accessed,container.labels.com_docker_compose_service),filters:!(),interval:s,query:(language:kuery,query:'not%20(type:log)%20and%20not%20(operation_id:internal)'),sort:!(!('@timestamp',desc)))",
       target: '_blank' },
     { name: 'View terminal', 
       icon: CommandLineIcon, 
+      visible: true,
       href: 'http://localhost:5050',
       target: '_blank' },
     { name: 'Rotate Vault keys', 
+      visible: isSecured,
       icon: ArrowPathIcon, 
       onClick: () => { setIsDialogOpen(true) } }
   ]
@@ -67,7 +73,7 @@ function VaultActionsMenu({className}) {
         <Menu.Items className="absolute left-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
           {
-            actions.map((action, index) => (
+            actions.filter((action) => { return action.visible } ).map((action, index) => (
               
                 <Menu.Item key={index}>
                   {({ active }) => (
