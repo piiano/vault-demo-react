@@ -92,7 +92,7 @@ The server includes [1 server implementations](server/README.md) [Python Django]
 # Docker compose
 ```bash
 # This is so the dependecies exists on the local env, as we map it as volume into the container for simplifiying development
-cd client && yarn
+cd client && yarn && cd ..
 docker compose down --volumes && docker compose build && docker compose up -d
 ``` 
 
