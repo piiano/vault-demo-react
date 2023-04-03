@@ -15,5 +15,6 @@ def wait_for_db(retry_count):
             time.sleep(1)
     return 1
 
-sys.exit(wait_for_db(10))
+# Wait for the database to be ready. 60s should be enough.
+sys.exit(wait_for_db(60))
 

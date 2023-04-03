@@ -9,7 +9,7 @@ import { getCustomer, updateCustomer } from '../../Api'
 
 import { VaultContext } from '../../providers/VaultProvider'
 import { LoginContext, MaskIfSupportRole } from '../../providers/LoginProvider'
-import { isoDateStrFromEpoch, epochFromIsoDateTimeStr } from '../../lib/utils'
+import { isoDateStrFromEpoch, epochFromIsoDateTimeStr, isoDateStrFromCurrentTime } from '../../lib/utils'
 
 export default function NewCustomer({ props }) {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function NewCustomer({ props }) {
     name: '',
     email: '',
     ssn: '',
-    expiration: '',
+    expiration: null,
   });
   const { isSecured } = useContext(
     VaultContext
@@ -164,7 +164,7 @@ export default function NewCustomer({ props }) {
               type="datetime-local"
               error={error && error.errors && error.errors["ssn"]}
               value={ formValues.expiration }
-              min={new Date().toISOString().split('.')[0].slice(0,16)}
+              min={ isoDateStrFromCurrentTime() }
               required={false}
               disabled={isSubmitting}
               hint="Set an expiration time to schedule removal of this customer object."

@@ -41,14 +41,7 @@ export default function Login() {
             Sign in to your account
           </h2>
           <p className="mt-2 text-sm text-gray-700">
-            Don’t have an account?{' '}
-            <Link
-              to="/register"
-              className="font-medium text-purple-600 hover:underline"
-            >
-              Sign up
-            </Link>{' '}
-            for a free trial.
+            Choose an account to impersonate from the following list:
           </p>
         </div>
       </div>

@@ -49,7 +49,10 @@ if (isAxiosMock) {
         return c
       });
     })
-    .onAny(/\/customers\/\d+/).reply((config) => {
+    .onAny(/\/customers\/\d+\/reveal\/\d+/).reply(200, 
+      { code: "123456" }
+    )
+    .onAny(/\/customers\/\d+$/).reply((config) => {
       const customerId = config.url.split('/').pop();
       const customer = customers.find(c => c.id === customerId);
       return customer ? [200, customer] : [404, { message: 'Customer not found.' }];
@@ -111,6 +114,7 @@ export const getCustomer = (customerId) => {
     });
 };
 
+
 export const updateCustomer = (customerId, customer) => {
   return axios.patch(`/customers/${customerId}`, customer)
     .then(response => response.data)
@@ -125,6 +129,22 @@ export const updateCustomer = (customerId, customer) => {
 
 export const deleteCustomer = (customerId) => {
   return axios.delete(`/customers/${customerId}`)
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`API request failed: ${error.message}`);
+    });
+};
+
+export const sendCustomerFieldRevealCode = (customerId, field) => {
+  return axios.get(`/customers/${customerId}/reveal/${field}`)
+    .then(response => response.data)
+    .catch(error => {
+      throw new Error(`API request failed: ${error.message}`);
+    });
+};
+
+export const verifyCustomerFieldRevealCode = (customerId, field, code, state = null) => {
+  return axios.post(`/customers/${customerId}/reveal/${field}`, { code, state })
     .then(response => response.data)
     .catch(error => {
       throw new Error(`API request failed: ${error.message}`);

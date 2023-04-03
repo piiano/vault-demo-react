@@ -8,6 +8,7 @@ import { getCustomer } from '../../Api'
 import { VaultContext } from '../../providers/VaultProvider'
 import { LoginContext, SecretTextIfSupportRole } from '../../providers/LoginProvider'
 import { Button } from '../../components/Button'
+import { formatEpoch } from '../../lib/utils'
 
 export default function ShowCustomer({ props }) {
   const [error, setError] = useState(null);
@@ -51,11 +52,11 @@ export default function ShowCustomer({ props }) {
           <>
           <div className="mt-4 grid grid-cols-1">
             <div className="sm:flex sm:items-center">
-              <header className="sm:flex-auto">
-                <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900">
+              <header className="sm:flex-auto truncate">
+                <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900  text-ellipsis">
                   <Placeholder className="py-3.5 bg-gray-300" isLoading={isLoading}>{customer.name}</Placeholder>
                 </h1>
-                <div className="mt-1 max-w-4xl text-sm text-gray-500">
+                <div className="mt-1 max-w-4xl text-sm text-gray-500  text-ellipsis">
                   <Placeholder isLoading={isLoading}>{customer.email}</Placeholder>
                 </div>
               </header>
@@ -75,25 +76,25 @@ export default function ShowCustomer({ props }) {
             <dl className="mt-2 divide-y divide-gray-200 border-t border-b border-gray-200">
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">ID</dt>
-                <dd className="whitespace-nowrap text-gray-900">
+                <dd className="ml-2 truncate text-gray-900">
                   <Placeholder isLoading={isLoading}>{customer.id}</Placeholder>
                 </dd>
               </div>
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">Name</dt>
-                <dd className="whitespace-nowrap text-gray-900">
+                <dd className="ml-2 truncate text-gray-900">
                   <Placeholder isLoading={isLoading}>{customer.name}</Placeholder>
                 </dd>
               </div>
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">Email</dt>
-                <dd className="whitespace-nowrap text-gray-900">
+                <dd className="ml-2 truncate text-gray-900">
                   <Placeholder isLoading={isLoading}>{customer.email}</Placeholder>
                 </dd>
               </div>
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">SSN</dt>
-                <dd className="whitespace-nowrap text-gray-900">
+                <dd className="ml-2 truncate text-gray-900">
                   <Placeholder isLoading={isLoading}>
                     <SecretTextIfSupportRole 
                         profile={profile} 
@@ -107,13 +108,13 @@ export default function ShowCustomer({ props }) {
               </div>
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">Expiration</dt>
-                <dd className="whitespace-nowrap text-gray-900">
-                  <Placeholder isLoading={isLoading}>{customer.expiration}</Placeholder>
+                <dd className="ml-2 truncate text-gray-900">
+                  <Placeholder isLoading={isLoading}>{formatEpoch(customer.expiration)}</Placeholder>
                 </dd>
               </div>
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">Owner</dt>
-                <dd className="whitespace-nowrap text-gray-900">
+                <dd className="ml-2 truncate text-gray-900">
                   <Placeholder isLoading={isLoading}><UserById id={customer.owner_id} /></Placeholder>
                 </dd>
               </div>

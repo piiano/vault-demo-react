@@ -6,7 +6,7 @@ import { TextField } from '../../components/Fields'
 import { ErrorAlert } from '../../components/Alert'
 
 import { createCustomer } from '../../Api'
-import { epochFromIsoDateTimeStr } from '../../lib/utils'
+import { epochFromIsoDateTimeStr, isoDateStrFromCurrentTime } from '../../lib/utils'
 
 export default function NewCustomer() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function NewCustomer() {
     name: '',
     email: '',
     ssn: '',
-    expiration: '',
+    expiration: null,
   });
 
   const handleSubmit = (event) => {
@@ -31,8 +31,6 @@ export default function NewCustomer() {
 
     // Set expiration to epoch seconds or null if empty
     payload['expiration'] = epochFromIsoDateTimeStr(payload['expiration'], null);
-
-    debugger;
 
     createCustomer(payload)
       .then(
@@ -102,7 +100,7 @@ export default function NewCustomer() {
             error={error && error.errors && error.errors["ssn"]}
             type="datetime-local"
             value={ formValues.expiration }
-            min={new Date().toISOString().split('.')[0].slice(0,16)}
+            min={ isoDateStrFromCurrentTime() }
             required={false}
             disabled={isSubmitting}
             hint="Set an expiration time to schedule removal of this customer object."

@@ -31,24 +31,28 @@ const pluralize = (count, word, inclusive = false) => {
   }
 }
 
-const isoDateStrFromEpoch = (epochTime, defaultValue = '') => {
-  if (isNaN(epochTime)) {
+const isoDateStrFromEpoch = (epochTime, defaultValue = 'None') => {
+  if (isNaN(epochTime) || epochTime === -1) {
     return defaultValue;
   } else {
     return moment.unix(epochTime).toISOString(true).slice(0, 16);
   }
 }
 
-const formatEpoch = (epochTime, defaultValue = '') => {
-  const date = moment.unix(epochTime)
-  if (isNaN(date)) {
+const formatEpoch = (epochTime, defaultValue = 'None') => {
+  if (isNaN(epochTime) || epochTime === -1) {
     return defaultValue;
   } else {
-    return date.format('MMM Do, YYYY [at] HH:mm z');
+    const date = moment.unix(epochTime)
+    if (isNaN(date)) {
+      return defaultValue;
+    } else {
+      return date.format('MMM Do, YYYY [at] HH:mm:ss z');
+    }
   }
 }
 
-const epochFromIsoDateTimeStr = (isoDateTimeStr, defaultValue = '') => {
+const epochFromIsoDateTimeStr = (isoDateTimeStr, defaultValue = 'None') => {
   // Convert the date to a iso string
   const epochTime = moment(isoDateTimeStr).unix();
   if (isNaN(epochTime)) {
@@ -58,4 +62,8 @@ const epochFromIsoDateTimeStr = (isoDateTimeStr, defaultValue = '') => {
   }
 }
 
-export { pluralize, markFilter, formatEpoch, isoDateStrFromEpoch, epochFromIsoDateTimeStr };
+const isoDateStrFromCurrentTime = () => {
+  return isoDateStrFromEpoch(moment().unix());
+}
+
+export { pluralize, markFilter, formatEpoch, isoDateStrFromEpoch, epochFromIsoDateTimeStr, isoDateStrFromCurrentTime };

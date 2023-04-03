@@ -117,7 +117,7 @@ function VaultActionsMenu({className}) {
             <ErrorAlert error={error} />
         }
         <p className="mt-4 text-sm text-gray-600">
-          Are you sure you want to rotate Vault keys? This action cannot be undone.
+          Are you sure you want to rotate Vault keys?
         </p>
       </Modal>
     </Menu>
@@ -164,17 +164,6 @@ export default function VaultBanner({ className, title, ...props }) {
       {...props}>
         <Container>
           <div className="flex items-center justify-between gap-x-10 py-2 sm:py-2">
-            <div className="flex items-center justify-between">
-              <SelectMenu
-                isLoading={ isLoadingUsers }
-                className="w-60" 
-                selected={selectedUser}
-                setSelected={setSelectedUser} 
-                items={users}
-                by="id"
-              />
-            </div>
-
             <p className="text-sm text-orange-600 py-1 text-center hidden md:block">
               This is a demo on how to use Piiano Vault to protect sensitive information.
             </p>
