@@ -12,7 +12,7 @@ class Customer(models.Model):
     email = models.EmailField()
     ssn = models.CharField(max_length=250)
     owner = models.ForeignKey(User, on_delete=models.CASCADE,)
-    expiration = models.FloatField(default=-1)
+    expiration = models.FloatField(null=True)
 
     def __str__(self):
         return self.name

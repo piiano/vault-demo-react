@@ -35,12 +35,12 @@ services:
     # Simplify debugging - any changes is automatically updated within the container
     volumes:
       - ./server/python-django:/app
+      - ./vault/keys:/keys:ro
     depends_on:
       - db
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/postgres
       PVAULT_BASE_URL: http://piiano-vault:${PVAULT_PORT}
-      PVAULT_ADMIN_API_KEY: ${PVAULT_ADMIN_API_KEY}
 
   vaultdb:
     image: postgres:${POSTGRES_VERSION}
@@ -56,6 +56,7 @@ services:
     volumes:
     #  - ./data/vaultdb:/var/lib/postgresql/data
       - ./vault:/usr/init:ro
+      - ./vault/keys:/keys
     depends_on:
       - vaultdb
     init: true

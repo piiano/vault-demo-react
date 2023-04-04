@@ -83,7 +83,7 @@ In addition to having Elastic stack for logging, you can directly attach to the 
 Create an alias for Piiano Vault CLI and attach its network to the Piiano Vault container:
 
 ```bash
-alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.3.0"
+alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.3.1"
 pvault status
 pvault confvar set --name log_level --value debug
 # Fetch Piiano Vault container logs
