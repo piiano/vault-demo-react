@@ -7,7 +7,7 @@ BASE_URL = os.environ.get("PVAULT_BASE_URL")
 api_key = None
 def get_api_key():
     global api_key
-    if None == api_key:
+    if True: #None == api_key:
         api_key = open("/keys/webapp.key", "r").read().strip()
     return api_key
 

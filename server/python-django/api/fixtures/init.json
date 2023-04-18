@@ -44,9 +44,9 @@
     "pk": 2,
     "fields": {
       "name": "Jack",
-      "email": "jack@company.com",
+      "email": "jack@acme.com",
       "ssn": "222-12-1234",
-      "owner": 1
+      "owner": 2
     }
   },
   {
@@ -54,9 +54,19 @@
     "pk": 3,
     "fields": {
       "name": "Sarah",
-      "email": "sarah@google.com",
+      "email": "sarah@acme.com",
       "ssn": "333-12-1234",
       "owner": 2
+    }
+  },
+  {
+    "model": "api.customer",
+    "pk": 4,
+    "fields": {
+      "name": "Debbie",
+      "email": "deb@company.com",
+      "ssn": "444-12-4356",
+      "owner": 1
     }
   }
 ]
