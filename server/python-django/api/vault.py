@@ -3,7 +3,13 @@ import os
 import logging
 
 BASE_URL = os.environ.get("PVAULT_BASE_URL")
-API_KEY = os.environ.get("PVAULT_ADMIN_API_KEY")
+
+api_key = None
+def get_api_key():
+    global api_key
+    if True: #None == api_key:
+        api_key = open("/keys/webapp.key", "r").read().strip()
+    return api_key
 
 MAGIC_PREFIX = "ENC_"
 
@@ -25,7 +31,7 @@ def encrypt(data, field_name, owner_id, expiration_secs):
     ]
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {API_KEY}"
+        "Authorization": f"Bearer {get_api_key()}"
     }
 
     response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
