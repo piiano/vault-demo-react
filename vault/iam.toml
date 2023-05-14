@@ -22,13 +22,13 @@
     operations = ["encrypt", "decrypt", "hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/phone_number.mask"]
+    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
 
   [policies.PolAllowAllMed]
     operations = ["encrypt", "decrypt", "hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn2", "*/types/ssn.mask", "*/types/ssn2.mask", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
 
   [policies.PolAllowAllMeta]
     operations = ["encrypt", "decrypt", "hash"]
@@ -58,13 +58,13 @@
     operations = ["decrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/phone_number.mask"]
+    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
 
   [policies.PolAllowDecryptMed]
     operations = ["decrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn2", "*/types/ssn2.mask", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
 
   [policies.PolAllowDecryptMeta]
     operations = ["decrypt"]
@@ -94,13 +94,13 @@
     operations = ["encrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/phone_number.mask"]
+    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
 
   [policies.PolAllowEncryptMed]
     operations = ["encrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn2", "*/types/ssn2.mask", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
 
   [policies.PolAllowEncryptMeta]
     operations = ["encrypt"]
@@ -131,13 +131,13 @@
     operations = ["hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/phone_number.mask"]
+    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
 
   [policies.PolAllowHashMed]
     operations = ["hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn2", "*/types/ssn2.mask", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
 
   [policies.PolAllowHashMeta]
     operations = ["hash"]

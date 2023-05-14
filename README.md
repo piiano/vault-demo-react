@@ -81,8 +81,6 @@ In addition to having Elastic stack for logging, you can directly attach to the 
 
 ### Piiano Vault
 
-Create an alias for Piiano Vault CLI and attach its network to the Piiano Vault container:
-
 ```bash
 pvault status
 pvault confvar set --name log_level --value debug

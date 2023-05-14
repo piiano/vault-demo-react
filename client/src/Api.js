@@ -12,8 +12,8 @@ let customers = [
 ]
 
 let users = [
-  { id: "1", name: 'User 1', email: 'user1@example.com', role: 'owner', avatar: 'https://www.gravatar.com/avatar/111d68d06e2d317b5a59c2c6c5bad808?d=identicon' },
-  { id: "2", name: 'User 2', email: 'user2@example.com', role: 'owner', avatar: 'https://www.gravatar.com/avatar/ab53a2911ddf9b4817ac01ddcd3d975f?d=identicon' },
+  { id: "1", name: 'User 1', email: 'user1@example.com', role: 'member', avatar: 'https://www.gravatar.com/avatar/111d68d06e2d317b5a59c2c6c5bad808?d=identicon' },
+  { id: "2", name: 'User 2', email: 'user2@example.com', role: 'member', avatar: 'https://www.gravatar.com/avatar/ab53a2911ddf9b4817ac01ddcd3d975f?d=identicon' },
   { id: "3", name: 'Piiano Support', email: 'support@piiano.com', role: 'support', avatar: 'https://www.gravatar.com/avatar/51e1dc098d02ed5e96c1069b4c4bd029?d=identicon' },
 ]
 

@@ -18,8 +18,8 @@ logging.basicConfig(level=logging.INFO)
 def tokens(request):
     request.POST = json.loads(request.body)
     email = request.POST.get('email')
-    id = User.objects.get(email=email).id
-    return JsonResponse( {"token": generate_token(id, email)})
+    user = User.objects.get(email=email)
+    return JsonResponse( {"token": generate_token(user.id, user.role, email)})
 
 ######## List users (for the demo)
 @require_http_methods(["GET"])

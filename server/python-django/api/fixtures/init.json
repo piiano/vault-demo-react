@@ -5,7 +5,7 @@
     "fields": {
       "name": "Bob",
       "email": "bob@acme.com",
-      "role": "owner",
+      "role": "member",
       "avatar": "https://www.gravatar.com/avatar/111d68d06e2d317b5a59c2c6c5bad808?d=identicon"
     }
   },
@@ -15,7 +15,7 @@
     "fields": {
       "name": "Alice",
       "email": "alice@star.com",
-      "role": "owner",
+      "role": "member",
       "avatar": "https://www.gravatar.com/avatar/ab53a2911ddf9b4817ac01ddcd3d975f?d=identicon"
     }
   },
@@ -33,7 +33,7 @@
     "model": "api.customer",
     "pk": 1,
     "fields": {
-      "name": "John",
+      "name": "John Doe",
       "email": "john@company.com",
       "ssn": "123---12-1234",
       "owner": 1
@@ -43,7 +43,7 @@
     "model": "api.customer",
     "pk": 2,
     "fields": {
-      "name": "Jack",
+      "name": "Jack Davis",
       "email": "jack@acme.com",
       "ssn": "222-12-1234",
       "owner": 2
@@ -53,7 +53,7 @@
     "model": "api.customer",
     "pk": 3,
     "fields": {
-      "name": "Sarah",
+      "name": "Sarah Smith",
       "email": "sarah@acme.com",
       "ssn": "333-12-1234",
       "owner": 2
@@ -63,7 +63,7 @@
     "model": "api.customer",
     "pk": 4,
     "fields": {
-      "name": "Debbie",
+      "name": "Debbie Williams",
       "email": "deb@company.com",
       "ssn": "444-12-4356",
       "owner": 1

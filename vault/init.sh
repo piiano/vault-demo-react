@@ -1,14 +1,17 @@
 #!/bin/sh
 
-pvault bundle add --name ssn2 --bundle-code @./bundle.js
-pvault datatype add --datatype-json @./types.js
+pvault confvar set --name log_level --value debug
+pvault bundle add --name bundle --bundle-code @./bundle.js
+pvault datatype add --datatype-json @./type_email.js
+pvault datatype add --datatype-json @./type_name.js
+pvault datatype add --datatype-json @./type_ssn.js
 pvault iam apply --conf @iam.toml 
 pvault iam regen-api-key --name Webapp --json | jq -r .api_key > /keys/webapp.key
 
 pvault collection add --collection-pvschema "
 customers PERSONS ( 
-    ssn SSN2 UNIQUE NULL COMMENT 'Social security number',  
+    ssn SSN_PROT UNIQUE NULL COMMENT 'Social security number',  
     owner_id INTEGER NULL,
-    email EMAIL NULL,  
-    name NAME NULL,
+    email EMAIL_PROT NULL,  
+    name NAME_PROT NULL,
 )"
