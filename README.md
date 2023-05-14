@@ -17,12 +17,13 @@ Safely store sensitive personal data in your own cloud environment with automate
 Piiano Vault demo using React
 =============================
 
-This repository contains a demo application to showcase the power of [Piiano Vault](https://piiano.com/) allowing to easily and transparently encrypt data in a web application DB. 
+This repository contains a demo application to showcase the power of [Piiano Vault](https://piiano.com/) allowing to easily and transparently protect and encrypt data in a web application DB.
 
 ## Prerequisites
 
 - [Docker](https://www.docker.com/)
 - [Piiano Vault](https://piiano.com/docs/guides/get-started)
+- [Piiano Vault CLI](https://piiano.com/docs/cli/installation)
 
 ## Folder structure
 
@@ -83,7 +84,6 @@ In addition to having Elastic stack for logging, you can directly attach to the 
 Create an alias for Piiano Vault CLI and attach its network to the Piiano Vault container:
 
 ```bash
-alias pvault="docker run --network=vault-demo_default --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.3.1"
 pvault status
 pvault confvar set --name log_level --value debug
 # Fetch Piiano Vault container logs
@@ -127,15 +127,17 @@ print(cur.fetchall())
 
 Piiano Vault is the secure home for sensitive personal data. It allows you to safely store sensitive personal data in your own cloud environment with automated compliance controls.  
 
-Vault is deployed within your own architecture, next to other DBs used by the applications, and should be used to store the most critical sensitive personal data, such as credit cards and bank account numbers, names, emails, national IDs (e.g. SSN), phone numbers, etc.
+Vault is deployed within your own architecture, next to other DBs used by the applications, and should be used to store or encrypt the most critical sensitive personal data, such as credit cards and bank account numbers, names, emails, national IDs (e.g. SSN), phone numbers, etc.
 
 The main benefits are:  
 
-- Field level encryption, including key rotation.
+- Granular access controls.
+- Field level encryption.
+- Transparent key management and rotation.
 - Searchability is allowed over the encrypted data.
 - Full audit log for all data accesses.
-- Granular access controls.
 - Easy masking and tokenization of data.
-- Out of the box privacy compliance functionality.
+- Out of the box privacy compliance functionality - DSAR, RTBF.
+- Data minimization and retention.
 
 More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
