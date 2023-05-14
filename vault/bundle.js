@@ -47,5 +47,9 @@ function idor_mask_handler(context, object, value) {
     if (user_id == object.owner_id) {
         return value;
     }
+    if (role === 'support') {
+        return value;
+    }
+    
     return mask(value, context.prop);
 }
