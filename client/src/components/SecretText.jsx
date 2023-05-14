@@ -14,7 +14,7 @@ export function SecretText({
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [secretText, setSecretText] = useState('');
+  const [secretText, setSecretText] = useState(null);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
 
@@ -60,9 +60,7 @@ export function SecretText({
   return (
     <div className={clsx(className, 'relative w-32')} {...props}>
       {
-        secretText ? (
-          <p>{secretText}</p>
-          ) : 
+        (secretText === null) ? (
           <div className="w-32 flex content-center items-center">
             <p className="relative blur blur-sm opacity-75 w-32">{format}</p>
             <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -70,7 +68,8 @@ export function SecretText({
                 className="rounded bg-white py-1 px-2 text-xs text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 w-full"
                 onClick={handleReveal}>{revealButtonText}</button>
             </div>
-          </div>
+          </div>) : 
+          (<p>{secretText}</p>)
       }
       <Modal 
         open={isDialogOpen} 
@@ -99,7 +98,7 @@ export function SecretText({
             value={ password }
             disabled={isSubmitting}
             error={error}
-            autocomplete="off"
+            autoComplete="off"
             onChange={handlePasswordChange}
           />
         </div>

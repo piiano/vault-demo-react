@@ -97,7 +97,7 @@ export default function NewCustomer() {
             label="Expiration"
             id="expiration"
             name="expiration"
-            error={error && error.errors && error.errors["ssn"]}
+            error={error && error.errors && error.errors["expiration"]}
             type="datetime-local"
             value={ formValues.expiration }
             min={ isoDateStrFromCurrentTime() }

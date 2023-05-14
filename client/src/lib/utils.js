@@ -40,7 +40,7 @@ const isoDateStrFromEpoch = (epochTime, defaultValue = 'None') => {
 }
 
 const formatEpoch = (epochTime, defaultValue = 'None') => {
-  if (isNaN(epochTime) || epochTime === -1) {
+  if (isNaN(epochTime) || epochTime === -1 || epochTime === null) {
     return defaultValue;
   } else {
     const date = moment.unix(epochTime)

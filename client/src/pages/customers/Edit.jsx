@@ -162,7 +162,7 @@ export default function NewCustomer({ props }) {
               id="expiration"
               name="expiration"
               type="datetime-local"
-              error={error && error.errors && error.errors["ssn"]}
+              error={error && error.errors && error.errors["expiration"]}
               value={ formValues.expiration }
               min={ isoDateStrFromCurrentTime() }
               required={false}
