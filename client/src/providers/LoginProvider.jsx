@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { setAuthToken, createToken, getProfile, getUsers } from '../Api';
 import { SecretText } from '../components/SecretText';
+import { Alert } from '../components/Alert';
 
 const LoginContext = createContext();
 
@@ -134,15 +135,29 @@ const RequireLogin = ({ children }) => {
   return children;
 }
 
-const RequireRoles = ({ profile, roles, children }) => {
+const RequireRoles = ({ profile, roles, showAlert, redact, children }) => {
   if( profile && roles.includes(profile.role) ) {
     return children;
+  }
+  if( showAlert ) {
+      return <Alert color='red' icon='exclamation'>Not authorized.</Alert>
+  }
+  if( redact ) {
+    return <SecretText format={redact} />
   }
   return null;
 }
 
-const RequireSupportRole = ({ profile, redact, children }) => {
-  return <RequireRoles redact={redact} profile={profile} roles={["support"]} children={children} />
+const RequireSupportRole = ({ profile, showAlert, redact, children }) => {
+  return <RequireRoles showAlert={showAlert} redact={redact} profile={profile} roles={["support"]} children={children} />
+}
+
+const RequireMemberRoleForCurrentUser = ({ showAlert, redact, children }) => {
+  const { profile } = useContext(
+      LoginContext
+  );
+
+  return <RequireRoles showAlert={showAlert} redact={redact} profile={profile} roles={["member"]} children={children} />
 }
 
 const maskText = (text, char="X") => {
@@ -175,4 +190,4 @@ const SecretTextIfSupportRole = ({ profile, email, text, sendCode, verifyCode, f
   return SecretTextIfRoles({ profile, roles: ["support"], email, text, sendCode, verifyCode, format });
 } 
 
-export { LoginProvider, LoginContext, RequireLogin, RequireSupportRole, MaskIfSupportRole, SecretTextIfSupportRole };
+export { LoginProvider, LoginContext, RequireLogin, RequireSupportRole, RequireMemberRoleForCurrentUser, MaskIfSupportRole, SecretTextIfSupportRole };

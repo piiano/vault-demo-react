@@ -26,10 +26,12 @@ export function TextField({
   className = '',
   inputClassName = '',
   errorClassName = 'border-red-500 focus:border-red-500 focus:ring-red-500 placeholder:text-red-300 pr-10',
+  disabledClassName = 'text-gray-300 bg-gray-200 cursor-not-allowed',
   required,
   isLoading,
   error = null,
   hint = null,
+  disabled = false,
   ...props
 }) {
   return (
@@ -40,7 +42,7 @@ export function TextField({
         </Label>}
         <Placeholder className="h-8"  isLoading={isLoading}>
           <div className="relative mt-2 rounded-md shadow-sm">
-            <input id={id} type={type} {...props} className={clsx(inputClasses, inputClassName, error? errorClassName : '')} />
+            <input id={id} type={type} {...props} className={clsx(inputClasses, inputClassName, error? errorClassName : '', disabled? disabledClassName : '')} />
             {
               error && 
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

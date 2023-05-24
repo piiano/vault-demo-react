@@ -94,7 +94,7 @@ export default function ShowCustomer({ props }) {
               </div>
               <div className="flex justify-between py-3 text-sm font-medium">
                 <dt className="text-gray-500">SSN</dt>
-                <dd className="ml-2 truncate text-gray-900">
+                <dd className="ml-2 truncate text-gray-900 text-right">
                   <Placeholder isLoading={isLoading}>
                     <SecretTextIfSupportRole 
                         profile={profile} 

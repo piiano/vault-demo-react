@@ -13,7 +13,7 @@ export default function SelectMenu({ className, label, items, selected, setSelec
             <>
               { label && <Listbox.Label className="text-sm font-medium text-gray-900 mr-2">{label}</Listbox.Label> }
               <div className="relative w-full">
-                <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6 cursor-pointer hover:bg-gray-50">
+                <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 sm:text-sm sm:leading-6 cursor-pointer hover:bg-gray-50">
                   <span className="flex items-center">
                     <Placeholder isLoading={isLoading} className="w-4 h-4 my-0 rounded-full mr-3" >
                       { selected?.avatar && <img src={selected.avatar} alt="" className="h-5 w-5 flex-shrink-0 rounded-full mr-3" /> }
@@ -22,6 +22,8 @@ export default function SelectMenu({ className, label, items, selected, setSelec
                     <span className="block truncate">
                       <Placeholder isLoading={isLoading} className="h-2 my-0" >
                         <span>{selected?.name}</span>
+                        { selected?.role &&
+                          <span className="ml-2 text-gray-500">({selected?.role})</span> }
                       </Placeholder>
                     </span>
                   </span>
@@ -43,7 +45,7 @@ export default function SelectMenu({ className, label, items, selected, setSelec
                         key={index}
                         className={({ active }) =>
                           clsx(
-                            active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                            active ? 'bg-purple-600 text-white' : 'text-gray-900',
                             'relative cursor-pointer select-none py-2 pl-3 pr-9'
                           )
                         }
@@ -57,13 +59,15 @@ export default function SelectMenu({ className, label, items, selected, setSelec
                                 className={clsx(selected ? 'font-semibold' : 'font-normal', 'block truncate')}
                               >
                                 {item?.name}
+                                { item?.role &&
+                                  <span className={clsx(active ? 'text-white' : 'text-gray-500','ml-2')}>({item?.role})</span> }
                               </span>
                             </div>
 
                             {selected ? (
                               <span
                                 className={clsx(
-                                  active ? 'text-white' : 'text-indigo-600',
+                                  active ? 'text-white' : 'text-purple-600',
                                   'absolute inset-y-0 right-0 flex items-center pr-4'
                                 )}
                               >

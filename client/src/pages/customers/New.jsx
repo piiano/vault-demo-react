@@ -7,6 +7,7 @@ import { ErrorAlert } from '../../components/Alert'
 
 import { createCustomer } from '../../Api'
 import { epochFromIsoDateTimeStr, isoDateStrFromCurrentTime } from '../../lib/utils'
+import { RequireMemberRoleForCurrentUser } from '../../providers/LoginProvider'
 
 export default function NewCustomer() {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ export default function NewCustomer() {
 
   return (
     <AppLayout>
+      <RequireMemberRoleForCurrentUser showAlert>
       <div className="mx-auto w-full max-w-2lg sm:px-4 md:w-2/3 md:max-w-md md:px-0">
         <div className="sm:flex sm:items-center">
           <header className="flex flex-row items-center space-x-6">
@@ -127,6 +129,7 @@ export default function NewCustomer() {
           </div>
         </form>
       </div>
+      </RequireMemberRoleForCurrentUser>
     </AppLayout>
   )
 }

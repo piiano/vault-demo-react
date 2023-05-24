@@ -9,7 +9,7 @@ import { UserById } from '../../components/UserById'
 import { getCustomers } from '../../Api'
 import { markFilter, pluralize } from '../../lib/utils'
 import { VaultContext } from '../../providers/VaultProvider'
-import { LoginContext, RequireSupportRole, MaskIfSupportRole, SecretTextIfSupportRole } from '../../providers/LoginProvider'
+import { LoginContext, RequireSupportRole, MaskIfSupportRole, SecretTextIfSupportRole, RequireMemberRoleForCurrentUser } from '../../providers/LoginProvider'
 import { SearchField } from '../../components/Fields'
 import { TableSortToggle } from '../../components/TableSortToggle'
 
@@ -96,7 +96,9 @@ export default function ListCustomers() {
             </p>
           </header>
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-            <Button href="/customers/new" color="blue">New customer</Button>
+            <RequireMemberRoleForCurrentUser>
+              <Button href="/customers/new" color="blue">New customer</Button>
+            </RequireMemberRoleForCurrentUser>
           </div>
         </div>
 

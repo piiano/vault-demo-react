@@ -19,6 +19,62 @@ Piiano Vault demo using React
 
 This repository contains a demo application to showcase the power of [Piiano Vault](https://piiano.com/) allowing to easily and transparently protect and encrypt data in a web application DB.
 
+The demo application is a simple Customer management SaaS application, allowing users to create, edit, delete and list their customers.
+
+The application includes 2 roles - `Member` and `Support`. The `Support` role can see all the customers in the system but SSN is masked by default unless an OTP (one-time password) code is provided when clicking the "Reveal" button.  The `Member` role can only see the customers they created.
+
+The application is implemented in React and uses a RESTful API to communicate with the backend.
+
+The backend is implemented in Python Django and uses a PostgreSQL DB to store the data.
+
+The application is deployed using Docker Compose, and includes a Piiano Vault container, a PostgreSQL DB container, a web based Terminal container and an Elastic stack container for viewing logs.
+
+## How to use this demo
+
+1. Navigate to the client web application at http://localhost:3000
+2. Sign in as `Alice` with password `alice` (Member role)
+3. List the customers owned by Alice
+4. Create a new customer for Alice
+5. Edit the customer and add a SSN
+
+### Attack surfaces
+
+What if an attacker gains access to the DB? Or the Web application server?
+
+The application is deployed with a set of vulnerabilities and issues, which can be fixed using Piiano Vault.  We provide some tools to simulate an attacker gaining access to the DB or the Web application server, and showcase how Piiano Vault can help mitigate the attack surface when setting the web application to run in `secure mode`:
+
+1. Gain access to unencrypted data by querying the DB:
+  - When an attacker has access to database credentials - "View terminal" link, and run `./1-db-connection.sh`
+  - When an attacker has access to the web application backend - "View terminal" link, and run `./2-django-server-shell.sh`
+
+  With Piiano Vault, the data is encrypted in the DB and the attacker cannot decrypt it without the encryption keys.
+
+2. IDOR (Insecure Direct Object References) - an unauthorized user can access other customer info - Sign in as John, then navigate directly to edit a customer that is not accessible by John, `http://localhost:3000/customers/3/edit`)
+
+  With Piiano Vault, the object level access control is enforced and the attacker cannot access the data.
+
+1. SSN is masked on the client side for the Support role, also incorrectly due to lack of validation/normalization - Using the network tab in the debugging tools can see the SSN in the response.  Also, the SSN is not masked in the network layer so man-in-the-middle can see the SSN.
+
+  With Piiano Vault, the SSN is masked on the server side and the attacker cannot see the SSN without privileged access.
+
+2. Sensitive data in logs - Edit + save customer, then use "View logs" link to see the sensitive data in the application logs.
+
+  With Piiano Vault, the sensitive data is masked in the logs and the attacker cannot see the raw data.
+
+3. One don't know who accessed the data! No access logs are saved on object level so we don't know who accessed the data and when. 
+
+  With Piiano Vault, the access logs are saved  and the attacker cannot access the data without leaving a trace.
+
+4. Expiration of data - Data is not deleted after a certain period of time, so it is kept forever.
+
+  With Piiano Vault, when an expiration is set to an object, the data is expired after a certain period of time and the attacker cannot access the data after it is expired.
+
+### Known issues
+
+Handling issues:
+1. Clean data: `./0-clear-data.sh` to reset the data to the initial state
+2. Run `fix-license.sh` to fix the license if needed
+
 ## Prerequisites
 
 - [Docker](https://www.docker.com/)
@@ -27,7 +83,7 @@ This repository contains a demo application to showcase the power of [Piiano Vau
 
 ## Folder structure
 
-The code in this directory contains a demo client in React and a set of server implmentation available in common languages for a safe User management CRUD API with [Piiano Vault](http://piiano.com). 
+The code in this directory contains a demo client in React and a set of server implementation available in common languages for a safe Customer management CRUD API with [Piiano Vault](http://piiano.com). 
 
 The server includes [1 server implementation](server/README.md) - [Python Django](/server/python-django). Each server implements several RESTful implementations, each with the same endpoints and logic.
 

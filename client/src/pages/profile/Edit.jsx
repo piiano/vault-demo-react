@@ -16,7 +16,8 @@ export default function EditProfile({ props }) {
     id: '',
     name: '',
     avatar: '',
-    email: ''
+    email: '',
+    role: '',
   });
   const { refresh, profile, isLoadingProfile } = useContext(
     LoginContext
@@ -29,6 +30,7 @@ export default function EditProfile({ props }) {
       avatar: profile.avatar,
       name: profile.name,
       email: profile.email,
+      role: profile.role,
     });
   }, [profile]);
 
@@ -123,6 +125,14 @@ export default function EditProfile({ props }) {
                   required
                   disabled={isSubmitting}
                   onChange={handleValueChange}
+                />
+                <TextField
+                  label="Role"
+                  id="role"
+                  name="role"
+                  value={formValues.role}
+                  required
+                  disabled={true}
                 />
                 <div>
                   <Button

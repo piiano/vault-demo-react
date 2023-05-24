@@ -58,7 +58,13 @@ export function NavProfile({ className }) {
         <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span className="sr-only">Open profile menu</span>
           {profile.avatar && (
-            <img className="h-8 w-8 rounded-full" src={profile.avatar} alt="" />
+            <div className="flex items-center space-x-2">
+              <img className="h-6 w-6 rounded-full" src={profile.avatar} alt="" />
+              <div className="text-md leading-snug text-gray-800 truncate space-x-2">
+                <span>{profile.name}</span>
+                <span className="text-gray-500">({profile.role})</span>
+              </div>
+            </div>
           )}
         </Menu.Button>
       </div>
@@ -84,7 +90,10 @@ export function NavProfile({ className }) {
                       </div>
                     )}
                     <div>
-                      <div className="text-base font-medium leading-snug text-gray-800 truncate">{profile.name}</div>
+                    <div className="text-base font-medium leading-snug text-gray-800 truncate space-x-2">
+                      <span>{profile.name}</span>
+                      <span className="text-gray-500">({profile.role})</span>
+                    </div>
                       <div className="text-sm font-medium leading-snug text-gray-500 truncate">{profile.email}</div>
                     </div>
                   </div>

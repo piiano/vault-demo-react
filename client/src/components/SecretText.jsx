@@ -58,12 +58,12 @@ export function SecretText({
   }
 
   return (
-    <div className={clsx(className, 'relative w-32')} {...props}>
+    <div className={clsx(className, 'relative')} {...props}>
       {
         (secretText === null) ? (
-          <div className="w-32 flex content-center items-center">
-            <p className="relative blur blur-sm opacity-75 w-32">{format}</p>
-            <div className="absolute left-1/2 transform -translate-x-1/2">
+          <div className="flex space-x-2 items-center">
+            <div className="opacity-75">{format}</div>
+            <div className="">
               <button 
                 className="rounded bg-white py-1 px-2 text-xs text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 w-full"
                 onClick={handleReveal}>{revealButtonText}</button>

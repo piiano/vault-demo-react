@@ -28,7 +28,7 @@ export default function NewCustomer({ props }) {
     name: '',
     email: '',
     ssn: '',
-    expiration: null,
+    expiration: '',
   });
   const { isSecured } = useContext(
     VaultContext
@@ -47,7 +47,7 @@ export default function NewCustomer({ props }) {
             name: customer.name,
             email: customer.email,
             ssn: MaskIfSupportRole({ profile, text: customer.ssn }),
-            expiration: isoDateStrFromEpoch(customer.expiration, null)
+            expiration: isoDateStrFromEpoch(customer.expiration, '')
           });
         },
         (error) => {
