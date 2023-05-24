@@ -1,15 +1,15 @@
 {
-    "name": "SSN2",
+    "name": "SSN_PROT",
     "base_type_name": "SSN",
-    "description": "Protected SSN.",
+    "description": "Protected SSN",
     "transformers": [
         {
-            "bundle": "ssn2",
+            "bundle": "bundle",
             "function": "idor_mask"
         }
     ],
     "default_transformer": {
-      "bundle": "ssn2",
+      "bundle": "bundle",
       "function": "idor_mask"
     }
-  }
+}

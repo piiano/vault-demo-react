@@ -1,23 +1,23 @@
 from functools import wraps
 from .models import User
 
-ROLE_OWNER = "owner"
+ROLE_MEMBER = "member"
 ROLE_SUPPORT = "support"
 
 MAGIC_BEGIN = "TOKEN"
 MAGIC_END = "SIGNATURE"
 BEARER = "Bearer"
-def generate_token(id, email):
-    return f"{MAGIC_BEGIN}_{id}_{email}_{MAGIC_END}"
+def generate_token(id, role, email):
+    return f"{MAGIC_BEGIN}_{id}_{role}_{email}_{MAGIC_END}"
 
 def parse_token(token):
     assert token.startswith(BEARER)
     try:
-        begin, id, email, end = token.split(" ")[1].split("_")
+        begin, id, role, email, end = token.split(" ")[1].split("_")
         assert begin == MAGIC_BEGIN and end == MAGIC_END
     except:
         return None
-    return id
+    return id, role
 
 def parse_auth(func):
     @wraps(func)
@@ -25,10 +25,9 @@ def parse_auth(func):
         auth = request.META.get("HTTP_AUTHORIZATION")
         id = None
         if auth:
-            id = parse_token(auth)
+            id, role = parse_token(auth)
         if id:
             kwargs['user_id'] = id
-            role = User.objects.get(id=id).role
             kwargs['role'] = role
         else:
             kwargs['user_id'] = None
