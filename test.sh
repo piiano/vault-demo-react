@@ -4,7 +4,8 @@ wait_until_containers_are_up()
 {
     # Wait for containers to be healthy
     echo "Waiting for containers to be up and running..."
-
+    sleep 3
+    
     start_time=$(date +%s)
     timeout=$((start_time + 300))  # 5 minutes timeout
 
@@ -26,7 +27,9 @@ wait_until_containers_are_up()
                 if [ "$health_status" = "\"exited\"" ]; then
                     all_running=false
                     echo "${name} exited"
-                    docker inspect "$container_id"
+                    set -x
+                    docker logs "$continer_id"
+                    docker inspect --format='{{json .State}}' "$container_id"
                     exit 1
                 fi
 
