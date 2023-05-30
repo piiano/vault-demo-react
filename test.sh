@@ -6,7 +6,7 @@ wait_until_containers_are_up()
     echo "Waiting for containers to be up and running..."
 
     start_time=$(date +%s)
-    timeout=$((start_time + 900))  # 15 minutes timeout
+    timeout=$((start_time + 300))  # 5 minutes timeout
 
     while true; do
         # Get the status of each service defined in the Docker Compose file
@@ -20,6 +20,14 @@ wait_until_containers_are_up()
             while IFS= read -r container_id; do
                 health_status=$(docker inspect --format='{{json .State.Status}}' "$container_id")
                 name=$(docker inspect --format='{{json .Name}}' "$container_id")
+
+                # if a container died, add debuging and exit
+                if [ "$health_status" != "\"exited\"" ]; then
+                    all_running=false
+                    echo "${name} exited"
+                    docker logs "$container_id"
+                    exit 1
+                fi
 
                 # If any container is not running or healthy, set the flag to false
                 if [ "$health_status" != "\"running\"" ]; then
@@ -38,7 +46,7 @@ wait_until_containers_are_up()
         # Check if timeout has been reached
         current_time=$(date +%s)
         if [ "$current_time" -gt "$timeout" ]; then
-            echo "Timeout reached. Containers did not start within 10 minutes."
+            echo "Timeout reached. Containers did not start within 5 minutes."
             docker ps
             exit 1
         fi
