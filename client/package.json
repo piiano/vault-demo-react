@@ -35,9 +35,9 @@
   "scripts": {
     "build:css": "postcss src/styles/main.css -o src/index.css",
     "watch:css": "postcss src/styles/main.css -o src/index.css -w",
-    "start": "yarn npm-run-all -p watch:css start-js",
+    "start": "yarn run npm-run-all -p watch:css start-js",
     "start-js": "react-scripts start",
-    "build": "yarn npm-run-all build:css build-js",
+    "build": "yarn run npm-run-all build:css build-js",
     "build-js": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
