@@ -25,7 +25,9 @@ wait_until_containers_are_up()
                 if [ "$health_status" != "\"exited\"" ]; then
                     all_running=false
                     echo "${name} exited"
-                    docker logs "$container_id"
+                    set -x
+                    docker-compose logs
+                    docker logs $container_id
                     exit 1
                 fi
 
