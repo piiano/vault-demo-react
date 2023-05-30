@@ -31,9 +31,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.CICD_RELEASES_PAT }}
-          # explicitly set ref so we pull based on branch name and get latest changes and not by commit hash and miss out
-          # changes that are committed by the workflow itself
-          ref: ${{ github.ref_name }}
 
       - name: Update README and resources to reference Vault version ${{ inputs.vault_version }}
         env:
