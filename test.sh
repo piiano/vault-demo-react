@@ -28,8 +28,8 @@ wait_until_containers_are_up()
                     all_running=false
                     echo "${name} exited"
                     set -x
-                    docker logs "$continer_id"
                     docker inspect --format='{{json .State}}' "$container_id"
+                    docker-compose logs
                     exit 1
                 fi
 
