@@ -20,12 +20,13 @@ wait_until_containers_are_up()
             while IFS= read -r container_id; do
                 health_status=$(docker inspect --format='{{json .State.Status}}' "$container_id")
                 name=$(docker inspect --format='{{json .Name}}' "$container_id")
-                # echo "Checking - $name $container_id == $health_status"
+                echo "Checking - $name $container_id == $health_status"
 
                 # if a container died, add debuging and exit
                 if [ "$health_status" = "\"exited\"" ]; then
                     all_running=false
                     echo "${name} exited"
+                    docker inspect "$container_id"
                     exit 1
                 fi
 
