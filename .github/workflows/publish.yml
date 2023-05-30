@@ -32,6 +32,11 @@ jobs:
         with:
           token: ${{ secrets.CICD_RELEASES_PAT }}
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: Update README and resources to reference Vault version ${{ inputs.vault_version }}
         env:
           LINE: compatible with Vault version
