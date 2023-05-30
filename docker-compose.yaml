@@ -17,7 +17,7 @@ services:
       - REACT_APP_API_BASE_URL=http://localhost:${SERVER_PORT}/api/
 
   db:
-    image: postgres
+    image: postgres:14.5
     #volumes:
     #  - ./data/db:/var/lib/postgresql/data
     ports:
