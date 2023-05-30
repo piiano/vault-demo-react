@@ -14,6 +14,9 @@ RUN yarn install --frozen-lockfile
 # Copy the rest of the app's files to the container
 COPY . .
 
+# Debugging
+RUN ls /app/node_modules/*-run-all
+
 # Serve the app on port 80
 EXPOSE 3000
 CMD ["yarn", "start"]
