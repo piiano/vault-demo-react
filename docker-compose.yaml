@@ -96,7 +96,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - piiano-vault
-      - kibana
       - server-python-django
 
   terminal:
@@ -138,8 +137,6 @@ services:
       - es-data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
-    logging:
-        driver: journald
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.15.0

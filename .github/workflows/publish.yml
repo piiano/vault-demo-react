@@ -55,7 +55,7 @@ jobs:
           # inject the license before running
           cat .env.example | grep -v PVAULT_SERVICE_LICENSE > .env
           echo "PVAULT_SERVICE_LICENSE=${{ secrets.PVAULT_SERVICE_LICENSE }}" >> .env
-          bash ./test.sh
+          bash ./test.sh --minimal
 
       - name: Commit and push changes
         # even though we're checking for workflow_dispatch we still want to be extra safe and

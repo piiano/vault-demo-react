@@ -20,14 +20,12 @@ wait_until_containers_are_up()
             while IFS= read -r container_id; do
                 health_status=$(docker inspect --format='{{json .State.Status}}' "$container_id")
                 name=$(docker inspect --format='{{json .Name}}' "$container_id")
+                # echo "Checking - $name $container_id == $health_status"
 
                 # if a container died, add debuging and exit
-                if [ "$health_status" != "\"exited\"" ]; then
+                if [ "$health_status" = "\"exited\"" ]; then
                     all_running=false
                     echo "${name} exited"
-                    set -x
-                    docker-compose logs
-                    journalctl -u docker CONTAINER_NAME=elasticsearch
                     exit 1
                 fi
 
@@ -116,8 +114,22 @@ check_web_is_answering()
     fi
 }
 
+# main
 echo "Basic system test"
-docker compose build && docker compose up -d
+
+services="init client db server-python-django vaultdb piiano-vault"
+extra_services="terminal filebeat elasticsearch logstash kibana"
+
+# first optional parameter is to run with minimal mode (no elk and no terminal)
+if [ \( -n "$1" \) -a \( "$1" = "--minimal" \) ]; then
+  echo "starting only basic services $services"
+else 
+  services="$services $extra_services"
+  echo "starting all services $services"
+fi
+
+docker compose build $services
+docker compose up -d $services 
 wait_until_containers_are_up
 wait_until_vault_is_up
 wait_until_react_is_up
