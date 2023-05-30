@@ -27,7 +27,7 @@ wait_until_containers_are_up()
                     echo "${name} exited"
                     set -x
                     docker-compose logs
-                    docker logs $container_id
+                    journalctl -u docker CONTAINER_NAME=elasticsearch
                     exit 1
                 fi
 

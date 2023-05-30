@@ -138,6 +138,8 @@ services:
       - es-data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
+    logging:
+        driver: journald
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.15.0
