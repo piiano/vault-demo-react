@@ -24,7 +24,7 @@ wait_until_containers_are_up()
                 # If any container is not running or healthy, set the flag to false
                 if [ "$health_status" != "\"running\"" ]; then
                     all_running=false
-                    echo "${name} still down ..."
+                    echo "${name} still down $health_status ..."
                     break
                 fi
             done <<< "$container_status"
@@ -39,6 +39,7 @@ wait_until_containers_are_up()
         current_time=$(date +%s)
         if [ "$current_time" -gt "$timeout" ]; then
             echo "Timeout reached. Containers did not start within 10 minutes."
+            docker ps
             exit 1
         fi
 
