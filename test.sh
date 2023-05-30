@@ -5,7 +5,7 @@ wait_until_containers_are_up()
     # Wait for containers to be healthy
     echo "Waiting for containers to be up and running..."
     sleep 3
-    
+
     start_time=$(date +%s)
     timeout=$((start_time + 300))  # 5 minutes timeout
 
@@ -121,19 +121,17 @@ check_web_is_answering()
 # main
 echo "Basic system test"
 
-services="init client db server-python-django vaultdb piiano-vault"
-extra_services="terminal filebeat elasticsearch logstash kibana"
+services="init db server-python-django vaultdb piiano-vault client"
 
 # first optional parameter is to run with minimal mode (no elk and no terminal)
 if [ \( -n "$1" \) -a \( "$1" = "--minimal" \) ]; then
   echo "starting only basic services $services"
+  docker compose build $services && docker compose up -d $services 
 else 
-  services="$services $extra_services"
   echo "starting all services $services"
+  docker compose build && docker compose up -d
 fi
 
-docker compose build $services
-docker compose up -d $services 
 wait_until_containers_are_up
 wait_until_vault_is_up
 wait_until_react_is_up

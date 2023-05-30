@@ -125,7 +125,7 @@ mimic an attacker with access to the DB server and showcase the power of Piiano 
 1. Run Docker Compose
 
 ```bash
-# This is so the dependecies exists on the local env, as we map it as volume into the container for simplifiying development
+# This is so the dependencies exists on the local env, as we map it as volume into the container for simplifying development
 docker compose down --volumes && docker compose build && docker compose up -d
 ```
 
