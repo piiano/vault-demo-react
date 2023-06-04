@@ -25,7 +25,7 @@ wait_until_containers_are_up()
                 name=$(docker inspect --format='{{json .Name}}' "$container_id")
 
                 # If any container is not running or healthy, set the flag to false
-                if [ $name = "/vault-demo-init-1" ] ; then 
+                if [ $name = "\"/vault-demo-init-1\"" ] ; then 
                     echo "Ignoring init container - should not be up"
                 else
                     echo "Checking - $name $container_id == $health_status"
