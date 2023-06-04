@@ -24,13 +24,14 @@ wait_until_containers_are_up()
                 echo "Checking - $name $container_id == $health_status"
 
                 # If any container is not running or healthy, set the flag to false
-                if [ "$health_status" != "\"running\"" ]; then
-                    all_running=false
-                    echo "${name} still down $health_status ..."
-                    docker-compose logs
-                    break
+                if [ $name != "/vault-demo-init-1" ] ; then 
+                    if [ "$health_status" != "\"running\"" ]; then
+                        all_running=false
+                        echo "${name} still down $health_status ..."
+                        docker-compose logs
+                        break
+                    fi
                 fi
-
             done <<< "$container_status"
 
             # If all containers are running and healthy, exit the loop
