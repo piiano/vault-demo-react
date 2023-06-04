@@ -55,6 +55,7 @@ jobs:
           # inject the license before running
           cat .env.example | grep -v PVAULT_SERVICE_LICENSE > .env
           echo "PVAULT_SERVICE_LICENSE=${{ secrets.PVAULT_SERVICE_LICENSE }}" >> .env
+          mkdir keys
           bash ./test.sh --minimal
 
       - name: Commit and push changes
