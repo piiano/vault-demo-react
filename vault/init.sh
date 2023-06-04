@@ -7,10 +7,6 @@ pvault datatype add --datatype-json @./type_name.js
 pvault datatype add --datatype-json @./type_ssn.js
 pvault iam apply --conf @iam.toml 
 
-ls -la . /
-id
-pvault iam regen-api-key --name Webapp --json | jq -r .api_key > /keys/webapp.key
-
 pvault collection add --collection-pvschema "
 customers PERSONS ( 
     ssn SSN_PROT UNIQUE NULL COMMENT 'Social security number',  

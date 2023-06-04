@@ -92,7 +92,7 @@ services:
     command: /usr/code/docker-compose-init.sh
     working_dir: /usr/code
     volumes:
-      - .:/usr/code:ro
+      - .:/usr/code # Not ro because the script writes the Webapp API key to file.
       - /var/run/docker.sock:/var/run/docker.sock:ro
     depends_on:
       - piiano-vault
