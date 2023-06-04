@@ -23,15 +23,18 @@ wait_until_containers_are_up()
             while IFS= read -r container_id; do
                 health_status=$(docker inspect --format='{{json .State.Status}}' "$container_id")
                 name=$(docker inspect --format='{{json .Name}}' "$container_id")
-                echo "Checking - $name $container_id == $health_status"
 
                 # If any container is not running or healthy, set the flag to false
-                if [ $name != "/vault-demo-init-1" ] ; then 
+                if [ $name = "/vault-demo-init-1" ] ; then 
+                    echo "Ignoring init container - should not be up"
+                else
+                    echo "Checking - $name $container_id == $health_status"
                     if [ "$health_status" != "\"running\"" ]; then
                         all_running=false
                         echo "${name} still down $health_status ..."
                         if [ "$current_time" -gt "$debug_timeout" ]; then
                             echo "Enabling Debug after 1 minute"
+                            docker ps
                             docker-compose logs
                         fi
                         break
