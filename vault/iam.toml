@@ -16,19 +16,19 @@
     operations = ["encrypt", "decrypt", "hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/email", "*/types/ssn", "*/types/phone_number", "*/types/zip_code_us", "*/types/name", "*/types/address", "*/types/us_bank_account_number", "*/types/ban", "*/types/cc_holder_name", "*/types/cc_expiration_string"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
 
   [policies.PolAllowAllLow]
     operations = ["encrypt", "decrypt", "hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
 
   [policies.PolAllowAllMed]
     operations = ["encrypt", "decrypt", "hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
 
   [policies.PolAllowAllMeta]
     operations = ["encrypt", "decrypt", "hash"]
@@ -40,7 +40,7 @@
     operations = ["encrypt", "decrypt", "hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/cc_number", "*/types/cc_cvv"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
 
   [policies.PolAllowDecryptAll]
     operations = ["decrypt"]
@@ -52,19 +52,19 @@
     operations = ["decrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/email", "*/types/ssn", "*/types/phone_number", "*/types/zip_code_us", "*/types/name", "*/types/address", "*/types/us_bank_account_number", "*/types/ban", "*/types/cc_holder_name", "*/types/cc_expiration_string"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
 
   [policies.PolAllowDecryptLow]
     operations = ["decrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
 
   [policies.PolAllowDecryptMed]
     operations = ["decrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
 
   [policies.PolAllowDecryptMeta]
     operations = ["decrypt"]
@@ -76,7 +76,7 @@
     operations = ["decrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/cc_number", "*/types/cc_cvv"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
 
   [policies.PolAllowEncryptAll]
     operations = ["encrypt"]
@@ -88,19 +88,19 @@
     operations = ["encrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/email", "*/types/ssn", "*/types/phone_number", "*/types/zip_code_us", "*/types/name", "*/types/address", "*/types/us_bank_account_number", "*/types/ban", "*/types/cc_holder_name", "*/types/cc_expiration_string"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
 
   [policies.PolAllowEncryptLow]
     operations = ["encrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
 
   [policies.PolAllowEncryptMed]
     operations = ["encrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
 
   [policies.PolAllowEncryptMeta]
     operations = ["encrypt"]
@@ -112,7 +112,7 @@
     operations = ["encrypt"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/cc_number", "*/types/cc_cvv"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
 
   
   [policies.PolAllowHashAll]
@@ -125,19 +125,19 @@
     operations = ["hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/email", "*/types/ssn", "*/types/phone_number", "*/types/zip_code_us", "*/types/name", "*/types/address", "*/types/us_bank_account_number", "*/types/ban", "*/types/cc_holder_name", "*/types/cc_expiration_string"]
+    resources = ["*/types/EMAIL", "*/types/SSN", "*/types/PHONE_NUMBER", "*/types/ZIP_CODE_US", "*/types/NAME", "*/types/ADDRESS", "*/types/US_BANK_ACCOUNT_NUMBER", "*/types/BAN", "*/types/CC_HOLDER_NAME", "*/types/CC_EXPIRATION_STRING"]
 
   [policies.PolAllowHashLow]
     operations = ["hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/gender", "*/types/email.mask", "*/types/email_prot", "*/types/name_prot", "*/types/phone_number.mask"]
+    resources = ["*/types/GENDER", "*/types/EMAIL.mask", "*/types/EMAIL_PROT", "*/types/NAME_PROT", "*/types/PHONE_NUMBER.mask"]
 
   [policies.PolAllowHashMed]
     operations = ["hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/date_of_birth", "*/types/us_bank_routing", "*/types/ssn.mask", "*/types/ssn_prot", "*/types/ban.mask", "*/types/cc_number.mask"]
+    resources = ["*/types/DATE_OF_BIRTH", "*/types/US_BANK_ROUTING", "*/types/SSN.mask", "*/types/SSN_PROT", "*/types/BAN.mask", "*/types/CC_NUMBER.mask"]
 
   [policies.PolAllowHashMeta]
     operations = ["hash"]
@@ -149,16 +149,16 @@
     operations = ["hash"]
     policy_type = "allow"
     reasons = ["*"]
-    resources = ["*/types/cc_number", "*/types/cc_cvv"]
+    resources = ["*/types/CC_NUMBER", "*/types/CC_CVV"]
 
 [roles]
 
   [roles.Developer]
-    capabilities = ["CapIAMReader", "CapKMSWriter", "CapConfvarReader", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesReader"]
+    capabilities = ["CapIAMReader", "CapKMSWriter", "CapConfvarReader", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesREADER"]
     policies = ["PolDenyAllAll"]
 
   [roles.CICD]
-    capabilities = ["CapIAMReader", "CapIAMWriter", "CapKMSReader", "CapKMSWriter", "CapConfvarReader", "CapConfvarWriter", "CapErrorWriter", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesReader", "CapCodeWriter", "CapTypesWriter"]
+    capabilities = ["CapIAMReader", "CapIAMWriter", "CapKMSReader", "CapKMSWriter", "CapConfvarReader", "CapConfvarWriter", "CapErrorWriter", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesREADER", "CapCodeWriter", "CapTypesWRITER"]
     policies = ["PolDenyAllAll"]
 
   [roles.ExternalApplication]

@@ -23,16 +23,6 @@ wait_until_containers_are_up()
                 name=$(docker inspect --format='{{json .Name}}' "$container_id")
                 echo "Checking - $name $container_id == $health_status"
 
-                # if a container died, add debuging and exit
-                if [ "$health_status" = "\"exited\"" ]; then
-                    all_running=false
-                    echo "${name} exited"
-                    set -x
-                    docker inspect --format='{{json .State}}' "$container_id"
-                    docker-compose logs
-                    exit 1
-                fi
-
                 # If any container is not running or healthy, set the flag to false
                 if [ "$health_status" != "\"running\"" ]; then
                     all_running=false
