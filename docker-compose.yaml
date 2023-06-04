@@ -7,9 +7,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - ${CLIENT_PORT}:${CLIENT_PORT}
-    # Simplify debugging - any changes is automatically updated within the container
-    volumes:
-      - ./client:/app
+    # # Simplify debugging - any changes is automatically updated within the container
+    # volumes:
+    #   - ./client:/app
     depends_on:
       - server-python-django
       - piiano-vault

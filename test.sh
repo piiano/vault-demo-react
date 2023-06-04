@@ -112,7 +112,6 @@ check_web_is_answering()
 
 # main
 echo "Basic system test"
-yarn --version
 
 services="init db server-python-django vaultdb piiano-vault client"
 
