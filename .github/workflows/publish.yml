@@ -56,6 +56,7 @@ jobs:
           cat .env.example | grep -v PVAULT_SERVICE_LICENSE > .env
           echo "PVAULT_SERVICE_LICENSE=${{ secrets.PVAULT_SERVICE_LICENSE }}" >> .env
           mkdir keys
+          chown -R 1000:1000 keys
           bash ./test.sh --minimal
 
       - name: Commit and push changes
