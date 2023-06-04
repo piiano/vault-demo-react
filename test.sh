@@ -81,7 +81,7 @@ check_log_for_pattern()
         echo "Pattern not found in $service_name. Attempt $attempt of $max_attempts"
     
         # Wait for a few seconds before the next attempt
-        sleep 3
+        sleep 5
     
         attempt=$((attempt + 1))
     done
@@ -120,6 +120,7 @@ check_web_is_answering()
 
 # main
 echo "Basic system test"
+yarn --version
 
 services="init db server-python-django vaultdb piiano-vault client"
 

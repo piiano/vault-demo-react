@@ -17,9 +17,7 @@
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
-    "tailwindcss": "^3.2.7",
-    "yarn-run-all": "^3.1.1",
-    "npm-run-all": "^4.1.5"
+    "tailwindcss": "^3.2.7"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -36,9 +34,9 @@
   "scripts": {
     "build:css": "postcss src/styles/main.css -o src/index.css",
     "watch:css": "postcss src/styles/main.css -o src/index.css -w",
-    "start": "yarn run npm-run-all -p watch:css start-js",
+    "start": "npx npm-run-all -p watch:css start-js",
     "start-js": "react-scripts start",
-    "build": "yarn run npm-run-all build:css build-js",
+    "build": "npx npm-run-all build:css build-js",
     "build-js": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
