@@ -96,26 +96,33 @@ To run this sample locally you need to start both a local dev server for the fro
 
 In addition, you will need a valid Piiano Vault service license to run Piiano Vault locally.
 
-Follow the steps below to run locally.
+Follow the steps below to run locally:
 
 1. Clone the project from GitHub:
 
-```bash
-git clone https://github.com/piiano/vault-demo-react.git
-```
+   ```bash
+   git clone https://github.com/piiano/vault-demo-react.git
+   ```
 
-1. Copy the .env.example file into a file named .env in the folder of the server you want to use. For example:
+2. Copy the .env.example file into a file named .env in the folder of the server you want to use. For example:
 
-```bash
-cp .env.example .env
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-1. Update the .env file with your Piiano Vault service license and API key:
+3. Obtain the Vault license from the [get started section of the guides](https://piiano.com/docs/guides/get-started/).
 
-```
-PVAULT_SERVICE_LICENSE=<your Piiano Vault license>
-PVAULT_ADMIN_API_KEY="pvaultauth"
-```
+4. Define PVAULT_SERVICE_LICENSE as an environment variable. Alternatively, you can add it to the .env file:
+
+   ```
+   PVAULT_SERVICE_LICENSE=<your Piiano Vault license>
+   ```
+
+5. Optionally, you can modify the admin's API key in the .env file to not use the default:
+
+   ```
+   PVAULT_ADMIN_API_KEY="pvaultauth"
+   ```
 
 ### With Docker Compose
 
