@@ -154,11 +154,11 @@
 [roles]
 
   [roles.Developer]
-    capabilities = ["CapIAMReader", "CapKMSWriter", "CapConfvarReader", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesREADER"]
+    capabilities = ["CapIAMReader", "CapKMSWriter", "CapConfvarReader", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesReader"]
     policies = ["PolDenyAllAll"]
 
   [roles.CICD]
-    capabilities = ["CapIAMReader", "CapIAMWriter", "CapKMSReader", "CapKMSWriter", "CapConfvarReader", "CapConfvarWriter", "CapErrorWriter", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesREADER", "CapCodeWriter", "CapTypesWRITER"]
+    capabilities = ["CapIAMReader", "CapIAMWriter", "CapKMSReader", "CapKMSWriter", "CapConfvarReader", "CapConfvarWriter", "CapErrorWriter", "CapClusterInfoReader", "CapInfoReader", "CapCollectionsReader", "CapCollectionsWriter", "CapCodeReader", "CapTypesReader", "CapCodeWriter", "CapTypesWriter"]
     policies = ["PolDenyAllAll"]
 
   [roles.ExternalApplication]
