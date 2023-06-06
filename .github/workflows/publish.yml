@@ -52,12 +52,14 @@ jobs:
 
       - name: basic funcionality test
         run: |
-          # inject the license before running
-          cat .env.example | grep -v PVAULT_SERVICE_LICENSE > .env
-          echo "PVAULT_SERVICE_LICENSE=${{ secrets.PVAULT_SERVICE_LICENSE }}" >> .env
+          # use the default environment before running
+          cp .env.example .env
+          # create the directory for the API keys for the test
           mkdir keys
           chown -R 1000:1000 keys
           bash ./test.sh --minimal
+        env:
+          PVAULT_SERVICE_LICENSE: ${{ secrets.PVAULT_SERVICE_LICENSE }}
 
       - name: Commit and push changes
         # even though we're checking for workflow_dispatch we still want to be extra safe and
