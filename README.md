@@ -172,20 +172,6 @@ python manage.py shell
 from api.models import *
 ```
 
-### Dump DB from server
-
-```bash
-python -c 'import psycopg2,os,pprint;cu=psycopg2.connect(os.environ["DATABASE_URL"]).cursor();cu.execute("SELECT * from api_customer;");pprint.pprint(cu.fetchall())'
-```
-
-```python
-import psycopg2,os
-conn=psycopg2.connect(os.environ["DATABASE_URL"])
-cur = conn.cursor();
-cur.execute("SELECT * from api_customer;")
-print(cur.fetchall())
-```
-
 # About Piiano Vault
 
 Piiano Vault is the secure home for sensitive personal data. It allows you to safely store sensitive personal data in your own cloud environment with automated compliance controls.
