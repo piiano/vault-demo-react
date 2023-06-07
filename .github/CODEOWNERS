@@ -1,1 +1,5 @@
-* @nirhaas @david-sackstein @david-piiano @nerya10 @ori-shalom @shiftan @motymichaely @lorg @yossi-lavi
+# All the Vault team are owners of the repo.
+* @piiano/vault @shiftan
+
+# Only the following can approve changes to Github Actions related files.
+/.github/ @david-piiano @ori-shalom @nirhaas
