@@ -56,7 +56,7 @@ jobs:
           cp .env.example .env
           # create the directory for the API keys for the test
           mkdir keys
-          chown -R 1000:1000 keys
+          # chown -R 1000:1000 keys
           bash ./test.sh --minimal
         env:
           PVAULT_SERVICE_LICENSE: ${{ secrets.PVAULT_SERVICE_LICENSE }}
