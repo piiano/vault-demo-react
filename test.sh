@@ -68,7 +68,7 @@ check_log_for_pattern()
     local service_name=$1
     local pattern=$2
     local attempt=1
-    local max_attempts=10
+    local max_attempts=50
     
     while [ $attempt -le $max_attempts ]; do
         # Check if the pattern exists in the Docker log. Notice usage of docker compose logs
@@ -89,7 +89,8 @@ check_log_for_pattern()
     
     echo "Pattern not found in $service_name after $max_attempts attempts. Bailing out..."
     set -x
-    docker compose logs | grep $service_name
+    curl --no-progress-meter http://localhost:8123/api/pvlt/1.0/ctl/info/health
+    docker compose logs
     return 1
 }
 
