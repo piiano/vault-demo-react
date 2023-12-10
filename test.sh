@@ -88,6 +88,7 @@ check_log_for_pattern()
     done
     
     echo "Pattern not found in $service_name after $max_attempts attempts. Bailing out..."
+    set -x
     docker compose logs | grep $service_name
     return 1
 }
