@@ -88,18 +88,12 @@ check_log_for_pattern()
     done
     
     echo "Pattern not found in $service_name after $max_attempts attempts. Bailing out..."
-    set -x
-    curl --no-progress-meter http://localhost:8123/api/pvlt/1.0/ctl/info/health
-    docker compose logs
     return 1
 }
 
 wait_until_vault_is_up()
 {
-    check_log_for_pattern "vault-demo-piiano-vault-1" "Serving HTTP on 0.0.0.0:8123"
-    if [ "$?" -eq 1 ] ; then
-        exit 1
-    fi
+    ./wait-for-service.sh http://localhost:8123/api/pvlt/1.0/ctl/info/health
 }
 
 check_vault_health()
