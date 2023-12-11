@@ -62,35 +62,6 @@ wait_until_containers_are_up()
     echo "All containers are up and running!"
 }
 
-
-check_log_for_pattern() 
-{
-    local service_name=$1
-    local pattern=$2
-    local attempt=1
-    local max_attempts=50
-    
-    while [ $attempt -le $max_attempts ]; do
-        # Check if the pattern exists in the Docker log. Notice usage of docker compose logs
-        # regular docker logs open a new process so you can't redirect stdout easily
-        echo "Checking for $pattern in $service_name"
-        if docker compose logs | grep $service_name | grep -q "$pattern"; then
-            echo "Pattern found in $service_name!"
-            return 0
-        fi
-    
-        echo "Pattern not found in $service_name. Attempt $attempt of $max_attempts"
-    
-        # Wait for a few seconds before the next attempt
-        sleep 5
-    
-        attempt=$((attempt + 1))
-    done
-    
-    echo "Pattern not found in $service_name after $max_attempts attempts. Bailing out..."
-    return 1
-}
-
 wait_until_vault_is_up()
 {
     ./wait-for-service.sh http://localhost:8123/api/pvlt/1.0/ctl/info/health
@@ -112,22 +83,25 @@ check_vault_health()
 
 wait_until_react_is_up()
 {
-    check_log_for_pattern "vault-demo-client-1" "webpack compiled successfully" 
-    if [ "$?" -eq 1 ] ; then
-        exit 1
-    fi
-}
+    local attempt=1
+    local max_attempts=15
+    
+    while [ $attempt -le $max_attempts ]; do
 
-check_web_is_answering()
-{
-    curl --no-progress-meter --connect-timeout 30 http://127.0.0.1:3000 | grep -q "Piiano Vault demo using React"
-    if [ $? = "0" ] ; then
-        echo "React application is up"    
-        return 0
-    else
-        echo "React app is unresponsive after 30 seconds. Bailing out..."
-        return 1
-    fi
+        curl --no-progress-meter --connect-timeout 2 http://127.0.0.1:3000 | grep -q "Piiano Vault demo using React"
+        if [ $? = "0" ] ; then
+            echo "React application is up"    
+            return 0
+        else
+            echo "React up still down, attempt ${attempt}"
+        fi
+
+        sleep 1
+        attempt=$((attempt + 1))
+    done
+
+    echo "Web is not up after $attempts attempts. Bailing out..."
+    exit 1
 }
 
 # main
@@ -148,5 +122,4 @@ wait_until_containers_are_up
 wait_until_vault_is_up
 check_vault_health
 wait_until_react_is_up
-check_web_is_answering
 docker compose down
