@@ -28,7 +28,7 @@ The backend is implemented in Python Django and uses a PostgreSQL DB to store th
 
 The application is deployed using Docker Compose, and includes a Piiano Vault container, a PostgreSQL DB container, a web based Terminal container and an Elastic stack container for viewing logs.
 
-This demo application version is 0.8.16 and is compatible with Vault version 1.11.4 .
+This demo application version is 0.8.17 and is compatible with Vault version 1.12.0 .
 
 ## How to use this demo
 
