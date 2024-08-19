@@ -12,7 +12,7 @@ wait_until_containers_are_up()
 
     while true; do
         # Get the status of each service defined in the Docker Compose file
-        container_status=$(docker-compose ps -q)
+        container_status=$(docker compose ps -q)
         current_time=$(date +%s)
 
         # Check if all containers are running
@@ -35,7 +35,7 @@ wait_until_containers_are_up()
                         if [ "$current_time" -gt "$debug_timeout" ]; then
                             echo "Enabling Debug after 1 minute"
                             docker ps
-                            docker-compose logs
+                            docker compose logs
                         fi
                         break
                     fi
